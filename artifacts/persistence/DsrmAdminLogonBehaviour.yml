@@ -1,0 +1,104 @@
+# RegSeek Artifact Template - Copy this file and fill in the details
+# File naming: use_lowercase_with_underscore.yml
+
+title: "DsrmAdminLogonBehaviour Registry Key value"
+category: "persistence"
+
+description: "The Dsrm admin account is a non local/logon account. If this registry key is 1 or 2, then that is a garunteed sign of compromise/persistence and domaiance over your forest.
+
+paths:
+  - 'HKLM\\System\\CurrentControlSet\\Control\\Lsa\\DsrmAdminLogonBehavior'
+
+details:
+  what: |
+    The DsrmAdminLogonBehaviour registry key controls the behavior of the Directory Services Restore Mode (DSRM) administrator account.
+    Normally(and I mean almost always) this key is either non exsistent OR it is set to 0. This means the DSRM admin account is not able to 
+    logon locally OR logon over the network. If the key is set to 1, it means the DSRM admin account can logon locally, and if it is set to 2,
+    it means network authentication is allowed. Not only is this weird, this will never be seen in a normal environment. This is a critical finding 
+    and is a strong indicator of compromise or persistence by an attacker who has gained control over the domain.
+
+  forensic_value: |
+    This artifact proves that someone had the privlidges to not only edit the registry of the Domain Controller but also that they had the ability to 
+    alter your domain controllers keys. The DSRM account is a local administrator, and thus like any local adminsitrator on the domain controller,
+    they can preform Dc sync attacks, extract hashes/keys/secrets/dpapi backup master keys, edit domain controller policies, and ultimately; comrpomsie
+    the rest of the forest at will. This includes compromise an RODC, and then passing the hash. 
+
+  structure: |
+    The DsrmAdminLogonBehaviour key is a DWORD value located in the Windows registry under the path:
+    `HKLM\System\CurrentControlSet\Control\Lsa\DsrmAdminLogonBehavior`.
+    It can have the following values:
+    - 0: DSRM admin account cannot log on locally or over the network.
+    - 1: DSRM admin account can log on locally.
+    - 2: DSRM admin account can log on over the network.
+
+  examples:
+    
+
+  tools:
+    - name: "reg query"
+      description: "there are no tools that detect/query this. I have made PRs to ReigstryExplorer and Regripper4.0"
+      command: "reg query HKLM\\System\\CurrentControlSet\\Control\\Lsa /v DsrmAdminLogonBehavior"
+
+metadata:
+  windows_versions:
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2016"
+    - "Windows Server 2008 R2"
+    - "Windows Server 2012"
+    - "Windows Server 2012 R2"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  # When this artifact was introduced (optional)
+  introduced: "Introduced in 2008"
+
+  
+
+  criticality: "high"
+
+  # Investigation types where this is particularly useful
+  investigation_types:
+    - "malware-analysis"
+    - "insider-threat"
+    - "incident-response"
+    - "timeline-analysis"
+
+  tags:
+    - "AD domaiance"
+    - "AD persistence"
+    - "registry forensics"
+    - "DsrmAdmin Boot recovery mode"
+  # References and sources (optional but recommended)
+  references:
+    - title: "Beyond The MCSE: Active Directory For The Security Professional"
+      url: "https://www.blackhat.com/docs/us-16/materials/us-16-Metcalf-Beyond-The-MCSE-Active-Directory-For-The-Security-Professional.pdf
+      type: "Presentation/Whitepaper"
+
+  # Data retention information
+  retention:
+    default_location: "System Registry"
+    persistence: "Survives reboots and system cleaning"
+    volatility: "Persistent until explicitly deleted"
+
+  # Related artifacts that investigators should also check
+  related_artifacts:
+    - "The logs"
+    - "Burn down the whole forest if this was set for longer than 1 week"
+
+# Author attribution (recommended)
+author:
+  name: "Abdul Mhanni" 
+  github: "ThatTotallyRealMyth"
+  linkedin: "https://www.linkedin.com/in/abdulmhanni/"
+  email: "abdul.mhanni@gmail.com" 
+
+# Contribution information
+contribution:
+  date_added: "2025-06-
+  last_updated: "2025-01-15"
+  version: "1.0"
