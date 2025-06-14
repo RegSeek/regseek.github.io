@@ -92,7 +92,7 @@ metadata:
     - "AD persistence"
     - "registry forensics"
     - "DsrmAdmin Boot recovery mode"
-  # References and sources (optional but recommended)
+
   references:
     - title: "Beyond The MCSE: Active Directory For The Security Professional"
       url: "https://www.blackhat.com/docs/us-16/materials/us-16-Metcalf-Beyond-The-MCSE-Active-Directory-For-The-Security-Professional.pdf
