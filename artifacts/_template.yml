@@ -43,18 +43,18 @@ details:
 
 # CRITICAL: Anti-checklist methodology sections
 limitations:
-  - "Specific things this artifact cannot determine"
-  - "Common false positives or misinterpretations"
-  - "What this artifact does NOT prove"
+  - "When the original compromose occurred"
+  - "There are no reported false Postive"
+  - "Who preoformed the change or when it was made"
 
 correlation:
   required_for_definitive_conclusions:
-    - "List other artifacts needed to prove what people assume this one proves"
-    - "Required evidence for court presentation"
+    - "The windows event logs, default as well as sysmon logs"
+    - "Other artifacts that provide context or corroboration, this is not a artifact that can be used alone"
   
   strengthens_evidence:
-    - "Artifacts that support but don't prove the same conclusions"
-    - "Supporting evidence that adds context"
+    - "Search the name of the key in the event logs. This should return the time/user. Confirm with the user found"
+    - "Sysmon logs also can provide details around a registry key modification/creation event 
 
 metadata:
   windows_versions:
