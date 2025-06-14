@@ -1,66 +1,61 @@
-title: "DsrmAdminLogonBehaviour Registry Key value"
-category: "persistence"
+title: "DSRM Admin Logon Behavior Registry Key"
+category: "persistence-methods"
 
-description: "The Dsrm admin account is a non local/logon account. If this registry key is 1 or 2, then that is a garunteed sign of compromise/persistence and domaiance over your forest.
+description: "Directory Services Restore Mode (DSRM) administrator account logon configuration - values of 1 or 2 indicate guaranteed compromise and persistence over Active Directory forest"
 
 paths:
-  - 'HKLM\\System\\CurrentControlSet\\Control\\Lsa\\DsrmAdminLogonBehavior'
+  - "HKLM\\System\\CurrentControlSet\\Control\\Lsa\\DsrmAdminLogonBehavior"
 
 details:
   what: |
-    The DsrmAdminLogonBehaviour registry key controls the behavior of the Directory Services Restore Mode (DSRM) administrator account.
-    Normally(and I mean almost always) this key is either non exsistent OR it is set to 0. This means the DSRM admin account is not able to 
-    logon locally OR logon over the network. If the key is set to 1, it means the DSRM admin account can logon locally, and if it is set to 2,
-    it means network authentication is allowed. Not only is this weird, this will never be seen in a normal environment. This is a critical finding 
-    and is a strong indicator of compromise or persistence by an attacker who has gained control over the domain.
+    The DsrmAdminLogonBehavior registry key controls the behavior of the Directory Services Restore Mode (DSRM) administrator account.
+    Normally (and almost always) this key is either non-existent OR set to 0. This means the DSRM admin account cannot 
+    logon locally OR over the network. If the key is set to 1, the DSRM admin account can logon locally, and if set to 2,
+    network authentication is allowed. This configuration is extremely rare in normal environments and indicates compromise.
 
   forensic_value: |
-    This artifact proves that someone had the privlidges to not only edit the registry of the Domain Controller but also that they had the ability to 
-    alter your domain controllers keys. The DSRM account is a local administrator, and thus like any local adminsitrator on the domain controller,
-    they can preform Dc sync attacks, extract hashes/keys/secrets/dpapi backup master keys, edit domain controller policies, and ultimately; comrpomsie
-    the rest of the forest at will. This includes compromise an RODC, and then passing the hash. 
+    This artifact proves that someone had the privileges to edit the Domain Controller registry and alter critical security settings. 
+    The DSRM account functions as a local administrator, enabling DC sync attacks, hash/key/secret extraction, DPAPI backup master key access, 
+    domain controller policy modification, and ultimately complete forest compromise. This includes compromising RODCs and lateral movement.
 
   structure: |
-    The DsrmAdminLogonBehaviour key is a DWORD value located in the Windows registry under the path:
-    `HKLM\System\CurrentControlSet\Control\Lsa\DsrmAdminLogonBehavior`.
-    It can have the following values:
-    - 0: DSRM admin account cannot log on locally or over the network.
-    - 1: DSRM admin account can log on locally.
-    - 2: DSRM admin account can log on over the network.
+    The DsrmAdminLogonBehavior key is a DWORD value located at:
+    HKLM\System\CurrentControlSet\Control\Lsa\DsrmAdminLogonBehavior
+    
+    Values:
+    - 0: DSRM admin account cannot log on locally or over the network (default/secure)
+    - 1: DSRM admin account can log on locally
+    - 2: DSRM admin account can log on over the network
 
-  example: |
-        ```
-        C:\> reg query HKLM\\System\\CurrentControlSet\\Control\\Lsa /v DsrmAdminLogonBehavior
-        HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Control\\Lsa
-        DsrmAdminLogonBehavior    REG_DWORD    0x1
-        ```
+  examples:
+    - "reg query HKLM\\System\\CurrentControlSet\\Control\\Lsa /v DsrmAdminLogonBehavior"
+    - "HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Control\\Lsa"
+    - "DsrmAdminLogonBehavior    REG_DWORD    0x1"
+
   tools:
     - name: "reg query"
-      description: "there are no tools that detect/query this. I have made PRs to ReigstryExplorer and Regripper4.0"
-      command: "reg query HKLM\\System\\CurrentControlSet\\Control\\Lsa /v DsrmAdminLogonBehavior"
+      description: "Windows Registry query command - currently no forensic tools specifically detect this artifact"
+    - name: "Registry Explorer"
+      description: "Manual registry analysis tool"
 
 limitations:
-  - "When the original compromose occurred"
-  - "There are no reported false Postive"
-  - "Who preoformed the change or when it was made"
+  - "Does not indicate when the original compromise occurred"
+  - "No known false positives - presence of value 1 or 2 indicates compromise"
+  - "Cannot identify who performed the change without additional logging"
 
 correlation:
   required_for_definitive_conclusions:
-    - "The windows event logs, default as well as sysmon logs"
-    - "Other artifacts that provide context or corroboration, this is not a artifact that can be used alone"
+    - "Windows Event Logs analysis for registry modification events"
+    - "Sysmon logs for registry change detection"
+    - "Timeline analysis with other persistence artifacts"
   
   strengthens_evidence:
-    - "Search the name of the key in the event logs. This should return the time/user. Confirm with the user found"
-    - "Sysmon logs also can provide details around a registry key modification/creation event"
+    - "Search for DsrmAdminLogonBehavior in Windows Event Logs for timestamp/user attribution"
+    - "Sysmon Event ID 13 (registry value set) for detailed modification tracking"
+    - "Correlation with other Active Directory persistence techniques"
 
 metadata:
   windows_versions:
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2016"
     - "Windows Server 2008 R2"
     - "Windows Server 2012"
     - "Windows Server 2012 R2"
@@ -68,51 +63,43 @@ metadata:
     - "Windows Server 2019"
     - "Windows Server 2022"
 
-  # When this artifact was introduced (optional)
-  introduced: "Introduced in 2008"
-
+  introduced: "Windows Server 2008"
   criticality: "high"
 
-
   investigation_types:
-    # Investigation Phases (how you're investigating):
-    - "incident-response"          # Emergency response situations            
-    - "behavioral-analysis"        # Understanding user/system behavior
-    - "insider-threat"             # Internal threat investigations
-    
-    # Attack Techniques (what the attacker did):
-    - "persistence-analysis"       # How threats maintain presence
-    - "privilege-escalation"       # Elevation of privileges
-    - "credential-theft"           # Credential harvesting/dumping
-    - "lateral-movement"           # Movement across network
-    - "remote-access"              # Remote access tools/methods
+    - "incident-response"
+    - "behavioral-analysis"
+    - "insider-threat"
+    - "persistence-analysis"
+    - "privilege-escalation"
+    - "credential-theft"
+    - "lateral-movement"
+    - "remote-access"
 
   tags:
-    - "AD domaiance"
-    - "AD persistence"
-    - "registry forensics"
-    - "DsrmAdmin Boot recovery mode"
+    - "active-directory"
+    - "domain-controller"
+    - "dsrm-persistence"
+    - "registry-forensics"
+    - "high-severity"
 
   references:
     - title: "Beyond The MCSE: Active Directory For The Security Professional"
-      url: "https://www.blackhat.com/docs/us-16/materials/us-16-Metcalf-Beyond-The-MCSE-Active-Directory-For-The-Security-Professional.pdf
-      type: "Presentation/Whitepaper"
+      url: "https://www.blackhat.com/docs/us-16/materials/us-16-Metcalf-Beyond-The-MCSE-Active-Directory-For-The-Security-Professional.pdf"
+      type: "research"
 
-  # Data retention information
   retention:
     default_location: "System Registry"
     persistence: "Survives reboots and system cleaning"
     volatility: "Persistent until explicitly deleted"
 
-# Author attribution (recommended)
 author:
-  name: "Abdul Mhanni" 
+  name: "Abdul Mhanni"
   github: "ThatTotallyRealMyth"
   linkedin: "https://www.linkedin.com/in/abdulmhanni/"
-  email: "abdul.mhanni@gmail.com" 
+  email: "abdul.mhanni@gmail.com"
 
-# Contribution information
 contribution:
-  date_added: "2025-06-
+  date_added: "2025-01-15"
   last_updated: "2025-01-15"
   version: "1.0"
