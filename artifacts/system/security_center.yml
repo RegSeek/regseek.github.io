@@ -55,7 +55,7 @@ details:
 
 metadata:
   windows_versions:
-    - "Windows XP SP2"
+    - "Windows XP"
     - "Windows Vista"
     - "Windows 7"
     - "Windows 8"

@@ -165,7 +165,7 @@ def build_site():
         "statistics": stats,
         "total": len(valid_artifacts),
         "last_updated": datetime.now().isoformat(),
-        "version": "2.0.0",
+        "version": "1.0.0",
         "build_info": {
             "total_files_processed": len(artifacts),
             "valid_artifacts": len(valid_artifacts),
