@@ -1,0 +1,127 @@
+title: "Automatic Destinations and Recent Items (ACMRU)"
+category: "user-behaviour"
+description: "Application-specific MRU tracking, dialog preferences, and automated destination management"
+
+paths:
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\CIDSizeMRU"
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\FirstFolder"
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StreamMRU"
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\LastVisitedMRU"
+
+details:
+  what: |
+    Windows tracks application-specific Most Recently Used (MRU) items including file dialog
+    sizing preferences, default folder locations, and stream operations. Provides granular 
+    tracking of user interaction patterns with file dialogs and document access behaviors.
+
+  forensic_value: |
+    Reveals detailed user interaction patterns with applications and file systems, showing
+    preferred locations for file operations and evidence of document manipulation activities.
+    Critical for understanding user behavior and establishing application usage timelines.
+
+  structure: |
+    CIDSizeMRU stores dialog box sizing preferences by application executable names.
+    FirstFolder maintains default folder locations for file dialogs by file type.
+    StreamMRU contains data stream access patterns with binary PIDL data representing
+    folder locations and navigation history.
+
+  examples:
+    - "CIDSizeMRU\\notepad.exe: Dialog size 800x600 (Notepad file dialog preferences)"
+    - "CIDSizeMRU\\winword.exe: Word document dialog sizing information"
+    - "FirstFolder\\*.txt: C:\\Users\\user\\Documents (Default text file location)"
+    - "FirstFolder\\*.pdf: C:\\Downloads (Default PDF file location)"
+    - "StreamMRU\\0: Binary PIDL data for recent stream operations"
+    - "LastVisitedMRU\\exe files: C:\\Tools\\Utilities (Executable file access location)"
+    - "MRUListEx: 2,1,0 (Access order - most recent first)"
+
+  tools:
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "MRU Parser"
+      description: "Specialized tools for analyzing MRU registry data"
+    - name: "RegRipper"
+      url: "https://github.com/keydet89/RegRipper3.0"
+      description: "Registry data extraction and analysis framework"
+    - name: "PIDL Analyzer"
+      description: "Tools for decoding Windows Shell Item Lists and folder references"
+    - name: "Common Dialog Analysis Tools"
+      description: "Utilities for analyzing file dialog interaction patterns"
+
+limitations:
+  - "Dialog preferences do NOT prove files were actually opened or accessed"
+  - "Size settings don't indicate successful file operations or document viewing"
+  - "Default folder locations don't show actual file activity in those folders"
+  - "Stream operations may reflect system activity rather than user actions"
+  - "PIDL data can become corrupted or reference non-existent locations"
+  - "MRU entries don't indicate duration of file interaction or editing"
+  - "Application-specific settings don't prove the application was actively used"
+
+correlation:
+  required_for_definitive_file_access_proof:
+    - "File system timestamps showing actual file modifications or access"
+    - "Application event logs showing document opening and editing activity"
+    - "Process execution logs confirming application usage during dialog interactions"
+    - "Registry keys modified by applications during file operations"
+    
+  strengthens_evidence:
+    - "Recent documents showing files accessed through these dialog preferences"
+    - "ShellBags data showing folder navigation correlating with dialog settings"
+    - "Jump Lists showing application usage patterns matching dialog history"
+    - "Thumbnail cache entries showing file previews from preferred locations"
+
+metadata:
+  windows_versions:
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+
+  introduced: "Windows XP"
+  criticality: "medium"
+
+  investigation_types:
+    - "behavioral-analysis"
+    - "insider-threat"
+    - "timeline-analysis"
+
+  tags:
+    - "mru"
+    - "file-dialogs"
+    - "document-access"
+    - "user-interaction"
+    - "application-usage"
+    - "dialog-preferences"
+    - "automated-destinations"
+
+  references:
+    - title: "Microsoft Documentation: Common File Dialogs"
+      url: "https://docs.microsoft.com/en-us/windows/win32/dlgbox/common-dialog-box-library"
+      type: "official"
+    - title: "Windows MRU Forensics Analysis"
+      url: "https://www.forensicfocus.com/articles/windows-mru-forensics/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (NTUSER.DAT)"
+    persistence: "MRU data persists until overwritten by newer entries"
+    volatility: "Real-time updates with user file dialog interactions"
+
+  related_artifacts:
+    - "opensavemru"
+    - "lastvisited_pidlmru"
+    - "comdlg32_settings"
+    - "recent_docs"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-12"
+  version: "3.0"

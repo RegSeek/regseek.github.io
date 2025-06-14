@@ -1,0 +1,115 @@
+title: "Visual Studio Code Editor Configuration"
+category: "program-execution"
+description: "VS Code editor settings, extensions, workspace history, and development environment configuration"
+
+paths:
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{771FD6B0-FA20-440A-A002-3B3BAC16DC50}_is1"
+  - "HKCU\\Software\\Classes\\vscode"
+  - "HKLM\\SOFTWARE\\Classes\\vscode"
+
+details:
+  what: |
+    Visual Studio Code development environment configuration including workspace settings, 
+    installed extensions, recent projects, and debugging configurations. Registry manages 
+    file associations, protocol handlers, and installation data.
+
+  forensic_value: |
+    Essential for investigating software development activities, code editing patterns, and 
+    project access. Shows evidence of code development, extension usage, workspace access, 
+    and can reveal unauthorized code modifications, software project involvement, and programming activities.
+
+  structure: |
+    VS Code configuration includes installation directories, file associations, protocol handlers, 
+    and workspace preferences. Extension data tracks installed development tools and language support.
+
+  examples:
+    - "InstallLocation: C:\\Users\\user\\AppData\\Local\\Programs\\Microsoft VS Code"
+    - "FileAssociation: .py -> Visual Studio Code"
+    - "FileAssociation: .js -> Visual Studio Code"
+    - "ProtocolHandler: vscode:// (VS Code URL protocol)"
+    - "RecentWorkspace: C:\\Development\\ProjectName"
+    - "RecentWorkspace: \\\\server\\shared\\source-code"
+    - "Extension: ms-python.python (Python development support)"
+    
+  tools:
+    - name: "Visual Studio Code"
+      description: "Microsoft's popular source code editor"
+    - name: "code --list-extensions"
+      description: "Command to list installed VS Code extensions"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "VS Code Settings Sync"
+      description: "Microsoft's settings synchronization for VS Code"
+
+limitations:
+  - "VS Code registry entries do NOT prove active code development or editing"
+  - "Installation presence doesn't indicate actual programming work was performed"
+  - "File associations may be set without opening or editing code files"
+  - "Recent workspace entries don't prove code was modified or created"
+  - "Extension installation doesn't indicate extension was actively used"
+  - "Protocol handler registration enables VS Code integration but doesn't show usage"
+  - "Workspace settings may be configured without actual development activity"
+
+correlation:
+  required_for_definitive_execution_proof:
+    - "Process execution logs showing Code.exe launches"
+    - "File system artifacts showing code files accessed or modified"
+    - "Recent documents showing programming files opened in VS Code"
+    - "VS Code workspace and settings files showing actual configuration"
+    
+  strengthens_evidence:
+    - "Git artifacts showing code commits and version control activity"
+    - "File modification timestamps correlating with VS Code execution"
+    - "Network logs showing extension downloads or updates"
+
+metadata:
+  windows_versions:
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+
+  introduced: "Visual Studio Code (2015)"
+  criticality: "medium"
+
+  investigation_types:
+    - "behavioral-analysis"
+    - "insider-threat"
+    - "data-exfiltration"
+    - "program-execution"
+
+  tags:
+    - "vscode"
+    - "code-editor"
+    - "development"
+    - "programming"
+    - "extensions"
+    - "workspace"
+    - "microsoft"
+
+  references:
+    - title: "Visual Studio Code Documentation"
+      url: "https://code.visualstudio.com/docs"
+      type: "official"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
+    persistence: "Development settings and workspace history persist across sessions"
+    volatility: "Recent projects and development activity provide ongoing programming evidence"
+
+  related_artifacts:
+    - "git_configuration"
+    - "development_tools"
+    - "recent_documents"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-06-08"
+  last_updated: "2025-06-12"
+  version: "3.0"

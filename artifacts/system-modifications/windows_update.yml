@@ -1,0 +1,135 @@
+title: "Windows Update Configuration and History"
+category: "system-modifications"
+description: "Windows Update service settings, WSUS configuration, automatic update policies, and patch management"
+
+paths:
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate"
+  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate\\Auto Update"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate\\Services"
+
+details:
+  what: |
+    Windows Update service configuration includes automatic update settings, Windows Server 
+    Update Services (WSUS) server configuration, update sources, installation schedules, 
+    and patch management settings for maintaining system security.
+
+  forensic_value: |
+    Critical for detecting security policy modifications where attackers disable updates 
+    to maintain vulnerable systems. Reveals WSUS server redirection for malicious update 
+    delivery and indicates update tampering for persistent access.
+
+  structure: |
+    Update configuration includes AUOptions (automatic update behavior), WUServer (WSUS server), 
+    UseWUServer (WSUS enablement), ScheduledInstallDay/Time (installation scheduling), and 
+    service registration stored as REG_DWORD and REG_SZ values.
+
+  examples:
+    - "AUOptions: 1 (Notify before downloading any updates)"
+    - "AUOptions: 4 (Automatically download and install updates)"
+    - "WUServer: http://wsus.company.com:8530"
+    - "WUServer: http://malicious-wsus.evil.com (Suspicious update server)"
+    - "UseWUServer: 1 (Use specified WSUS server instead of Microsoft)"
+    - "ScheduledInstallDay: 0 (Install updates every day)"
+    - "ScheduledInstallTime: 3 (Install updates at 3:00 AM)"
+    - "NoAutoUpdate: 1 (Automatic updates completely disabled)"
+    - "DisableWindowsUpdateAccess: 1 (Block access to Windows Update)"
+
+  tools:
+    - name: "Windows Update Settings"
+      description: "Built-in Windows Update configuration and status interface"
+    - name: "wuauclt.exe"
+      description: "Windows Update client command-line utility"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "PowerShell Update Management"
+      description: "PowerShell modules for Windows Update automation and analysis"
+
+limitations:
+  - "Update configuration does NOT prove updates were actually installed"
+  - "WSUS server settings don't confirm connection or communication occurred"
+  - "Disabled updates may be legitimate enterprise policy, not attack evidence"
+  - "Scheduled installation times don't prove updates were applied"
+  - "Configuration changes don't indicate who made the modifications"
+  - "Update server redirection may be legitimate corporate infrastructure"
+  - "Service settings show configuration state, not update installation history"
+    
+correlation:
+  required_for_definitive_update_activity_proof:
+    - "Windows Update event logs showing actual update installation"
+    - "Installed programs registry showing update installations"
+    - "File system artifacts showing updated files and timestamps"
+    - "System event logs confirming update service operations"
+    
+  strengthens_evidence:
+    - "Network logs showing connections to update servers"
+    - "Registry modification timestamps correlating with update changes"
+    - "Application logs showing update-related process activity"
+    - "System restore points created during update installations"
+
+metadata:
+  windows_versions:
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows XP"
+  criticality: "high"
+
+  investigation_types:
+    - "malware-analysis"
+    - "timeline-analysis"
+    - "lateral-movement"
+    - "persistence-analysis"
+    - "incident-response"
+
+  tags:
+    - "windows-update"
+    - "wsus"
+    - "patch-management"
+    - "vulnerability"
+    - "update-tampering"
+    - "security-updates"
+    - "automatic-updates"
+
+  references:
+    - title: "Windows Update"
+      url: "https://docs.microsoft.com/en-us/windows/deployment/update/"
+      type: "official"
+    - title: "Windows Update Security and Attack Vectors"
+      url: "https://www.sans.org/white-papers/36427/"
+      type: "research"
+    - title: "WSUS Infrastructure Security"
+      url: "https://docs.microsoft.com/en-us/windows-server/administration/windows-server-update-services/"
+      type: "official"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE), Windows Update logs"
+    persistence: "Update configuration persists until manually changed or policy overridden"
+    volatility: "Update settings critical for ongoing security patch delivery and vulnerability management"
+
+  related_artifacts:
+    - "security_policy"
+    - "installed_programs"
+    - "version_info"
+    - "network_configuration"
+
+author:
+  name: "RegSeek Migration"
+  github: "regseek"
+
+contribution:
+  date_added: "2025-06-13"
+  last_updated: "2025-06-13"
+  version: "3.0"

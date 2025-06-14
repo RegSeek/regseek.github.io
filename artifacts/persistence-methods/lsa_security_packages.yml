@@ -1,0 +1,150 @@
+title: "LSA Security Packages and Authentication"
+category: "persistence-methods"
+description: "Local Security Authority packages, authentication providers, and credential interception mechanisms"
+
+paths:
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\OSConfig"
+
+details:
+  what: |
+    Local Security Authority (LSA) configuration including security packages, authentication
+    providers, notification packages, and security support providers that handle authentication,
+    credential management, and security functions. Controls authentication protocols, password
+    filtering, and security event notifications throughout the Windows authentication subsystem.
+
+  forensic_value: |
+    Advanced persistence technique where malware registers malicious DLLs as LSA security packages,
+    providing persistent access with SYSTEM privileges and the ability to intercept authentication
+    credentials, passwords, and security tokens. Can indicate sophisticated attacks targeting
+    authentication infrastructure, credential harvesting operations, and advanced persistent threats.
+
+  structure: |
+    LSA settings include Security Packages (authentication DLLs), Authentication Packages (logon
+    process DLLs), Notification Packages (password change notifications), SecurityProviders
+    (SSP/AP DLLs), and Bounds checking configuration stored as REG_MULTI_SZ values with system
+    security implications.
+
+  examples:
+    - "Security Packages: kerberos, msv1_0, schannel, wdigest, tspkg, pku2u"
+    - "Authentication Packages: msv1_0, malicious_auth_package"
+    - "Notification Packages: scecli, rassfm, malicious_notify"
+    - "SecurityProviders: schannel.dll, digest.dll, msnsspc.dll, backdoor.dll"
+    - "LsaDbBackupPath: C:\\Windows\\System32\\config"
+    - "Bounds: 0x30 (bounds checking configuration)"
+    - "NoLMHash: 1 (disable LM hash storage)"
+    - "LmCompatibilityLevel: 5 (NTLMv2 only)"
+
+  tools:
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry browser for LSA configuration analysis"
+    - name: "Autoruns"
+      url: "https://docs.microsoft.com/en-us/sysinternals/downloads/autoruns"
+      description: "Microsoft Sysinternals tool with LSA provider enumeration"
+    - name: "LSA Secrets Dumper"
+      description: "Tools for extracting and analyzing LSA secrets and configuration"
+    - name: "Security Policy Editor"
+      description: "Windows security policy management for LSA configuration"
+    - name: "Mimikatz"
+      url: "https://github.com/gentilkiwi/mimikatz"
+      description: "Credential extraction tool that can identify LSA modifications"
+
+limitations:
+  - "LSA package registration does NOT prove packages were loaded or executed"
+  - "Security provider entries don't indicate successful credential interception"
+  - "Authentication package modifications don't show logon process exploitation"
+  - "Notification package settings don't prove password change monitoring occurred"
+  - "LSA configuration changes may be blocked by security policies or protections"
+  - "Malicious packages may fail to load due to signature verification or compatibility issues"
+  - "Registry entries don't show frequency or success of credential harvesting attempts"
+
+correlation:
+  required_for_definitive_exploitation_proof:
+    - "Process execution logs showing LSA service loading malicious packages"
+    - "File system artifacts showing malicious LSA DLL files at specified paths"
+    - "Memory dumps showing injected code in LSASS process address space"
+    - "Network traffic logs showing credential theft or authentication bypass"
+    
+  strengthens_evidence:
+    - "Event logs showing LSA service restarts or authentication failures"
+    - "Registry modifications made by malicious LSA packages"
+    - "File system changes indicating credential harvesting activity"
+    - "Security audit logs showing unusual authentication patterns"
+
+metadata:
+  windows_versions:
+    - "Windows NT 3.1"
+    - "Windows NT 4.0"
+    - "Windows 2000"
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows NT 3.1"
+  criticality: "high"
+
+  investigation_types:
+    - "persistence-analysis"
+    - "privilege-escalation"
+    - "credential-theft"
+    - "malware-analysis"
+    - "incident-response"
+
+  tags:
+    - "persistence"
+    - "lsa"
+    - "authentication"
+    - "credential-theft"
+    - "system-privileges"
+    - "advanced-persistence"
+    - "security-packages"
+    - "password-interception"
+    - "sophisticated-malware"
+
+  references:
+    - title: "Local Security Authority (LSA)"
+      url: "https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/local-security-authority"
+      type: "official"
+    - title: "Authentication Packages"
+      url: "https://docs.microsoft.com/en-us/windows/win32/secauthn/authentication-packages"
+      type: "official"
+    - title: "MITRE ATT&CK: LSA Secrets"
+      url: "https://attack.mitre.org/techniques/T1003/004/"
+      type: "research"
+    - title: "LSA Security Package Analysis"
+      url: "https://www.sans.org/blog/lsa-security-packages-analysis/"
+      type: "research"
+
+  retention:
+    default_location: "SYSTEM registry hive"
+    persistence: "Survives reboots, highly persistent with system-level privileges"
+    volatility: "LSA configuration persists until explicit modification or system corruption"
+
+  related_artifacts:
+    - "sam_security"
+    - "security_policy"
+    - "winlogon_userinit"
+    - "com_objects"
+    - "scheduled_tasks"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-12"
+  version: "3.0"

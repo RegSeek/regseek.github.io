@@ -1,0 +1,115 @@
+title: "Windows Telephony and Communication Services"
+category: "communication-apps"
+description: "TAPI configuration, VoIP settings, messaging protocols, and communication service integration"
+
+paths:
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Telephony"
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Communications"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\TapiSrv"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Svchost\\LocalSystemNetworkRestricted"
+
+details:
+  what: |
+    Windows Telephony API (TAPI) and communication services configuration.
+    Controls VoIP integration, telephony service providers, messaging protocols,
+    and unified communication platform settings.
+
+  forensic_value: |
+    Critical for investigating unauthorized communication channels, VoIP-based data
+    exfiltration, and covert communication protocols. Shows telephony applications
+    and protocol settings that might indicate command and control communication.
+
+  structure: |
+    Configuration includes TAPI service providers, communication device registrations,
+    protocol handlers, messaging service configurations, and VoIP integration settings.
+
+  examples:
+    - "Telephony\\Providers\\Provider0: unimdm.tsp (Universal modem TSP)"
+    - "Communications\\CallHistoryEnabled: 1 (Call history tracking enabled)"
+    - "TapiSrv\\Start: 3 (Telephony service manual startup)"
+    - "VoIPProtocols\\SIP: Enabled (Session Initiation Protocol support)"
+    - "MessagingProtocols\\SMTP: smtp.company.com:587 (Email server configuration)"
+    - "CommunicationApps\\Teams: Registered (Microsoft Teams integration)"
+
+  tools:
+    - name: "Phone and Modem Options (telephon.cpl)"
+      description: "Built-in Windows telephony and modem configuration"
+    - name: "Communication Apps Settings"
+      description: "Windows communication application management"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Registry analysis tool"
+    - name: "TAPI Browser"
+      description: "Telephony API configuration analysis tools"
+
+limitations:
+  - "Shows service setup only, not actual call records or communication content"
+  - "Service provider registration doesn't prove telephony services were used"
+  - "Protocol configuration doesn't indicate what communications occurred"
+
+correlation:
+  required_for_definitive_conclusions:
+    - "Call detail records (CDR) from telephony systems showing actual communication"
+    - "Network traffic analysis confirming VoIP protocol usage"
+    - "Application logs from telephony software showing call activity"
+  
+  strengthens_evidence:
+    - "Communication app artifacts showing integrated telephony usage"
+    - "Network configuration artifacts showing VoIP infrastructure setup"
+    - "Device management artifacts showing communication hardware integration"
+
+metadata:
+  windows_versions:
+    - "Windows 95"
+    - "Windows NT"
+    - "Windows 2000"
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2000"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows 95 (TAPI 1.0)"
+  criticality: "medium"
+
+  investigation_types:
+    - "data-exfiltration"
+    - "behavioral-analysis"
+    - "incident-response"
+    - "lateral-movement"
+    - "anti-forensics"
+
+  tags:
+    - "telephony"
+    - "voip"
+    - "messaging"
+    - "tapi"
+    - "communication-protocols"
+    - "covert-channels"
+
+  references:
+    - title: "Microsoft Documentation: Telephony API (TAPI)"
+      url: "https://docs.microsoft.com/en-us/windows/win32/tapi/telephony-application-programming-interfaces"
+      type: "official"
+    - title: "VoIP Security and Forensics Analysis"
+      url: "https://www.sans.org/white-papers/33649/"
+      type: "research"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-12"
+  version: "3.0"

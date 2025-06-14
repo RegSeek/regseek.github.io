@@ -1,0 +1,153 @@
+title: "Network Interface Configuration"
+category: "network-infrastructure"
+description: "Network adapter configuration including IP addresses, DHCP settings, DNS servers, and routing information"
+
+paths:
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Network\\{4D36E972-E325-11CE-BFC1-08002BE10318}"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002BE10318}"
+
+details:
+  what: |
+    Windows stores network interface configuration data including IP addresses, subnet masks, default gateways, 
+    DNS servers, DHCP settings, and adapter-specific parameters. Each network interface has its own GUID-identified 
+    subkey containing current and historical network configuration.
+
+  forensic_value: |
+    Reveals network configuration history, static IP assignments, DNS server changes, and can show evidence of 
+    network pivoting, tunneling, or lateral movement preparation. Critical for understanding network connectivity, 
+    identifying rogue configurations, and correlating network-based attacks with system configuration.
+
+  structure: |
+    Interface GUIDs as subkeys containing REG_SZ and REG_MULTI_SZ values for network parameters. Key values include 
+    IPAddress, SubnetMask, DefaultGateway, NameServer, DHCPIPAddress, DHCPServer, Domain, EnableDHCP, and lease information. 
+    Binary data includes interface metrics and adapter settings.
+
+  examples:
+    - "DHCPIPAddress: 192.168.1.100"
+    - "StaticAddress: 10.0.0.50"
+    - "SubnetMask: 255.255.255.0"
+    - "DefaultGateway: 192.168.1.1"
+    - "NameServer: 8.8.8.8,1.1.1.1"
+    - "DHCPServer: 192.168.1.1"
+    - "Domain: company.local"
+    - "DHCPLeaseObtainedTime: 1642291200 (Unix timestamp)"
+    - "DHCPLeaseTerminatesTime: 1642377600 (Unix timestamp)"
+    - "EnableDHCP: 1 (DHCP enabled)"
+    - "MTU: 1500"
+    - "Interface Metric: 20"
+
+  tools:
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry browser for network configuration analysis"
+    - name: "RegRipper"
+      url: "https://github.com/keydet89/RegRipper3.0"
+      description: "Registry analysis with network interface plugins"
+    - name: "ipconfig /all"
+      description: "Built-in Windows command for current network configuration"
+    - name: "netsh interface show"
+      description: "Advanced network shell for interface configuration details"
+    - name: "NetworkInterfaceView"
+      url: "https://www.nirsoft.net/utils/network_interface_view.html"
+      description: "NirSoft tool for detailed network interface information"
+
+limitations:
+  - "Network interface configuration does NOT prove network communication occurred"
+  - "IP address assignments don't indicate what network traffic was generated"
+  - "DNS server settings don't show what domain name queries were made"
+  - "DHCP lease information doesn't prove active network usage during lease period"
+  - "Static IP configuration may be set without network connectivity"
+  - "Gateway settings don't indicate routing table was used for communication"
+  - "Interface metrics don't show network performance or actual usage"
+
+correlation:
+  required_for_definitive_execution_proof:
+    - "Network traffic logs showing actual communication using configured IP addresses"
+    - "DHCP server logs showing lease assignments and renewal activity"
+    - "DNS query logs showing name resolution using configured DNS servers"
+    - "Routing table logs showing gateway utilization for network communication"
+    
+  strengthens_evidence:
+    - "Network connection logs showing active interface utilization"
+    - "Application logs showing network-dependent services using interfaces"
+    - "Timeline analysis correlating interface changes with network activity"
+
+metadata:
+  windows_versions:
+    - "Windows NT 4.0"
+    - "Windows 2000"
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2000"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows NT 4.0"
+  
+  criticality: "medium"
+
+  investigation_types:
+    - "lateral-movement"
+    - "data-exfiltration"
+    - "timeline-analysis"
+    - "incident-response"
+    - "behavioral-analysis"
+
+  tags:
+    - "network"
+    - "ip-addresses"
+    - "dhcp"
+    - "dns"
+    - "lateral-movement"
+    - "network-configuration"
+    - "interface-settings"
+    - "routing"
+    - "connectivity"
+
+  references:
+    - title: "TCP/IP Registry Parameters"
+      url: "https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc739819(v=ws.10)"
+      type: "official"
+    - title: "Network Interface Identification"
+      url: "https://docs.microsoft.com/en-us/windows-hardware/drivers/network/network-interface-identification"
+      type: "official"
+    - title: "Windows Network Forensics"
+      url: "https://www.sans.org/blog/digital-forensics-network-configuration/"
+      type: "research"
+    - title: "Registry Network Analysis"
+      url: "https://www.forensicfocus.com/articles/windows-network-configuration-forensics/"
+      type: "research"
+
+  retention:
+    default_location: "SYSTEM registry hive"
+    persistence: "Survives reboots, persists until network reconfiguration"
+    volatility: "Historical lease data may be overwritten but configuration persists"
+
+  related_artifacts:
+    - "wifi_profiles"
+    - "mapped_drives"
+    - "vpn_connections"
+    - "proxy_settings"
+    - "dns_cache"
+    - "shared_folders"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-12"
+  version: "3.0"

@@ -1,0 +1,134 @@
+title: "Boot Configuration and Startup Settings"
+category: "system-modifications"
+description: "System boot configuration, safe mode settings, BCD entries, and startup recovery options"
+
+paths:
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\SafeBoot"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager"
+  - "HKLM\\BCD00000000"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\CrashControl"
+
+details:
+  what: |
+    Windows boot configuration encompasses safe mode settings, Boot Configuration Data (BCD) 
+    registry entries, session manager configuration, crash control settings, and startup options 
+    that control system initialization behavior. Manages boot menu options, recovery settings, 
+    and safe mode driver loading.
+
+  forensic_value: |
+    Reveals if system was booted in safe mode to evade security software, shows boot configuration 
+    changes indicating system tampering or recovery attempts, and indicates attempts to disable 
+    security features through boot parameter manipulation. Critical for understanding system state 
+    during incidents.
+
+  structure: |
+    SafeBoot contains Minimal and Network subkeys with drivers and services that load in safe mode. 
+    Session Manager includes BootExecute (boot-time programs), GlobalFlag (debugging options), and 
+    CriticalDeviceTimeout settings. BCD entries control boot menu options stored as binary data.
+
+  examples:
+    - "SafeBoot\\Minimal\\{36FC9E60-C465-11CF-8056-444553540000}: Universal Plug and Play"
+    - "SafeBoot\\Network\\Tcpip: TCP/IP Protocol Driver"
+    - "BootExecute: autocheck autochk * (automatic disk check)"
+    - "GlobalFlag: 0x00000010 (Enable heap validation)"
+    - "CriticalDeviceTimeout: 10 (10-second device timeout)"
+    - "BCD\\Objects\\{bootmgr}: Windows Boot Manager configuration"
+    - "CrashDumpEnabled: 7 (Automatic memory dump)"
+    - "SafeModeWithNetworking: 1 (Network safe mode available)"
+
+  tools:
+    - name: "bcdedit.exe"
+      description: "Built-in Boot Configuration Data editor and viewer"
+    - name: "msconfig.exe"
+      description: "System Configuration utility for startup options"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "Boot Configuration Editor"
+      description: "Third-party BCD editing and analysis tools"
+    - name: "Advanced Boot Options"
+      description: "Windows built-in boot menu for troubleshooting"
+
+limitations:
+  - "Boot configuration does NOT prove system was actually booted in safe mode"
+  - "Safe mode settings don't indicate what activities occurred during safe mode boot"
+  - "BCD modifications may be legitimate system recovery or maintenance changes"
+  - "Crash control settings don't prove actual system crashes or memory dumps occurred"
+  - "Boot parameter changes may be for troubleshooting rather than malicious purposes"
+  - "Session manager settings don't indicate actual boot execution results"
+
+correlation:
+  required_for_definitive_boot_evidence:
+    - "Event logs showing safe mode boot events and startup service loading"
+    - "System logs confirming actual boot mode used during suspicious periods"
+    - "File system artifacts showing activity performed during safe mode sessions"
+    - "Registry changes showing configuration modifications during boot or safe mode"
+    - "Process execution logs showing applications launched during safe mode operation"
+    
+  strengthens_evidence:
+    - "Boot sector analysis showing configuration changes at disk level"
+    - "Event logs showing boot configuration modifications and their timestamps"
+    - "File modifications in boot directories during configuration change periods"
+    - "Registry changes in other system areas during boot parameter modifications"
+
+metadata:
+  windows_versions:
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows Vista"
+  criticality: "medium"
+
+  investigation_types:
+    - "incident-response"
+    - "malware-analysis"
+    - "lateral-movement"
+    - "privilege-escalation"
+    - "anti-forensics"
+
+  tags:
+    - "boot-configuration"
+    - "safe-mode"
+    - "startup"
+    - "system-tampering"
+    - "recovery"
+    - "bcd"
+    - "crash-control"
+
+  references:
+    - title: "Microsoft Documentation: Boot Configuration Data"
+      url: "https://docs.microsoft.com/en-us/windows-hardware/drivers/devtest/boot-configuration-data"
+      type: "official"
+    - title: "Windows Boot Process Forensics"
+      url: "https://www.forensicfocus.com/articles/windows-boot-process-forensics/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (SYSTEM, BCD)"
+    persistence: "Boot settings persist until manually modified"
+    volatility: "Critical system settings affecting startup behavior"
+
+  related_artifacts:
+    - "startup_programs"
+    - "security_policy"
+    - "error_reporting"
+    - "performance_monitoring"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-13"
+  version: "3.0"

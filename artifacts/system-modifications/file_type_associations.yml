@@ -1,0 +1,148 @@
+title: "File Type Associations and Default Programs"
+category: "system-modifications"
+description: "File extension mappings to applications, default program settings, and shell action configurations"
+
+paths:
+  - "HKCR\\*"
+  - "HKLM\\SOFTWARE\\Classes"
+  - "HKCU\\SOFTWARE\\Classes"
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\KindMap"
+
+details:
+  what: |
+    Windows maintains comprehensive file type associations that determine which applications handle 
+    specific file extensions, define shell actions (Open, Edit, Print), specify icon locations, 
+    and set command line parameters for execution. Includes both system-wide associations and 
+    user-specific overrides.
+
+  forensic_value: |
+    Critical for understanding file execution methods and potential malware persistence mechanisms. 
+    Shows how files are launched, can reveal hijacked file associations used by malware for persistence, 
+    and indicates unauthorized changes to default programs. Essential for analyzing execution paths 
+    and identifying security compromises.
+
+  structure: |
+    File extensions stored as registry keys (.exe, .txt, .pdf) pointing to ProgID class identifiers. 
+    ProgID classes contain shell command definitions, icon paths, application details, and supported 
+    actions. Default values specify handling applications, with shell\\open\\command containing 
+    execution strings.
+
+  examples:
+    - ".exe\\(Default): exefile (Executable file type identifier)"
+    - "exefile\\shell\\open\\command: \"%1\" %* (Direct execution)"
+    - ".txt\\(Default): txtfile (Text file identifier)"
+    - "txtfile\\shell\\open\\command: %SystemRoot%\\system32\\NOTEPAD.EXE %1"
+    - ".pdf\\(Default): AcroExch.Document (Adobe Acrobat association)"
+    - "Hijacked Association: .txt\\shell\\open\\command: C:\\malware\\backdoor.exe %1"
+    - ".lnk\\(Default): lnkfile (Shortcut file handler)"
+    - "Unknown\\shell\\open\\command: %SystemRoot%\\system32\\rundll32.exe"
+    
+  tools:
+    - name: "FileTypesMan"
+      url: "https://www.nirsoft.net/utils/file_types_manager.html"
+      description: "Comprehensive file type association manager and analyzer"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "Default Programs Editor"
+      url: "https://defaultprogramseditor.com/"
+      description: "Advanced default program and file association editor"
+    - name: "AssocMan"
+      description: "Command-line file association management utility"
+    - name: "Windows Settings - Default Apps"
+      description: "Built-in Windows interface for managing file associations"
+    - name: "Autoruns"
+      url: "https://docs.microsoft.com/en-us/sysinternals/downloads/autoruns"
+      description: "Shows file association abuse for persistence"
+
+limitations:
+  - "File association configuration does NOT prove malicious file execution occurred"
+  - "Hijacked associations don't indicate successful exploitation or persistence"
+  - "Association modifications may be legitimate software installation changes"
+  - "Default program settings don't prove files were actually opened"
+  - "Shell command modifications may be for legitimate application upgrades"
+  - "ProgID changes don't indicate malicious activity was successful"
+
+correlation:
+  required_for_definitive_hijacking_proof:
+    - "Process execution logs showing malicious applications launched via hijacked associations"
+    - "File system artifacts showing malicious files executed through association abuse"
+    - "Event logs showing successful execution of hijacked file handlers"
+    - "Registry changes showing association modifications during attack timeframes"
+    - "Application logs showing unexpected programs handling specific file types"
+    
+  strengthens_evidence:
+    - "File modifications showing malicious applications installed during association changes"
+    - "Event logs showing file operations triggering hijacked associations"
+    - "Registry changes in related startup locations during file association modifications"
+    - "Process execution showing persistence achieved through association abuse"
+
+metadata:
+  windows_versions:
+    - "Windows 95"
+    - "Windows NT"
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows 95"
+  criticality: "high"
+
+  investigation_types:
+    - "malware-analysis"
+    - "persistence-analysis"
+    - "incident-response"
+    - "behavioral-analysis"
+
+  tags:
+    - "file-associations"
+    - "default-programs"
+    - "execution-paths"
+    - "malware-persistence"
+    - "hijacking"
+    - "shell-commands"
+    - "progid"
+    - "file-handlers"
+
+  references:
+    - title: "Microsoft Documentation: File Type and URI Associations"
+      url: "https://docs.microsoft.com/en-us/windows/win32/shell/fa-file-types"
+      type: "official"
+    - title: "Malware Persistence via File Association Hijacking"
+      url: "https://attack.mitre.org/techniques/T1546/001/"
+      type: "research"
+    - title: "Windows File Association Forensics"
+      url: "https://www.forensicfocus.com/articles/windows-file-association-forensics/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT, CLASSES_ROOT)"
+    persistence: "Associations persist until manually changed or overridden"
+    volatility: "Changes affect immediate file execution behavior, critical for security"
+
+  related_artifacts:
+    - "run_keys"
+    - "shell_extensions"
+    - "com_objects"
+    - "installed_programs"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-13"
+  version: "3.0"

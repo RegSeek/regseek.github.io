@@ -1,0 +1,147 @@
+title: "PowerShell Execution Policy and Configuration"
+category: "program-execution"
+description: "PowerShell execution policies, module logging, script execution settings, and security configurations"
+
+paths:
+  - "HKLM\\SOFTWARE\\Microsoft\\PowerShell\\1\\ShellIds\\Microsoft.PowerShell"
+  - "HKCU\\SOFTWARE\\Microsoft\\PowerShell\\1\\ShellIds\\Microsoft.PowerShell"
+  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\PowerShell"
+  - "HKCU\\SOFTWARE\\Policies\\Microsoft\\Windows\\PowerShell"
+  - "HKLM\\SOFTWARE\\Microsoft\\PowerShell\\3\\PowerShellEngine"
+
+details:
+  what: |
+    PowerShell execution policy settings control script execution permissions, logging configuration, 
+    transcription settings, module loading policies, and security restrictions. Determines security 
+    restrictions, audit capabilities, and execution environments across different user contexts.
+
+  forensic_value: |
+    Shows if PowerShell security was weakened to allow malicious script execution, reveals logging 
+    configuration that may hide or expose malicious activity, and indicates PowerShell usage patterns. 
+    Critical for analyzing script-based attacks, PowerShell Empire usage, and advanced persistent 
+    threats using PowerShell for persistence and lateral movement.
+
+  structure: |
+    ExecutionPolicy values control script execution (Restricted, AllSigned, RemoteSigned, Unrestricted, Bypass), 
+    logging settings for ScriptBlock and Module logging, transcription paths, constrained language mode settings, 
+    and AMSI bypass attempts stored as REG_SZ and REG_DWORD values with policy inheritance hierarchies.
+
+  examples:
+    - "ExecutionPolicy: Unrestricted (allows all scripts)"
+    - "EnableScriptBlockLogging: 1 (detailed script logging enabled)"
+    - "EnableTranscripting: 1 (session transcription enabled)"
+    - "OutputDirectory: C:\\Logs\\PowerShell_Transcripts"
+    - "EnableModuleLogging: 1 (module activity logging)"
+    - "ModuleNames: * (log all modules)"
+    - "ConstrainedLanguageMode: 0 (full language mode)"
+    - "ScriptBlockInvocationLogging: 1 (detailed invocation logging)"
+    - "EnableScriptBlockInvocationLogging: 1"
+    - "PSVersion: 5.1.19041.1682"
+
+  tools:
+    - name: "Get-ExecutionPolicy PowerShell"
+      description: "Built-in PowerShell cmdlet for checking current execution policy"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry browser for PowerShell policy analysis"
+    - name: "PowerShell ISE"
+      description: "Integrated Scripting Environment for PowerShell development and testing"
+    - name: "Event Viewer"
+      description: "Windows Event Viewer for PowerShell execution logs (Event IDs 4103, 4104)"
+    - name: "PowerShell Security Scanner"
+      description: "Tools for analyzing PowerShell security configuration and threats"
+
+limitations:
+  - "Execution policy settings do NOT prevent script execution - can be bypassed with command-line parameters"
+  - "Policy changes don't indicate what scripts were actually executed"
+  - "Logging configuration may be disabled after malicious activity"
+  - "PowerShell can be launched with -ExecutionPolicy Bypass parameter"
+  - "Constrained Language Mode can be bypassed with various techniques"
+  - "AMSI bypass methods can disable security monitoring"
+  - "Transcription logs may be deleted or corrupted by attackers"
+  - "Module logging settings don't capture all PowerShell activity"
+
+correlation:
+  required_for_definitive_execution_proof:
+    - "PowerShell Event Logs (Event IDs 4103, 4104, 4105, 4106) showing actual script execution"
+    - "Process execution logs showing PowerShell.exe launches with command-line parameters"
+    - "PowerShell transcription logs showing executed commands and scripts"
+    - "Application event logs showing PowerShell module loading and execution"
+    
+  strengthens_evidence:
+    - "File system artifacts showing PowerShell script files and modules"
+    - "Network logs showing connections initiated by PowerShell processes"
+    - "Registry modifications made by PowerShell execution"
+    - "Scheduled task logs showing PowerShell-based automation"
+
+metadata:
+  windows_versions:
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "PowerShell 1.0 (2006)"
+  criticality: "high"
+
+  investigation_types:
+    - "malware-analysis"
+    - "persistence-analysis"
+    - "incident-response"
+    - "behavioral-analysis"
+    - "lateral-movement"
+    - "program-execution"
+
+  tags:
+    - "execution"
+    - "powershell"
+    - "script-execution"
+    - "security-policy"
+    - "logging"
+    - "malware-analysis"
+    - "execution-bypass"
+    - "amsi"
+    - "constrained-language"
+
+  references:
+    - title: "PowerShell Execution Policies"
+      url: "https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies"
+      type: "official"
+    - title: "PowerShell Security Best Practices"
+      url: "https://docs.microsoft.com/en-us/powershell/scripting/security/powershell-security-best-practices"
+      type: "official"
+    - title: "MITRE ATT&CK: PowerShell"
+      url: "https://attack.mitre.org/techniques/T1059/001/"
+      type: "research"
+    - title: "PowerShell Logging and Security"
+      url: "https://www.sans.org/blog/powershell-logging-and-security/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hives (SOFTWARE, NTUSER.DAT)"
+    persistence: "Survives reboots, persists until policy changes or system reconfiguration"
+    volatility: "Policy changes overwrite previous settings, audit logs retain execution history"
+
+  related_artifacts:
+    - "registry_run_keys"
+    - "scheduled_tasks"
+    - "wmi_events"
+    - "event_log_config"
+    - "app_compat_flags"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-12"
+  version: "3.0"

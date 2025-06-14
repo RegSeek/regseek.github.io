@@ -1,0 +1,151 @@
+title: "ShellBags Explorer Navigation History"
+category: "file-operations"
+description: "Windows Explorer folder navigation history and view preferences with deleted folder evidence"
+
+paths:
+  - "HKCU\\Software\\Microsoft\\Windows\\Shell\\Bags"
+  - "HKCU\\Software\\Microsoft\\Windows\\Shell\\BagMRU"
+  - "HKCU\\Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\Bags"
+  - "HKCU\\Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\BagMRU"
+  - "HKCU\\Software\\Classes\\Wow6432Node\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\Bags"
+
+details:
+  what: |
+    ShellBags track Windows Explorer navigation history, folder view preferences, window
+    positions, column sorting options, and folder access patterns. Records evidence of folders
+    accessed even if they no longer exist on the system. Stores metadata about folder structures
+    and user interaction patterns with the file system.
+
+  forensic_value: |
+    Proves user accessed specific folders, shows folder structure of deleted directories, reveals
+    navigation patterns, and provides evidence of external storage device usage. Critical for
+    proving folder access and user activity. Can reveal access to sensitive directories, network
+    shares, and removable media. Essential for timeline reconstruction.
+
+  structure: |
+    Hierarchical folder structure with numbered bag entries containing view preferences,
+    access timestamps, and folder properties. BagMRU maintains most recently used folder list
+    with PIDL (Pointer to Item IDentifier List) data. Each bag contains window size, view mode,
+    column widths, and sorting preferences.
+
+  examples:
+    - "Bag 1: Desktop folder settings (Icon view, large icons)"
+    - "Bag 15: C:\\Users\\user\\Documents\\Sensitive (Details view)"
+    - "Bag 23: \\\\server\\confidential (network folder access)"
+    - "Bag 45: E:\\ (USB drive - Kingston DataTraveler)"
+    - "MRU Entry: USB drive folder structure"
+    - "View: Details mode, sorted by date modified"
+    - "Position: Window at 100,100 size 800x600"
+    - "Columns: Name, Date Modified, Type, Size"
+
+  tools:
+    - name: "ShellBagsExplorer"
+      url: "https://github.com/EricZimmerman/ShellBagsExplorer"
+      description: "Eric Zimmerman's comprehensive ShellBags analysis tool"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry browser with ShellBags parsing capabilities"
+    - name: "ShellBag Analyzer"
+      description: "Specialized tools for ShellBags timeline analysis"
+    - name: "RegRipper"
+      url: "https://github.com/keydet89/RegRipper3.0"
+      description: "Registry analysis with shellbags.pl plugin"
+    - name: "SBECmd"
+      url: "https://github.com/EricZimmerman/SBECmd"
+      description: "Command-line ShellBags extraction and analysis"
+
+limitations:
+  - "ShellBags do NOT prove files were accessed or modified within folders"
+  - "Folder navigation doesn't indicate duration of folder interaction"
+  - "View preferences don't show successful file operations were performed"
+  - "Network folder entries don't prove successful authentication or file access"
+  - "USB device entries don't indicate what files were accessed on removable media"
+  - "Deleted folder evidence doesn't show when folders were actually deleted"
+  - "Window positioning doesn't prove active folder usage or file manipulation"
+
+correlation:
+  required_for_definitive_file_access_proof:
+    - "File system timestamps showing actual file modifications in navigated folders"
+    - "Recent documents showing files accessed from folders in ShellBags"
+    - "OpenSaveMRU entries showing file operations in navigated locations"
+    - "Process execution logs showing applications accessing files in these folders"
+    
+  strengthens_evidence:
+    - "LastVisitedPidlMRU showing application-specific folder access"
+    - "USB device registry entries showing removable media connections"
+    - "Network share access logs correlating with network folder navigation"
+    - "Jump Lists showing application usage in navigated folders"
+
+metadata:
+  windows_versions:
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows XP"
+  criticality: "high"
+
+  investigation_types:
+    - "timeline-analysis"
+    - "behavioral-analysis"
+    - "data-exfiltration"
+    - "incident-response"
+    - "insider-threat"
+
+  tags:
+    - "user-activity"
+    - "folder-navigation"
+    - "explorer-history"
+    - "deleted-folders"
+    - "external-storage"
+    - "user-behavior"
+    - "file-system-access"
+    - "network-shares"
+    - "usb-tracking"
+
+  references:
+    - title: "Windows ShellBags Forensics"
+      url: "https://www.sans.org/blog/computer-forensic-artifacts-windows-7-shellbags/"
+      type: "research"
+    - title: "ShellBags Analysis Techniques"
+      url: "https://www.forensicfocus.com/articles/windows-shellbags-forensics/"
+      type: "research"
+    - title: "Registry Forensics: ShellBags"
+      url: "https://www.champlain.edu/Documents/LCDI/archive/Shellbags-Analysis.pdf"
+      type: "research"
+    - title: "Digital Forensics: ShellBags Analysis"
+      url: "https://articles.forensicfocus.com/2010/04/12/shellbags-forensics/"
+      type: "research"
+
+  retention:
+    default_location: "NTUSER.DAT registry hive"
+    persistence: "Survives folder deletion, persists across reboots and system updates"
+    volatility: "Historical access patterns preserved even after folder removal"
+
+  related_artifacts:
+    - "recent_docs"
+    - "lastvisited_pidlmru"
+    - "opensavemru"
+    - "jump_lists"
+    - "usb_device_history"
+    - "mapped_drives"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-12"
+  version: "3.0"

@@ -1,0 +1,117 @@
+title: "Notepad++ Text Editor Usage and File History"
+category: "file-operations"
+description: "Notepad++ configuration, recent files, session data, and plugin usage"
+
+paths:
+  - "HKCU\\Software\\Notepad++"
+  - "HKLM\\SOFTWARE\\Notepad++"
+  - "HKCU\\Software\\Classes\\Notepad++_file"
+
+details:
+  what: |
+    Notepad++ text editor stores configuration including recent file lists, session data,
+    plugin configurations, and editing preferences. Registry tracks document access patterns,
+    programming language usage, and workspace settings for text editing activity analysis.
+
+  forensic_value: |
+    Important for investigating source code access, configuration file modifications, and
+    script development. Shows evidence of programming activity, configuration file editing,
+    and document modification patterns. Can reveal development work, system administration
+    activities, or evidence of script-based attacks.
+
+  structure: |
+    Notepad++ configuration includes recent file paths, session restoration data, language
+    syntax settings, plugin configurations, and find/replace history. File history shows
+    accessed documents and editing sessions for comprehensive text editing behavior analysis.
+
+  examples:
+    - "RecentFiles: C:\\Scripts\\malware_payload.py"
+    - "RecentFiles: C:\\Windows\\System32\\drivers\\etc\\hosts"
+    - "RecentFiles: C:\\Users\\user\\Documents\\passwords.txt"
+    - "Session\\File0: C:\\Development\\source_code.cpp"
+    - "FindHistory: SELECT * FROM users WHERE admin=1"
+    - "ReplaceHistory: password123 -> ********"
+    - "Language: Python (Programming language syntax)"
+
+  tools:
+    - name: "Notepad++ Settings"
+      description: "Built-in Notepad++ configuration and preference management"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "Text Editor Forensics Tools"
+      description: "Specialized tools for text editor history and session analysis"
+
+limitations:
+  - "Recent file lists do NOT prove files were actually edited or modified"
+  - "Session data doesn't indicate successful file saving or content changes"
+  - "Find/replace history doesn't show operations were successfully executed"
+  - "File paths may reference non-existent or inaccessible files"
+  - "Recent files don't indicate duration of editing or extent of modifications"
+  - "Plugin configurations don't show plugins were actively used"
+  - "Language settings don't prove programming or scripting activity occurred"
+
+correlation:
+  required_for_definitive_editing_proof:
+    - "File system timestamps showing actual file modifications during Notepad++ usage"
+    - "Process execution logs showing Notepad++ application startup and activity"
+    - "File content analysis showing changes consistent with text editing"
+    - "Application event logs showing successful file opening and saving operations"
+    
+  strengthens_evidence:
+    - "Recent documents showing text files accessed outside of Notepad++"
+    - "Registry keys or system files modified correlating with configuration editing"
+    - "Backup files or version history showing progressive file modifications"
+    - "Network activity logs correlating with script execution or file transfers"
+
+metadata:
+  windows_versions:
+    - "Windows 2000"
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+
+  introduced: "Notepad++"
+  criticality: "medium"
+
+  investigation_types:
+    - "behavioral-analysis"
+    - "malware-analysis"
+    - "incident-response"
+
+  tags:
+    - "notepad-plus-plus"
+    - "text-editor"
+    - "programming"
+    - "source-code"
+    - "configuration-files"
+    - "development-activity"
+
+  references:
+    - title: "Notepad++ Official Site"
+      url: "https://notepad-plus-plus.org/"
+      type: "official"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
+    persistence: "File history and session data persist until manually cleared"
+    volatility: "Recent files provide ongoing development and editing activity evidence"
+
+  related_artifacts:
+    - "development_tools"
+    - "text_editing"
+    - "recent_documents"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-06-08"
+  last_updated: "2025-06-12"
+  version: "3.0"

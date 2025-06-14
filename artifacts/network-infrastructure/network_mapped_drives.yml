@@ -1,0 +1,140 @@
+title: "Network Mapped Drives and Shares"
+category: "network-infrastructure"
+description: "Mapped network drives, UNC paths, shared resource connections, and persistent drive mappings"
+
+paths:
+  - "HKCU\\Network"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\lanmanserver\\Shares"
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Map Network Drive MRU"
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MountPoints2"
+
+details:
+  what: |
+    Windows stores information about mapped network drives, shared folder connections, UNC path access history, 
+    and persistent drive mappings. Maintains both active drive mappings and historical connection data including 
+    server names, share paths, authentication credentials, and connection persistence settings.
+
+  forensic_value: |
+    Critical for investigating lateral movement, data exfiltration routes, unauthorized network access, and 
+    corporate espionage through network shares. Shows evidence of file server access, shared resource usage patterns, 
+    and potential data staging locations on network drives.
+
+  structure: |
+    Network registry key contains drive letters as subkeys with RemotePath (UNC path), ProviderName (network provider), 
+    UserName (authentication context), and ConnectionType (persistent/temporary). Map Network Drive MRU stores 
+    recently accessed UNC paths in chronological order.
+
+  examples:
+    - "Z:\\\\RemotePath: \\\\\\\\fileserver.domain.com\\\\shared (Corporate file server)"
+    - "Y:\\\\RemotePath: \\\\\\\\192.168.1.100\\\\admin$ (Administrative share access)"
+    - "X:\\\\RemotePath: \\\\\\\\suspicious-server\\\\confidential (Potential unauthorized access)"
+    - "ProviderName: Microsoft Windows Network (Standard SMB/CIFS provider)"
+    - "UserName: DOMAIN\\\\username (Authentication context for connection)"
+    - "ConnectionType: 1 (Persistent connection - reconnects on logon)"
+    - "MRU: \\\\\\\\server\\\\finance (Recently accessed financial share)"
+
+  tools:
+    - name: "net use"
+      description: "Built-in Windows command for network drive management and enumeration"
+    - name: "NetDriveView"
+      url: "https://www.nirsoft.net/utils/netdrive_view.html"
+      description: "View and analyze network drive mappings and connections"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "RegRipper"
+      url: "https://github.com/keydet89/RegRipper3.0"
+      description: "Registry data extraction and analysis framework"
+    - name: "Network Resource Monitor"
+      description: "Tools for monitoring network share access and authentication patterns"
+
+limitations:
+  - "Mapped drive configuration does NOT prove files were accessed or transferred"
+  - "Network drive mappings don't indicate successful authentication to remote servers"
+  - "MRU entries don't show what files were accessed on network shares"
+  - "Persistent connections don't prove drives were actively used after mapping"
+  - "UNC path history doesn't indicate successful connection establishment"
+  - "Administrative share mappings may be legitimate system administration"
+  - "Drive letter assignments don't show frequency or duration of usage"
+
+correlation:
+  required_for_definitive_execution_proof:
+    - "SMB/CIFS protocol logs showing actual file server connections and authentication"
+    - "File system access logs showing files opened or transferred on network drives"
+    - "Event logs showing successful network drive connections and logon sessions"
+    - "Network traffic captures showing file sharing protocol communication"
+    
+  strengthens_evidence:
+    - "Recent documents showing files accessed from mapped network locations"
+    - "Process execution logs showing applications accessing network drives"
+    - "File modification timestamps on network shares correlating with user activity"
+
+metadata:
+  windows_versions:
+    - "Windows NT"
+    - "Windows 2000"
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2000"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows NT 3.1"
+  criticality: "high"
+
+  investigation_types:
+    - "lateral-movement"
+    - "data-exfiltration"
+    - "behavioral-analysis"
+    - "timeline-analysis"
+    - "incident-response"
+
+  tags:
+    - "network"
+    - "mapped-drives"
+    - "lateral-movement"
+    - "file-shares"
+    - "unc-paths"
+    - "network-access"
+    - "data-exfiltration"
+
+  references:
+    - title: "Microsoft Documentation: Network Drive Mapping"
+      url: "https://docs.microsoft.com/en-us/windows-server/storage/file-server/"
+      type: "official"
+    - title: "Lateral Movement via Network Shares"
+      url: "https://attack.mitre.org/techniques/T1021/002/"
+      type: "research"
+    - title: "Network Share Forensics Analysis"
+      url: "https://www.sans.org/white-papers/33492/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (NTUSER.DAT, SYSTEM)"
+    persistence: "Drive mappings persist until manually removed or network configuration change"
+    volatility: "Network connections provide ongoing intelligence about file server access patterns"
+
+  related_artifacts:
+    - "shared_folders"
+    - "network_interfaces"
+    - "recent_docs"
+    - "netbios_settings"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-12"
+  version: "3.0"

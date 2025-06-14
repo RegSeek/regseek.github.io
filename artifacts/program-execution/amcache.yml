@@ -1,0 +1,132 @@
+title: "AmCache Application Activity Cache"
+category: "program-execution"
+description: "Advanced execution tracking with SHA1 hashes, file metadata, and compilation timestamps"
+
+paths:
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\AppCompatCache\\Amcache.hve"
+
+details:
+  what: |
+    AmCache.hve registry hive tracks metadata about executables, installed applications, 
+    and drivers including file paths, SHA1 hashes, compilation times, and program information. 
+    Contains InventoryApplication, InventoryApplicationFile, and InventoryDriverBinary entries.
+
+  forensic_value: |
+    Critical for proving file presence on system even if deleted. Contains SHA1 hashes 
+    for malware identification and compilation timestamps for threat actor correlation. 
+    More detailed than ShimCache with richer metadata for identifying renamed executables 
+    and tracking software installation patterns.
+
+  structure: |
+    Registry hive containing multiple keys with structured data format. Each entry includes 
+    FileID (SHA1 hash), file path, size, compilation time, program details, and binary 
+    version information stored with rich forensic metadata.
+
+  examples:
+    - "Path: C:\\Users\\user\\Desktop\\malware.exe"
+    - "SHA1: 9c07abbdd1faa019708cfb54a778748077fe13e3"
+    - "CompileTime: 2024-01-10 15:30:45"
+    - "Size: 1,048,576 bytes"
+    - "Publisher: Unknown Publisher"
+    - "Product: Suspicious Application"
+    - "BinaryType: 64-bit"
+    - "Language: English (United States)"
+
+  tools:
+    - name: "AmcacheParser"
+      url: "https://github.com/EricZimmerman/AmcacheParser"
+      description: "Eric Zimmerman's AmCache parser with timeline output"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry browser and analysis tool"
+    - name: "RegRipper"
+      url: "https://github.com/keydet89/RegRipper3.0"
+      description: "Registry analysis framework with AmCache plugins"
+    - name: "KAPE"
+      url: "https://www.kroll.com/en/services/cyber-risk/investigate-and-respond/kroll-artifact-parser-extractor-kape"
+      description: "Artifact collection and parsing framework"
+
+limitations:
+  - "AmCache entry does NOT prove program execution - only shows file was present on system"
+  - "File metadata can be modified or spoofed by malware authors"
+  - "SHA1 hashes may not be unique across all possible files"
+  - "Compilation timestamps can be altered to evade detection"
+  - "File presence doesn't indicate when or if the file was actually executed"
+  - "Renamed executables may retain original metadata from before renaming"
+  - "Administrative installation may populate AmCache without user execution"
+
+correlation:
+  required_for_definitive_execution_proof:
+    - "Process execution logs (Event ID 4688) showing actual program launch"
+    - "Prefetch files (.pf) with execution counters and file references"
+    - "Application event logs showing successful program startup"
+    - "EDR/monitoring tool process execution logs"
+    
+  strengthens_evidence:
+    - "ShimCache entries with matching file paths and timestamps"
+    - "UserAssist showing user-initiated program launches"
+    - "Network connections initiated by programs with matching hashes"
+    - "File modifications with timestamps correlating to program activity"
+
+metadata:
+  windows_versions:
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows 8"
+  criticality: "high"
+
+  investigation_types:
+    - "malware-analysis"
+    - "timeline-analysis"
+    - "incident-response"
+    - "behavioral-analysis"
+    - "program-execution"
+
+  tags:
+    - "execution"
+    - "amcache"
+    - "sha1-hashes"
+    - "malware-analysis"
+    - "compilation-time"
+    - "file-presence"
+    - "application-tracking"
+    - "forensic-timeline"
+
+  references:
+    - title: "Windows AmCache Analysis"
+      url: "https://www.mandiant.com/resources/blog/amcache"
+      type: "research"
+    - title: "AmCache.hve in Windows 8"
+      url: "https://www.swiftforensics.com/2013/12/amcachehve-in-windows-8-goldmine-for.html"
+      type: "blog"
+    - title: "SANS AmCache Analysis"
+      url: "https://www.sans.org/blog/amcache-still-rules-everything-around-me-updated/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive file (Amcache.hve)"
+    persistence: "Survives reboots and system cleaning, persists until hive corruption"
+    volatility: "Entries can be overwritten but historical data often recoverable"
+
+  related_artifacts:
+    - "appcompat_cache"
+    - "userassist"
+    - "prefetch_settings"
+    - "muicache"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-12"
+  version: "3.0"

@@ -1,0 +1,112 @@
+title: "Voice Recorder Application Activity"
+category: "user-behaviour"
+description: "Windows Voice Recorder usage, recording locations, and audio capture settings"
+
+paths:
+  - "HKCU\\Software\\Microsoft\\SoundRecorder"
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ApplicationFrame\\Positions\\Microsoft.SoundRecorder_8wekyb3d8bbwe!App"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Appx\\AppxAllUserStore\\Applications\\Microsoft.SoundRecorder_8wekyb3d8bbwe"
+
+details:
+  what: |
+    Windows Voice Recorder application stores configuration data including recording quality
+    settings, file save locations, application preferences, and usage statistics. Registry
+    tracks app positioning, window states, recently used settings, and integration preferences
+    for audio recording functionality built into Windows.
+
+  forensic_value: |
+    Provides evidence of audio recording activity that could indicate surveillance, interview
+    recording, voice memo creation, or audio evidence capture. Shows usage patterns, recording
+    preferences, and potential evidence of covert recording activities. Can reveal user behavior
+    related to audio documentation or evidence preservation.
+
+  structure: |
+    SoundRecorder entries include recording quality preferences, default save locations,
+    application window positioning, and recent file access patterns. ApplicationFrame data
+    tracks window positions and application state information. UWP app registration contains
+    installation and permission data.
+
+  examples:
+    - "LastOpenedFile: C:\\Users\\user\\Documents\\Recording.m4a"
+    - "RecordingQuality: High (Audio quality preference)"
+    - "DefaultSaveLocation: Documents\\Recordings"
+    - "AutoSave: 1 (Automatic file saving enabled)"
+    - "AppPosition: {x:100, y:100, width:800, height:600}"
+
+  tools:
+    - name: "Voice Recorder App"
+      description: "Built-in Windows audio recording application"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "Audio Forensics Tools"
+      description: "Specialized tools for audio file analysis and metadata extraction"
+
+limitations:
+  - "Voice Recorder configuration does NOT prove audio recordings were actually made"
+  - "Quality settings don't indicate successful recording operations occurred"
+  - "Save locations don't show audio files were created or stored"
+  - "Application positioning doesn't prove the app was actively used"
+  - "Recent file entries don't indicate recordings were played or accessed"
+  - "Auto-save settings don't show automatic recording functionality was used"
+  - "Permission data doesn't prove microphone access was granted or used"
+
+correlation:
+  required_for_definitive_recording_proof:
+    - "Audio files showing actual recordings created by Voice Recorder"
+    - "Process execution logs showing Voice Recorder application startup and activity"
+    - "File system artifacts showing audio file creation and storage"
+    - "Windows Event Logs showing microphone access and usage"
+    
+  strengthens_evidence:
+    - "Recent documents showing audio files created during Voice Recorder usage"
+    - "Registry keys modified during recording operations"
+    - "File system timestamps showing audio file creation correlating with app usage"
+    - "Privacy settings showing microphone permissions granted to Voice Recorder"
+
+metadata:
+  windows_versions:
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+
+  introduced: "Windows 8"
+  criticality: "medium"
+
+  investigation_types:
+    - "behavioral-analysis"
+    - "incident-response"
+
+  tags:
+    - "voice-recorder"
+    - "audio-recording"
+    - "surveillance"
+    - "evidence"
+    - "microphone-usage"
+    - "recording-activity"
+
+  references:
+    - title: "Windows Voice Recorder"
+      url: "https://support.microsoft.com/en-us/windows/record-sounds-with-voice-recorder-83b2d3b0-3b62-4b45-9c9b-9c50a4b82db4"
+      type: "official"
+
+  retention:
+    default_location: "Registry hive files (NTUSER.DAT, SOFTWARE)"
+    persistence: "Usage data persists until application reset or removal"
+    volatility: "Recording activity provides evidence of audio capture usage"
+
+  related_artifacts:
+    - "microphone_access"
+    - "file_access_history"
+    - "application_usage"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-06-08"
+  last_updated: "2025-06-12"
+  version: "3.0"

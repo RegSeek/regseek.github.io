@@ -1,0 +1,140 @@
+title: "Power Management Configuration and Sleep Settings"
+category: "system-modifications"
+description: "Power schemes, sleep timers, hibernation settings, wake events, and power policy configuration"
+
+paths:
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power"
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FlyoutMenuSettings"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power"
+
+details:
+  what: |
+    Windows power management encompasses power schemes, sleep/hibernate timers, wake event 
+    configuration, fast startup settings, power button behavior, and energy-saving policies. 
+    Controls system sleep behavior, automatic wake events, power state transitions, and 
+    power management policies that affect system availability.
+
+  forensic_value: |
+    Critical for understanding system availability during incident timeframes, detecting 
+    anti-forensic techniques that use sleep/hibernate to hide activity, and analyzing power 
+    events that affect timeline reconstruction. Power settings reveal attempts to prevent 
+    system sleep during malicious activities or using power management to evade detection.
+
+  structure: |
+    Power configuration includes power scheme GUIDs, sleep timeout values, hibernation 
+    enablement, fast startup settings, wake timer permissions, and power button actions. 
+    Advanced settings control display timeout, hard disk sleep, processor power management, 
+    and system wake events.
+
+  examples:
+    - "ActivePowerScheme: {381b4222-f694-41f0-9685-ff5bb260df2e} (Balanced power plan)"
+    - "HibernateEnabled: 1 (Hibernation feature enabled)"
+    - "HibernateSize: 16777216 (Hibernation file size in bytes)"
+    - "FastStartup: 1 (Fast startup enabled)"
+    - "ACSettingIndex: 1800 (30 minutes until sleep on AC power)"
+    - "DCSettingIndex: 900 (15 minutes until sleep on battery)"
+    - "AllowWakeTimers: 1 (Wake timers permitted)"
+    - "PowerButtonAction: 1 (Power button triggers sleep)"
+    
+  tools:
+    - name: "Power Options (powercfg.cpl)"
+      description: "Built-in Windows power management configuration interface"
+    - name: "powercfg.exe"
+      description: "Command-line power configuration and analysis utility"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "Power Efficiency Diagnostics"
+      description: "Windows built-in power troubleshooting and analysis tools"
+    - name: "Event Viewer"
+      description: "System event logs for power state changes and wake events"
+
+limitations:
+  - "Power management configuration does NOT prove system sleep states actually occurred"
+  - "Sleep timer settings don't indicate when system was actually sleeping or awake"
+  - "Hibernation settings don't prove hibernation files contain specific evidence"
+  - "Wake event configuration doesn't indicate what caused system wake events"
+  - "Power scheme modifications may be for legitimate energy management"
+  - "Fast startup settings don't prove system boot/shutdown timing manipulation"
+
+correlation:
+  required_for_definitive_timeline_proof:
+    - "Event logs showing actual system sleep/wake events with timestamps"
+    - "File system artifacts showing file access patterns during configured sleep periods"
+    - "Process execution logs showing application activity during power state transitions"
+    - "Network logs showing connectivity during configured sleep/wake cycles"
+    - "Registry changes showing power configuration modifications during investigation periods"
+    
+  strengthens_evidence:
+    - "Hibernation files containing memory dumps from specific time periods"
+    - "Event logs showing wake events triggered by specific applications or network activity"
+    - "File modifications correlating with power state changes and wake events"
+    - "Registry changes in other system areas during power configuration modifications"
+
+metadata:
+  windows_versions:
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows XP"
+  criticality: "medium"
+
+  investigation_types:
+    - "timeline-analysis"
+    - "incident-response"
+    - "behavioral-analysis"
+    - "anti-forensics"
+
+  tags:
+    - "power-management"
+    - "sleep-settings"
+    - "hibernation"
+    - "wake-events"
+    - "timeline-analysis"
+    - "system-availability"
+    - "anti-forensics"
+    - "power-schemes"
+
+  references:
+    - title: "Microsoft Documentation: Power Management"
+      url: "https://docs.microsoft.com/en-us/windows/win32/power/power-management-portal"
+      type: "official"
+    - title: "Windows Power Settings and Forensic Analysis"
+      url: "https://www.forensicfocus.com/articles/power-management-forensics/"
+      type: "research"
+    - title: "System Timeline Reconstruction with Power Events"
+      url: "https://www.sans.org/white-papers/33927/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (SYSTEM, NTUSER.DAT), hibernation files"
+    persistence: "Power settings persist until manually changed or policy override"
+    volatility: "Power events logged in system event logs, hibernation files may contain memory data"
+
+  related_artifacts:
+    - "boot_configuration"
+    - "error_reporting"
+    - "event_log_config"
+    - "performance_monitoring"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-06-07"
+  last_updated: "2025-06-13"
+  version: "2.0"

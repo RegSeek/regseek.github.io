@@ -1,0 +1,122 @@
+title: "ActiveX Controls and Compatibility Settings"
+category: "browser-activity"
+description: "Internet Explorer ActiveX control registration, kill bits, and security settings"
+
+paths:
+  - "HKLM\\SOFTWARE\\Microsoft\\Internet Explorer\\ActiveX Compatibility"
+  - "HKLM\\SOFTWARE\\Classes\\CLSID"
+  - "HKLM\\SOFTWARE\\Microsoft\\Code Store Database\\Distribution Units"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Ext"
+
+details:
+  what: |
+    ActiveX controls are Component Object Model (COM) objects that provide interactive functionality in Internet Explorer.
+    Registry manages control registration, security settings, kill bits for blocking dangerous
+    controls, and compatibility flags.
+
+  forensic_value: |
+    Critical for investigating browser-based attacks and malicious ActiveX installations.
+    Shows evidence of dangerous controls, exploitation attempts, and security policy
+    modifications that weaken browser defenses.
+
+  structure: |
+    ActiveX Compatibility contains CLSID entries with Compatibility Flags and kill bits.
+    Distribution Units track downloaded controls. Kill bits are REG_DWORD values that
+    prevent specific controls from running.
+
+  examples:
+    - "ActiveX Compatibility\\{CLSID}\\Compatibility Flags: 0x00000400 (Kill bit - blocked)"
+    - "ActiveX Compatibility\\{6BF52A52-394A-11d3-B153-00C04F79FAA6}: Windows Media Player"
+    - "Distribution Units\\{D27CDB6E-AE6D-11cf-96B8-444553540000}: Adobe Flash Player"
+    - "CLSID\\{CLSID}\\InprocServer32: C:\\malware\\malicious_control.dll"
+    - "Kill Bit: Compatibility Flags: 0x00000400 (ActiveX control disabled for security)"
+    - "CodeBase: http://malicious-site.com/exploit.cab"
+
+  tools:
+    - name: "Internet Options (inetcpl.cpl)"
+      description: "Built-in IE security and ActiveX configuration"
+    - name: "OLE/COM Object Viewer (oleview.exe)"
+      description: "Microsoft tool for viewing registered COM/ActiveX objects"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis tool"
+
+limitations:
+  - "Registry shows registered controls only, not actual execution or exploitation"
+  - "Kill bits show administrative blocking, not attempted attacks"
+  - "Legitimate software may register ActiveX controls for valid purposes"
+  - "Controls can be registered but never used by applications"
+
+correlation:
+  required_for_definitive_conclusions:
+    - "Process execution logs showing control loading"
+    - "Network traffic showing malicious downloads or communication"
+    - "Browser crash dumps or exploitation evidence"
+    - "File system artifacts showing malicious control files"
+  
+  strengthens_evidence:
+    - "Timeline analysis of when controls were registered"
+    - "Browser security zone configurations"
+    - "Other browser exploitation artifacts"
+
+metadata:
+  windows_versions:
+    - "Windows 95"
+    - "Windows 98"
+    - "Windows NT 4.0"
+    - "Windows 2000"
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+
+  introduced: "Internet Explorer 3.0"
+  criticality: "high"
+
+  investigation_types:
+    - "malware-analysis"
+    - "incident-response"
+    - "initial-access"
+    - "privilege-escalation"
+
+  tags:
+    - "activex"
+    - "browser-security"
+    - "malware-delivery"
+    - "kill-bits"
+    - "browser-exploits"
+    - "drive-by-downloads"
+
+  references:
+    - title: "Microsoft Documentation: ActiveX Controls"
+      url: "https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa751968(v=vs.85)"
+      type: "official"
+    - title: "ActiveX Kill Bits"
+      url: "https://docs.microsoft.com/en-us/troubleshoot/browsers/activex-controls-not-load"
+      type: "official"
+    - title: "MITRE ATT&CK: Exploitation for Client Execution"
+      url: "https://attack.mitre.org/techniques/T1203/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, CLASSES)"
+    persistence: "ActiveX settings persist until manually changed or updated"
+    volatility: "Control registrations affect ongoing browser security"
+
+  related_artifacts:
+    - "browser_helper_objects"
+    - "com_objects"
+    - "internet_settings"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-01-15"
+  version: "3.0"

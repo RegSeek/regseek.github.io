@@ -1,0 +1,127 @@
+title: "Bluetooth Device History and Configuration"
+category: "network-infrastructure"
+description: "Bluetooth device pairing history, connection logs, device capabilities, and wireless communication tracking"
+
+paths:
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\BTHPORT\\Parameters\\Devices"
+  - "HKCU\\Software\\Microsoft\\Bluetooth\\Device"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\BTHENUM"
+  - "HKLM\\SOFTWARE\\Microsoft\\Bluetooth\\AudioGateway"
+
+details:
+  what: |
+    Windows Bluetooth subsystem maintains device pairing history, connection logs, device capabilities, 
+    authentication keys, and service discovery records. Tracks all Bluetooth devices that have been 
+    paired, attempted connections, and supported device profiles.
+
+  forensic_value: |
+    Critical for investigating wireless data exfiltration, unauthorized device connections, and covert 
+    communication channels. Shows evidence of Bluetooth keyboards, mice, phones, headsets, and potential 
+    data transfer devices. Essential for insider threat investigations and establishing device presence during incidents.
+
+  structure: |
+    Device entries organized by Bluetooth MAC addresses containing device names, pairing timestamps, 
+    authentication keys, supported services, device types, and connection history. Each device maintains 
+    profile information, capability flags, and last seen timestamps.
+
+  examples:
+    - "Device: 00:11:22:33:44:55 (Samsung Galaxy S21 - Mobile phone)"
+    - "DeviceName: AirPods Pro (Apple wireless earbuds)"
+    - "LastConnected: 2024-01-20 15:30:25 UTC (Recent connection timestamp)"
+    - "PairingDate: 2024-01-15 09:00:00 UTC (Initial pairing time)"
+    - "DeviceType: 0x040418 (Audio/Video device - headphones)"
+    - "Services: A2DP, AVRCP, HFP (Audio streaming and control)"
+    - "LinkKey: [Binary authentication key data]"
+    - "TrustedDevice: 1 (Device marked as trusted)"
+
+  tools:
+    - name: "Bluetooth Settings (ms-settings:bluetooth)"
+      description: "Built-in Windows Bluetooth device management interface"
+    - name: "Device Manager (devmgmt.msc)"
+      description: "Hardware device management including Bluetooth devices"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "BluetoothView"
+      url: "https://www.nirsoft.net/utils/bluetooth_viewer.html"
+      description: "NirSoft tool for monitoring Bluetooth devices and connections"
+    - name: "Bluetooth Device Analyzer"
+      description: "Specialized forensic tools for Bluetooth device analysis"
+
+limitations:
+  - "Bluetooth pairing history does NOT prove active data transfer occurred"
+  - "Device presence in registry doesn't indicate device was connected during specific timeframes"
+  - "LastConnected timestamps may not reflect actual communication sessions"
+  - "Pairing information persists even after device is no longer used"
+  - "Authentication keys don't prove successful data transmission"
+  - "Service capabilities don't show what services were actually utilized"
+  - "Trusted device status doesn't indicate automatic connection occurred"
+
+correlation:
+  required_for_definitive_execution_proof:
+    - "Bluetooth service logs showing actual connection establishment and data transfer"
+    - "Network traffic logs showing Bluetooth protocol communication"
+    - "File system artifacts showing files transferred via Bluetooth"
+    - "Application logs showing Bluetooth-enabled applications activity"
+    
+  strengthens_evidence:
+    - "USB device logs showing Bluetooth adapter activity"
+    - "Event logs showing device connection and disconnection events"
+    - "File creation timestamps correlating with Bluetooth connection times"
+
+metadata:
+  windows_versions:
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+
+  introduced: "Windows XP SP2"
+  criticality: "medium"
+
+  investigation_types:
+    - "data-exfiltration"
+    - "insider-threat"
+    - "timeline-analysis"
+    - "behavioral-analysis"
+
+  tags:
+    - "bluetooth"
+    - "wireless"
+    - "device-pairing"
+    - "data-exfiltration"
+    - "covert-communication"
+    - "device-tracking"
+    - "mobile-devices"
+
+  references:
+    - title: "Microsoft Documentation: Bluetooth"
+      url: "https://docs.microsoft.com/en-us/windows-hardware/drivers/bluetooth/"
+      type: "official"
+    - title: "Bluetooth Forensics and Investigation"
+      url: "https://www.sans.org/white-papers/33584/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (SYSTEM, NTUSER.DAT)"
+    persistence: "Device pairing history persists until manually removed"
+    volatility: "Connection timestamps provide precise device usage correlation"
+
+  related_artifacts:
+    - "device_sync"
+    - "hardware_devices"
+    - "network_interfaces"
+    - "usb_device_history"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-06-07"
+  last_updated: "2025-06-12"
+  version: "3.0"

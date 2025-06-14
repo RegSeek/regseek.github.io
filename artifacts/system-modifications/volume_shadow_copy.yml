@@ -1,0 +1,132 @@
+title: "Volume Shadow Copy Service Configuration"
+category: "system-modifications"
+description: "VSS settings, restore points, shadow copy storage, and backup service configuration"
+
+paths:
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\VSS"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\SystemRestore"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\BackupRestore\\FilesNotToBackup"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsBackup"
+
+details:
+  what: |
+    Volume Shadow Copy Service (VSS) creates point-in-time copies of files and volumes 
+    for backup and restore operations. Configuration controls VSS behavior, restore point 
+    creation policies, storage allocation limits, and file exclusions.
+
+  forensic_value: |
+    Critical for forensic investigations as VSS can be disabled by attackers to prevent 
+    data recovery. Shadow copies contain historical file versions that may preserve evidence 
+    of deleted or modified files, providing crucial data recovery opportunities.
+
+  structure: |
+    VSS service configuration includes startup type and operational parameters. SystemRestore 
+    contains policies for restore point creation, disk usage limits (DiskPercent), retention 
+    intervals (RPLifeInterval), and monitoring settings.
+
+  examples:
+    - "VSS\\Start: 3 (Manual startup - VSS available on demand)"
+    - "VSS\\Start: 4 (Disabled - VSS completely unavailable)"
+    - "SystemRestore\\DisableSR: 1 (System Restore disabled)"
+    - "DiskPercent: 15 (15% maximum disk space allocation)"
+    - "RPLifeInterval: 7776000 (90 days restore point retention)"
+    - "FilesNotToBackup: *.tmp, pagefile.sys, hiberfil.sys"
+    - "CreateRestorePoint: 0 (Automatic restore point creation disabled)"
+    - "WindowsBackup\\LastSuccessfulBackupTime: [FILETIME]"
+
+  tools:
+    - name: "vssadmin.exe"
+      description: "Built-in Volume Shadow Copy administrative command-line tool"
+    - name: "System Restore"
+      description: "Built-in Windows system restore and recovery interface"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "ShadowExplorer"
+      url: "https://www.shadowexplorer.com"
+      description: "Third-party tool for browsing shadow copy data"
+
+limitations:
+  - "VSS configuration does NOT prove shadow copies were actually created"
+  - "Service enabled status doesn't indicate successful backup operations"
+  - "Restore point policies don't prove points were generated"
+  - "Storage allocation doesn't guarantee shadow copy availability"
+  - "Disabled VSS may be legitimate system configuration, not attack evidence"
+  - "Configuration timestamps show registry changes, not actual VSS activity"
+  - "File exclusions don't indicate whether backups were performed"
+
+correlation:
+  required_for_definitive_backup_activity_proof:
+    - "VSS event logs showing actual shadow copy creation and deletion"
+    - "File system artifacts showing restore point creation timestamps"
+    - "System event logs confirming VSS service operations"
+    - "Backup application logs showing successful backup operations"
+    
+  strengthens_evidence:
+    - "File system artifacts showing shadow copy storage usage"
+    - "Registry modification timestamps correlating with VSS changes"
+    - "Application logs showing restore operations or data recovery"
+    - "System performance logs showing VSS storage utilization"
+
+metadata:
+  windows_versions:
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows XP"
+  criticality: "high"
+
+  investigation_types:
+    - "timeline-analysis"
+    - "data-exfiltration"
+    - "incident-response"
+    - "anti-forensics"
+    - "behavioral-analysis"
+
+  tags:
+    - "vss"
+    - "shadow-copies"
+    - "restore-points"
+    - "data-recovery"
+    - "evidence-preservation"
+    - "backup-service"
+    - "file-history"
+
+  references:
+    - title: "Volume Shadow Copy Service"
+      url: "https://docs.microsoft.com/en-us/windows/win32/vss/volume-shadow-copy-service-overview"
+      type: "official"
+    - title: "Shadow Copy Forensics and Data Recovery"
+      url: "https://www.sans.org/white-papers/33649/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (SYSTEM, SOFTWARE), shadow copy storage"
+    persistence: "Configuration persists until manually changed, shadow copies until retention expiry"
+    volatility: "Shadow copies preserve historical data essential for forensic analysis"
+
+  related_artifacts:
+    - "backup_configuration"
+    - "file_history"
+    - "system_restore"
+    - "data_recovery"
+
+author:
+  name: "RegSeek Migration"
+  github: "regseek"
+
+contribution:
+  date_added: "2025-06-13"
+  last_updated: "2025-06-13"
+  version: "3.0"

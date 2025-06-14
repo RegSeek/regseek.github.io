@@ -1,0 +1,133 @@
+title: "Teredo and IPv6 Transition Configuration"
+category: "network-infrastructure"
+description: "IPv6 transition technologies, Teredo tunneling, and covert communication channels"
+
+paths:
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Teredo\\Parameters"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\IPHTTPS\\Parameters"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\iphlpsvc\\Parameters\\Isatap"
+
+details:
+  what: |
+    IPv6 transition technology configuration managing Teredo tunneling, 6to4 automatic tunneling,
+    ISATAP (Intra-Site Automatic Tunnel Addressing Protocol), and IP-HTTPS settings. Enables
+    IPv6 connectivity over IPv4 networks through tunnel server addresses and interface parameters.
+
+  forensic_value: |
+    Critical for detecting covert communication channels that exploit IPv6 transition technologies
+    to bypass firewall restrictions and network monitoring. Teredo and other tunneling protocols
+    can be abused for command and control communication, data exfiltration, and firewall evasion.
+    Configuration changes may indicate sophisticated attack techniques using IPv6 tunnels.
+
+  structure: |
+    Teredo configuration includes Type (client/server mode), ServerName (tunnel server address),
+    ClientPort (client communication port), and EnabledState (service status). IPv6 parameters
+    control DisabledComponents (IPv6 feature disabling) and transition technology settings.
+
+  examples:
+    - "Teredo\\Type: 4 (Teredo client mode)"
+    - "Teredo\\ServerName: teredo.ipv6.microsoft.com (Default Microsoft server)"
+    - "Teredo\\ClientPort: 0 (Dynamic port allocation)"
+    - "DisabledComponents: 0xFF (IPv6 completely disabled)"
+    - "6to4\\Enabled: 1 (6to4 automatic tunneling enabled)"
+    - "ISATAP\\Enabled: 1 (ISATAP tunneling enabled)"
+    - "IPHTTPS\\State: 3 (IP-HTTPS enabled and active)"
+    - "Teredo\\ServerName: malicious-tunnel.evil.com (Suspicious server)"
+
+  tools:
+    - name: "netsh interface teredo"
+      description: "Built-in Teredo configuration and status commands"
+    - name: "netsh interface ipv6"
+      description: "IPv6 interface configuration and troubleshooting utilities"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "IPv6 Network Configuration"
+      description: "Windows built-in IPv6 configuration interface"
+    - name: "IPv6 Tunnel Analysis Tools"
+      description: "Specialized network analysis tools for IPv6 transition technologies"
+
+limitations:
+  - "Configuration settings do NOT prove IPv6 tunneling was actually used"
+  - "Enabled transition technologies don't indicate actual tunnel establishment"
+  - "Server settings don't prove successful connections to tunnel servers"
+  - "IPv6 enablement doesn't show what traffic used IPv6 tunnels"
+  - "Teredo configuration may exist without any tunnel communication"
+  - "Disabled components don't prevent all IPv6 transition technology usage"
+  - "Tunnel server addresses can be legitimate while still enabling covert channels"
+
+correlation:
+  required_for_definitive_usage_proof:
+    - "Network traffic analysis showing actual IPv6 tunnel communications"
+    - "Teredo server connection logs confirming tunnel establishment"
+    - "IPv6 routing table entries showing active tunnel interfaces"
+    - "Application logs showing IPv6 connectivity through tunnels"
+    
+  strengthens_evidence:
+    - "Process execution logs showing IPv6 transition service activity"
+    - "Network interface statistics showing IPv6 tunnel traffic"
+    - "DNS resolution logs showing IPv6 address queries"
+    - "Firewall logs showing IPv6 tunnel traffic patterns"
+
+metadata:
+  windows_versions:
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows Vista"
+  criticality: "high"
+
+  investigation_types:
+    - "lateral-movement"
+    - "data-exfiltration"
+    - "anti-forensics"
+    - "behavioral-analysis"
+    - "incident-response"
+
+  tags:
+    - "ipv6"
+    - "teredo"
+    - "tunneling"
+    - "covert-communication"
+    - "firewall-bypass"
+    - "transition-technologies"
+    - "dual-stack"
+
+  references:
+    - title: "Microsoft Documentation: IPv6 Transition Technologies"
+      url: "https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/dd379548(v=ws.10)"
+      type: "official"
+    - title: "IPv6 Tunnel Abuse for Covert Channels"
+      url: "https://www.sans.org/white-papers/33649/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (SYSTEM)"
+    persistence: "Network tunnel configuration persists across reboots"
+    volatility: "Tunnel settings enable ongoing covert communication capabilities"
+
+  related_artifacts:
+    - "network_interfaces"
+    - "firewall_rules"
+    - "proxy_settings"
+    - "dns_cache"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-12"
+  version: "3.0"

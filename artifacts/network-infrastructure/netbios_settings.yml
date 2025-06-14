@@ -1,0 +1,136 @@
+title: "NetBIOS and Network Naming Configuration"
+category: "network-infrastructure"
+description: "NetBIOS over TCP/IP settings, name resolution configuration, and legacy network browsing capabilities"
+
+paths:
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\NetBT\\Parameters"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\LanmanServer\\Parameters"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\ComputerName\\ComputerName"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Browser\\Parameters"
+
+details:
+  what: |
+    NetBIOS over TCP/IP configuration controls legacy network naming services, Windows Internet Name Service (WINS) 
+    integration, network browsing capabilities, and backward compatibility for older Windows networking protocols. 
+    Manages NetBIOS name resolution, scope identification, and legacy network neighborhood functionality.
+
+  forensic_value: |
+    Critical for investigating lateral movement techniques that exploit NetBIOS vulnerabilities, analyzing legacy 
+    network reconnaissance activities, and detecting attacks that leverage NetBIOS name resolution for network discovery. 
+    Shows WINS server configurations and reveals network browsing capabilities that facilitate information gathering.
+
+  structure: |
+    NetBT parameters include EnableLMHosts (LMHOSTS file usage), NodeType (NetBIOS resolution method), NameServer 
+    (WINS server addresses), ScopeId (NetBIOS scope identifier), and EnableNetbiosSmb (NetBIOS over SMB). 
+    LanmanServer controls network browsing and server announcements.
+
+  examples:
+    - "EnableLMHosts: 1 (LMHOSTS file resolution enabled)"
+    - "NodeType: 8 (Hybrid node - P-node then B-node)"
+    - "NameServer: 192.168.1.10,192.168.1.11 (Primary and secondary WINS servers)"
+    - "ScopeId: CORPORATE.LOCAL (NetBIOS scope identifier)"
+    - "EnableNetbiosSmb: 1 (NetBIOS over SMB enabled)"
+    - "BrowseAnnounce: 1 (Server announces presence to browsers)"
+    - "MaintainServerList: 2 (Auto - maintain browser list)"
+    - "IsDomainMaster: 0 (Not domain master browser)"
+
+  tools:
+    - name: "nbtstat.exe"
+      description: "Built-in NetBIOS over TCP/IP statistics and name table utility"
+    - name: "net view"
+      description: "Command-line network browsing and share enumeration"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "Network Configuration Tools"
+      description: "Built-in Windows network adapter configuration interface"
+    - name: "NetBIOS Name Scanner"
+      description: "Third-party tools for NetBIOS network discovery and analysis"
+
+limitations:
+  - "NetBIOS configuration does NOT prove NetBIOS protocols were actively used"
+  - "WINS server settings don't indicate successful name resolution queries occurred"
+  - "Browser announcement settings don't show actual network browsing activity"
+  - "LMHOSTS enablement doesn't prove static name mappings were used"
+  - "Node type configuration doesn't indicate NetBIOS communication success"
+  - "Scope settings may be configured without NetBIOS scope utilization"
+  - "Server list maintenance doesn't prove network neighborhood access"
+
+correlation:
+  required_for_definitive_execution_proof:
+    - "Network traffic captures showing NetBIOS protocol communication"
+    - "NetBIOS service logs showing name resolution requests and responses"
+    - "WINS server logs showing NetBIOS name registration and query activity"
+    - "Event logs showing NetBIOS service starts and network browsing events"
+    
+  strengthens_evidence:
+    - "SMB/CIFS logs showing NetBIOS session establishment"
+    - "Network discovery logs showing NetBIOS-based reconnaissance"
+    - "File sharing access logs using NetBIOS name resolution"
+
+metadata:
+  windows_versions:
+    - "Windows NT"
+    - "Windows 2000"
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2000"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows NT 3.1"
+
+  criticality: "medium"
+
+  investigation_types:
+    - "lateral-movement"
+    - "behavioral-analysis"
+    - "incident-response"
+    - "initial-access"
+
+  tags:
+    - "netbios"
+    - "name-resolution"
+    - "wins"
+    - "network-browsing"
+    - "lateral-movement"
+    - "legacy-protocols"
+    - "smb"
+
+  references:
+    - title: "Microsoft Documentation: NetBIOS over TCP/IP"
+      url: "https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc759150(v=ws.10)"
+      type: "official"
+    - title: "NetBIOS Attacks and Lateral Movement"
+      url: "https://attack.mitre.org/techniques/T1021/002/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (SYSTEM)"
+    persistence: "Network configuration persists until manually changed"
+    volatility: "Network settings affect ongoing network communication capabilities"
+
+  related_artifacts:
+    - "network_interfaces"
+    - "shared_folders"
+    - "computer_name"
+    - "dns_cache"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-12"
+  version: "3.0"

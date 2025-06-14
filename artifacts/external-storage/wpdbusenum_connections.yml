@@ -1,0 +1,137 @@
+title: "WPDBUSENUM Portable Device Connections"
+category: "external-storage"
+description: "Windows Portable Device Bus Enumerator tracking for mobile phones, cameras, and media players"
+
+paths:
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\SWD\\WPDBUSENUM"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\WPDBusEnum"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows Portable Devices"
+
+details:
+  what: |
+    Windows Portable Device Bus Enumerator (WPDBUSENUM) tracks connections of portable devices including 
+    smartphones, digital cameras, media players, and tablets that use Media Transfer Protocol (MTP) or 
+    Picture Transfer Protocol (PTP) rather than appearing as traditional storage devices.
+
+  forensic_value: |
+    Critical for mobile device forensics and investigations involving smartphones, tablets, and digital 
+    cameras. Shows evidence of mobile device connections that could indicate data transfer, photo/video 
+    extraction, or mobile device exploitation even when devices don't mount as traditional drives.
+
+  structure: |
+    Device entries organized under WPDBUSENUM with unique device identifiers containing DeviceDesc, 
+    HardwareID, Service, ContainerID, and connection metadata. Each device maintains enumeration data, 
+    capabilities information, and driver binding details.
+
+  examples:
+    - "WPDBUSENUM\\\\{12345678-1234-5678-9abc-123456789abc}\\\\0000: iPhone connection"
+    - "DeviceDesc: Apple iPhone (Device description)"
+    - "HardwareID: WPDBUSENUM\\\\Apple_iPhone (Hardware identification)"
+    - "Service: WUDFRd (Windows User-Mode Driver Framework)"
+    - "ContainerID: {abcdef12-3456-789a-bcde-f123456789ab} (Device container)"
+    - "FriendlyName: John's iPhone (User-assigned device name)"
+    - "Manufacturer: Apple Inc. (Device manufacturer)"
+    - "DeviceInterfaceGUIDs: Media Transfer Protocol interfaces"
+
+  tools:
+    - name: "Device Manager (devmgmt.msc)"
+      description: "Built-in Windows device management for portable device enumeration"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "USBDeview"
+      url: "https://www.nirsoft.net/utils/usb_devices_view.html"
+      description: "USB and portable device history viewer"
+    - name: "Portable Device Inspector"
+      description: "Third-party tools for analyzing Windows portable device connections"
+    - name: "Mobile Device Forensics Tools"
+      description: "Specialized forensic utilities for mobile device connection analysis"
+
+limitations:
+  - "Device enumeration does NOT prove files were transferred to or from the device"
+  - "Connection records don't indicate what data operations occurred"
+  - "MTP/PTP device presence doesn't prove unauthorized data access"
+  - "Device capabilities registration may be from legitimate sync or charging"
+  - "Portable device connection doesn't indicate successful data extraction"
+  - "Driver association may occur without actual file transfer operations"
+
+correlation:
+  required_for_definitive_access_proof:
+    - "File system artifacts showing files transferred from portable device"
+    - "Application logs showing successful MTP/PTP data operations"
+    - "Recent documents or photos with metadata indicating portable device origin"
+    - "Event logs showing successful device authentication and data access"
+    - "Network logs if device was used for internet access or cloud synchronization"
+    
+  strengthens_evidence:
+    - "Registry timestamps correlating device connection to file transfer times"
+    - "Photo/video files with EXIF data matching connected camera or phone"
+    - "USB connection logs showing physical device attachment"
+    - "User activity logs showing interaction during device connection periods"
+
+metadata:
+  windows_versions:
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows Vista"
+  criticality: "high"
+
+  investigation_types:
+    - "data-exfiltration"
+    - "initial-access"
+    - "insider-threat"
+    - "timeline-analysis"
+    - "incident-response"
+
+  tags:
+    - "usb"
+    - "portable-devices"
+    - "mobile-phones"
+    - "cameras"
+    - "media-players"
+    - "mtp"
+    - "ptp"
+    - "device-connections"
+    - "mobile-forensics"
+
+  references:
+    - title: "Microsoft Documentation: Windows Portable Devices"
+      url: "https://docs.microsoft.com/en-us/windows/win32/windows-portable-devices"
+      type: "official"
+    - title: "Mobile Device Forensics and Windows Portable Devices"
+      url: "https://www.sans.org/white-papers/33584/"
+      type: "research"
+    - title: "Portable Device Connection Analysis"
+      url: "https://www.forensicfocus.com/articles/portable-device-forensics/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (SYSTEM, SOFTWARE)"
+    persistence: "Device connection history persists until manual cleanup or registry corruption"
+    volatility: "Connection data provides evidence of mobile device interactions and data transfer"
+
+  related_artifacts:
+    - "device_history"
+    - "device_capabilities"
+    - "hardware_devices"
+    - "drive_letter_mapping"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-13"
+  version: "3.0"

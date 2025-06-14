@@ -1,0 +1,129 @@
+title: "WiFi Network Profiles and Credentials"
+category: "network-infrastructure"
+description: "Stored WiFi profiles, SSIDs, security settings, and network location tracking"
+
+paths:
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\NetworkList\\Profiles"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\NetworkList\\Signatures\\Unmanaged"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\NetworkList\\Signatures\\Managed"
+
+details:
+  what: |
+    Windows WiFi network profile information including SSID names, security configurations,
+    connection properties, network categories, and encrypted credentials for automatic
+    reconnection. Network signatures track connection history and first/last connection times.
+
+  forensic_value: |
+    Critical for establishing user location patterns, travel history, and potential access points
+    visited by suspects. WiFi profiles reveal geographic movement, lifestyle patterns, and
+    association with specific locations or organizations. Can indicate compromise through rogue
+    access points or reveal investigative leads about suspect activities.
+
+  structure: |
+    Network profiles stored with GUIDs as registry keys containing ProfileName (SSID),
+    Description (network details), Category (public/private/domain), DateCreated and
+    DateLastConnected as FILETIME values. Signatures maintain network identification data.
+
+  examples:
+    - "ProfileName: CoffeeShop_WiFi (Public WiFi access point)"
+    - "ProfileName: HOME-NETWORK-5G (Personal residence network)"
+    - "Description: Starbucks Guest Network (Business establishment WiFi)"
+    - "Category: 0 (Public network), 1 (Private network), 2 (Domain network)"
+    - "DateCreated: 0x01DA2E8F5C6A0000 (FILETIME: 2024-01-15 14:30:25)"
+    - "DateLastConnected: 0x01DA2F1A2B8C0000 (Recent connection timestamp)"
+    - "FirstNetwork: Corporate_Guest (First connected network profile)"
+    - "Managed: 1 (Enterprise-managed network profile)"
+
+  tools:
+    - name: "WirelessKeyView"
+      url: "https://www.nirsoft.net/utils/wireless_key.html"
+      description: "Recover stored WiFi passwords and network information"
+    - name: "WiFi Password Revealer"
+      description: "Third-party tools for WiFi credential recovery and analysis"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "netsh wlan show profiles"
+      description: "Built-in Windows command for WiFi profile enumeration"
+    - name: "Network Location Analysis Tools"
+      description: "Specialized tools for geographic and location analysis from WiFi data"
+
+limitations:
+  - "WiFi profiles do NOT prove user was physically present at network locations"
+  - "Network connection doesn't indicate duration of stay or actual internet usage"
+  - "SSID names can be spoofed or duplicated across different physical locations"
+  - "Connection timestamps don't prove sustained network activity"
+  - "Profile creation doesn't guarantee successful authentication or data transmission"
+  - "WiFi credentials don't indicate what online activities occurred"
+  - "Network categories may be incorrect or manually modified"
+
+correlation:
+  required_for_definitive_location_proof:
+    - "WiFi access point MAC addresses and GPS coordinates from wardriving databases"
+    - "Internet service provider logs showing IP address assignments at specific times"
+    - "Application usage logs showing online activity during WiFi connections"
+    - "Cell tower location data correlating with WiFi connection timestamps"
+    
+  strengthens_evidence:
+    - "Browser history showing location-specific searches or activities"
+    - "File system artifacts with timestamps correlating to WiFi connections"
+    - "GPS metadata in photos or documents created during WiFi connection periods"
+    - "Credit card or transaction records showing purchases at WiFi network locations"
+
+metadata:
+  windows_versions:
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+
+  introduced: "Windows Vista"
+  criticality: "medium"
+
+  investigation_types:
+    - "insider-threat"
+    - "timeline-analysis"
+    - "behavioral-analysis"
+
+  tags:
+    - "network"
+    - "wifi"
+    - "credentials"
+    - "location-tracking"
+    - "travel-patterns"
+    - "network-profiles"
+    - "geographic-analysis"
+
+  references:
+    - title: "Microsoft Documentation: Network Location Awareness"
+      url: "https://docs.microsoft.com/en-us/windows/win32/nla/network-location-awareness-portal"
+      type: "official"
+    - title: "WiFi Forensics and Location Analysis"
+      url: "https://www.sans.org/white-papers/33894/"
+      type: "research"
+    - title: "Wireless Network Forensics Investigation Techniques"
+      url: "https://www.forensicfocus.com/articles/wireless-network-forensics/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE)"
+    persistence: "WiFi profiles persist until manually removed or network forgotten"
+    volatility: "Connection timestamps provide ongoing location and travel intelligence"
+
+  related_artifacts:
+    - "network_interfaces"
+    - "network_connections"
+    - "location_services"
+    - "proxy_settings"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-12"
+  version: "3.0"

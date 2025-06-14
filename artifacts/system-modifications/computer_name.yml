@@ -1,0 +1,135 @@
+title: "Computer Name and Domain Information"
+category: "system-modifications"
+description: "System hostname, domain membership, workgroup settings, and network identification parameters"
+
+paths:
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\ComputerName\\ComputerName"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\ComputerName\\ActiveComputerName"
+
+details:
+  what: |
+    Windows computer identification information encompasses hostname configuration, NetBIOS name 
+    settings, domain membership status, workgroup assignments, DNS hostname configuration, and 
+    network identification parameters essential for network communication and authentication.
+
+  forensic_value: |
+    Essential for system identification in network environments, correlating with Active Directory 
+    logs, and network traffic analysis. Computer naming patterns may reveal organizational structure, 
+    system purpose, geographic location, or administrative conventions. Critical for linking registry 
+    artifacts to specific systems in multi-computer investigations.
+
+  structure: |
+    ComputerName registry key contains current and active computer names, domain membership 
+    information, and pending name changes. Tcpip Parameters include DNS hostname, domain suffix, 
+    and network identification settings. Winlogon contains domain authentication information.
+
+  examples:
+    - "ComputerName: DESKTOP-ABC123 (Default Windows 10 naming pattern)"
+    - "ActiveComputerName: WORKSTATION01 (Currently active system name)"
+    - "Domain: CORPORATE (Domain membership)"
+    - "Hostname: ws01.corporate.local (Fully qualified domain name)"
+    - "DnsNameServer: 192.168.1.10,192.168.1.11 (DNS server configuration)"
+    - "DefaultDomainName: CORPORATE.LOCAL (Default authentication domain)"
+    - "NV Domain: WORKGROUP (NetBIOS workgroup for non-domain systems)"
+
+  tools:
+    - name: "System Properties (sysdm.cpl)"
+      description: "Built-in Windows computer name and domain management interface"
+    - name: "hostname.exe"
+      description: "Command-line utility for displaying current computer name"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "systeminfo.exe"
+      description: "Comprehensive system information including computer name and domain"
+    - name: "Computer Management Console"
+      description: "Windows administrative tool for system identification and management"
+
+limitations:
+  - "Computer name configuration does NOT prove network communication occurred"
+  - "Domain membership settings don't indicate actual network access or authentication"
+  - "Hostname configuration doesn't prove system was actively used on the network"
+  - "DNS settings don't indicate actual DNS queries or network traffic"
+  - "Network identification may be configured but network interfaces could be disabled"
+  - "Domain authentication settings don't prove successful domain logons occurred"
+
+correlation:
+  required_for_definitive_network_activity_proof:
+    - "Network traffic logs showing actual communication using the configured hostname"
+    - "Event logs showing domain authentication and network access events"
+    - "DNS query logs showing hostname resolution and network activity"
+    - "Active Directory logs showing computer account authentication"
+    - "File server logs showing network file access from the identified computer"
+    
+  strengthens_evidence:
+    - "Network interface configuration showing active network connections"
+    - "Event logs showing successful domain logons using computer credentials"
+    - "Registry changes showing network configuration during investigation periods"
+    - "File system artifacts showing network resource access"
+
+metadata:
+  windows_versions:
+    - "Windows NT"
+    - "Windows 2000"
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2000"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows NT 3.1"
+  criticality: "low"
+
+  investigation_types:
+    - "incident-response"
+    - "timeline-analysis"
+    - "lateral-movement"
+    
+  tags:
+    - "computer-name"
+    - "domain"
+    - "network-identification"
+    - "hostname"
+    - "system-identity"
+    - "infrastructure"
+    - "workgroup"
+
+  references:
+    - title: "Microsoft Documentation: Computer Names"
+      url: "https://docs.microsoft.com/en-us/windows/win32/sysinfo/computer-names"
+      type: "official"
+    - title: "Windows Network Identity and Domain Membership"
+      url: "https://docs.microsoft.com/en-us/windows-server/identity/ad-ds/"
+      type: "official"
+
+  retention:
+    default_location: "Registry hive files (SYSTEM, SOFTWARE)"
+    persistence: "Computer identity information persists until manually changed"
+    volatility: "Stable system identification data, changes require administrator privileges"
+
+  related_artifacts:
+    - "user_profiles"
+    - "version_info"
+    - "network_interfaces"
+    - "netbios_settings"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-13"
+  version: "3.0"

@@ -1,0 +1,151 @@
+title: "USB Device Capabilities and Properties"
+category: "external-storage"
+description: "USB device hardware properties, capabilities, and identification data for connected devices"
+
+paths:
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USB\\VID_*&PID_*"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USBSTOR\\*"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceClasses\\{53f56307-b6bf-11d0-94f2-00a0c91efb8b}"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceClasses\\{a5dcbf10-6530-11d2-901f-00c04fb951ed}"
+
+details:
+  what: |
+    Windows stores USB device information including vendor/product IDs (VID/PID), device capabilities, 
+    hardware characteristics, power requirements, and supported features. Tracks both storage and 
+    non-storage USB devices with technical specifications and driver associations for device enumeration.
+
+  forensic_value: |
+    Identifies device capabilities beyond basic vendor information. Can reveal specialized hardware, 
+    covert devices, modified USB devices, or attack tools designed for data exfiltration. Useful 
+    for detecting USB weaponization attempts, device modification, and sophisticated surveillance equipment.
+
+  structure: |
+    Device instance subkeys identified by VID (Vendor ID) and PID (Product ID) containing Capabilities, 
+    DeviceDesc, HardwareID, CompatibleIDs, and Service values. Binary capability flags indicate supported 
+    features and power characteristics. ContainerID links related device interfaces.
+
+  examples:
+    - "VID_0951&PID_1666: Kingston DataTraveler USB drive"
+    - "DeviceDesc: USB Mass Storage Device"
+    - "HardwareID: USBSTOR\\DiskSanDisk_Cruzer_Blade____1.00"
+    - "Capabilities: 0x00000084 (Removable | UniqueID)"
+    - "Service: USBSTOR (USB storage driver)"
+    - "ContainerID: {12345678-1234-5678-9abc-123456789abc}"
+    - "Problem: 0 (Device working properly)"
+    - "ClassGUID: {36fc9e60-c465-11cf-8056-444553540000} (USB device class)"
+    - "PowerData: Bus-powered device, 500mA maximum"
+    - "DeviceClass: Mass Storage"
+
+  tools:
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry browser with USB device enumeration analysis"
+    - name: "USBView"
+      url: "https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/usbview"
+      description: "Microsoft USB device viewer showing device tree and capabilities"
+    - name: "USBDeview"
+      url: "https://www.nirsoft.net/utils/usb_devices_view.html"
+      description: "NirSoft comprehensive USB device information and history viewer"
+    - name: "Device Manager"
+      description: "Built-in Windows device management interface for hardware analysis"
+    - name: "USB Detective"
+      description: "Specialized USB forensics tools for device identification and analysis"
+
+limitations:
+  - "Device capability registration does NOT prove device was actively used for data transfer"
+  - "Hardware properties don't indicate what files were accessed or copied"
+  - "Device enumeration occurs during connection but doesn't prove malicious activity"
+  - "Capability flags may not reflect actual device usage or user actions"
+  - "Driver association doesn't indicate successful data operations"
+  - "Device presence doesn't prove data exfiltration or unauthorized access"
+
+correlation:
+  required_for_definitive_usage_proof:
+    - "File system artifacts showing actual file access or modification on USB device"
+    - "Event logs (Event ID 6416) showing volume mounting and access"
+    - "ShellBags showing user navigation to USB drive folders"
+    - "Recent documents referencing files from USB device"
+    - "Link files (.lnk) pointing to USB device locations"
+    
+  strengthens_evidence:
+    - "USB device connection timestamps from last write times"
+    - "Drive letter assignments showing device mounting"
+    - "Prefetch files showing execution of programs from USB device"
+    - "Network logs if USB device contained remote access tools"
+
+metadata:
+  windows_versions:
+    - "Windows 98"
+    - "Windows 2000"
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2000"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows 98"
+  criticality: "medium"
+
+  investigation_types:
+    - "data-exfiltration"
+    - "initial-access"
+    - "malware-analysis"
+    - "incident-response"
+    - "timeline-analysis"
+    - "behavioral-analysis"
+
+  tags:
+    - "usb"
+    - "device-capabilities"
+    - "hardware-properties"
+    - "device-identification"
+    - "covert-devices"
+    - "usb-forensics"
+    - "device-enumeration"
+    - "hardware-analysis"
+    - "device-weaponization"
+
+  references:
+    - title: "USB Device Registry Entries"
+      url: "https://docs.microsoft.com/en-us/windows-hardware/drivers/install/standard-usb-identifiers"
+      type: "official"
+    - title: "USB Device Capabilities"
+      url: "https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/ns-wdm-_device_capabilities"
+      type: "official"
+    - title: "USB Forensics and Analysis"
+      url: "https://www.sans.org/blog/digital-forensics-usb-device-analysis/"
+      type: "research"
+    - title: "Windows USB Device Identification"
+      url: "https://www.forensicfocus.com/articles/usb-device-forensics/"
+      type: "research"
+
+  retention:
+    default_location: "SYSTEM registry hive"
+    persistence: "Survives device disconnection, persists until manual removal or corruption"
+    volatility: "Device enumeration data preserved across reboots and reconnections"
+
+  related_artifacts:
+    - "drive_letter_mapping"
+    - "last_write_times"
+    - "shellbags"
+    - "recent_docs"
+    - "hardware_devices"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-13"
+  version: "3.0"

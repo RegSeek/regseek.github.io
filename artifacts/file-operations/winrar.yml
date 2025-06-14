@@ -1,0 +1,123 @@
+title: "WinRAR Archive Tool Usage and File History"
+category: "file-operations"
+description: "WinRAR configuration, archive history, extraction locations, and compression activity"
+
+paths:
+  - "HKCU\\Software\\WinRAR"
+  - "HKLM\\SOFTWARE\\WinRAR"
+  - "HKCU\\Software\\Classes\\WinRAR"
+  - "HKLM\\SOFTWARE\\Classes\\WinRAR"
+
+details:
+  what: |
+    WinRAR archive utility stores configuration including recent archive files, extraction paths,
+    compression settings, and file association preferences. Registry tracks archive creation/
+    extraction activity, password usage patterns, temporary file locations, and compression
+    preferences for comprehensive archive tool usage analysis.
+
+  forensic_value: |
+    Critical for investigating data packaging for exfiltration, evidence destruction through
+    compression, password-protected archive usage, and file transfer preparation. Shows evidence
+    of archive creation/extraction activity, reveals potentially suspicious file packaging, and
+    can indicate data theft preparation or evidence concealment.
+
+  structure: |
+    WinRAR configuration includes recent archive lists, default extraction paths, compression
+    levels, password settings, and file association data. Archive history shows processed files,
+    extraction locations, and access patterns for comprehensive archive tool behavior analysis
+    and data handling tracking.
+
+  examples:
+    - "ArcHistory: C:\\Users\\user\\Documents\\sensitive_data.rar"
+    - "ArcHistory: C:\\Temp\\exfiltration_package.zip"
+    - "ExtrPath: C:\\Users\\user\\Desktop\\extracted\\"
+    - "Compression: 3 (Normal compression level)"
+    - "SavePaths: 1 (Save extraction paths)"
+    - "Password: (Encrypted password usage indicator)"
+    - "TempPath: C:\\Temp\\WinRAR\\ (Temporary extraction location)"
+
+  tools:
+    - name: "WinRAR File Manager"
+      description: "Built-in WinRAR archive management interface"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "Archive Forensics Tools"
+      description: "Specialized tools for archive analysis and password recovery"
+
+limitations:
+  - "WinRAR configuration does NOT prove archives were actually created or extracted"
+  - "Archive history doesn't indicate successful compression or extraction operations"
+  - "Password settings don't prove password-protected archives were created"
+  - "Extraction paths don't show files were successfully extracted or accessed"
+  - "Compression levels don't indicate actual archive creation occurred"
+  - "Temporary file settings don't prove temporary files were created or processed"
+  - "File associations don't show archive files were opened or processed"
+
+correlation:
+  required_for_definitive_usage_proof:
+    - "File system artifacts showing created or extracted archive files"
+    - "Process execution logs showing WinRAR application startup and activity"
+    - "Temporary files showing archive processing operations"
+    - "Event logs showing file operations correlating with archive activity"
+    
+  strengthens_evidence:
+    - "Recent documents showing archive files accessed through WinRAR"
+    - "Registry keys modified during archive operations"
+    - "File system timestamps showing archive creation/extraction times"
+    - "ShellBags showing folder navigation to archive locations"
+
+metadata:
+  windows_versions:
+    - "Windows 95"
+    - "Windows 98"
+    - "Windows 2000"
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+
+  introduced: "WinRAR"
+  criticality: "low"
+
+  investigation_types:
+    - "data-exfiltration"
+    - "behavioral-analysis"
+    - "incident-response"
+    - "anti-forensics"
+
+  tags:
+    - "winrar"
+    - "archive-tools"
+    - "compression"
+    - "data-packaging"
+    - "file-extraction"
+    - "password-protection"
+
+  references:
+    - title: "WinRAR Archiver"
+      url: "https://www.rarlab.com/"
+      type: "official"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
+    persistence: "Archive history and settings persist until manually cleared"
+    volatility: "Archive activity provides evidence of file packaging and extraction"
+
+  related_artifacts:
+    - "file_compression"
+    - "data_packaging"
+    - "recent_documents"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-06-08"
+  last_updated: "2025-06-12"
+  version: "3.0"

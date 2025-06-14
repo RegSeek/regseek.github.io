@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+
+# Block access to build files except the main artifacts.json
+User-agent: *
+Disallow: /build/
+Allow: /build/artifacts.json
+
+# Allow CSS and JS files
+Allow: /css/
+Allow: /js/
+
+# Block any temporary or development files
+Disallow: /*.tmp$
+Disallow: /*.bak$
+Disallow: /*~$
+Disallow: /node_modules/
+Disallow: /.git/
+Disallow: /.github/
+

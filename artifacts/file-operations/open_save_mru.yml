@@ -1,0 +1,152 @@
+title: "Open and Save Dialog MRU History"
+category: "file-operations"
+description: "Recently opened and saved files through Windows common dialog boxes with file type organization"
+
+paths:
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU"
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSaveMRU"
+
+details:
+  what: |
+    Windows tracks files and folders accessed through standard Open and Save dialog boxes
+    used by most Windows applications. Maintains separate lists organized by file extension
+    and includes folder navigation history within dialogs. Captures user file interaction
+    patterns across applications regardless of the specific application used.
+
+  forensic_value: |
+    Reveals comprehensive user file access patterns, document locations, network share usage,
+    and specific files opened for editing, viewing, or saving. Shows evidence of data access,
+    document tampering, unauthorized file operations, and can indicate data staging for
+    exfiltration. Critical for proving user interaction with specific files.
+
+  structure: |
+    Organized by file extensions (*.*, txt, pdf, docx, etc.) with MRUListEx showing access
+    order within each category. Binary data contains full file paths, folder locations, and
+    shell item lists. OpenSavePidlMRU uses PIDL format for richer location data including
+    network paths and special folders.
+
+  examples:
+    - "Extension: *.*\\0: C:\\Users\\user\\Documents\\confidential.pdf"
+    - "Extension: txt\\1: C:\\Temp\\passwords.txt"
+    - "Extension: xlsx\\2: \\\\server\\finance\\budget2024.xlsx"
+    - "Extension: exe\\0: D:\\USB\\suspicious_tool.exe"
+    - "Extension: zip\\1: C:\\Downloads\\data_archive.zip"
+    - "MRUListEx: 2,1,0 (most recent order within extension)"
+    - "Network path: \\\\192.168.1.100\\shared\\sensitive_data.docx"
+    - "Special folder: Desktop\\document.pdf"
+
+  tools:
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry browser with OpenSaveMRU parsing and PIDL analysis"
+    - name: "OpenSaveMRU Parser"
+      description: "Specialized tools for parsing and analyzing Open/Save dialog history"
+    - name: "MRU-Blaster"
+      description: "Tool for clearing and analyzing various MRU lists including OpenSave"
+    - name: "RegRipper"
+      url: "https://github.com/keydet89/RegRipper3.0"
+      description: "Registry analysis with opensavemru.pl plugin for detailed parsing"
+    - name: "LastActivityView"
+      url: "https://www.nirsoft.net/utils/computer_activity_view.html"
+      description: "Comprehensive activity viewer including file dialog history"
+
+limitations:
+  - "Dialog history does NOT prove files were actually opened, edited, or saved"
+  - "File paths don't indicate successful file operations or content access"
+  - "Network locations don't prove successful authentication or file retrieval"
+  - "MRU entries may reflect browsing or failed file operations"
+  - "Extension-based organization doesn't show actual file content or type"
+  - "Dialog usage doesn't indicate duration of file interaction or editing"
+  - "PIDL data may reference non-existent or moved files"
+
+correlation:
+  required_for_definitive_file_access_proof:
+    - "File system timestamps showing actual file modifications or access"
+    - "Application event logs showing successful file opening and editing operations"
+    - "Process execution logs showing applications performing file operations"
+    - "File content analysis showing changes consistent with user interaction"
+    
+  strengthens_evidence:
+    - "Recent documents showing files accessed through these dialog boxes"
+    - "LastVisitedPidlMRU showing folder navigation correlating with file access"
+    - "Office MRU entries showing document access patterns matching OpenSave history"
+    - "Jump Lists showing application usage correlating with file dialog interactions"
+
+metadata:
+  windows_versions:
+    - "Windows 95"
+    - "Windows 98"
+    - "Windows NT 4.0"
+    - "Windows 2000"
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2000"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows 95"
+  criticality: "high"
+
+  investigation_types:
+    - "data-exfiltration"
+    - "insider-threat"
+    - "behavioral-analysis"
+    - "timeline-analysis"
+    - "incident-response"
+
+  tags:
+    - "user-activity"
+    - "file-access"
+    - "document-history"
+    - "network-shares"
+    - "data-exfiltration"
+    - "dialog-boxes"
+    - "file-operations"
+    - "application-usage"
+    - "document-tampering"
+
+  references:
+    - title: "Common Dialog Box Library"
+      url: "https://docs.microsoft.com/en-us/windows/win32/dlgbox/common-dialog-box-library"
+      type: "official"
+    - title: "Windows MRU Lists Forensics"
+      url: "https://www.sans.org/blog/digital-forensics-mru-analysis/"
+      type: "research"
+    - title: "Registry Forensics: OpenSaveMRU"
+      url: "https://www.forensicfocus.com/articles/opensavemru-analysis/"
+      type: "research"
+    - title: "Windows Dialog History Analysis"
+      url: "https://articles.forensicfocus.com/2009/08/17/windows-dialog-history/"
+      type: "research"
+
+  retention:
+    default_location: "NTUSER.DAT registry hive"
+    persistence: "Survives file deletion and application uninstallation, persists per user profile"
+    volatility: "Limited cache size may cause older entries to be overwritten within each extension"
+
+  related_artifacts:
+    - "recent_docs"
+    - "lastvisited_pidlmru"
+    - "comdlg32_settings"
+    - "shellbags"
+    - "office_files"
+    - "thumbnail_cache"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-12"
+  version: "3.0"

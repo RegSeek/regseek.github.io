@@ -1,0 +1,142 @@
+title: "Application Compatibility Flags and Settings"
+category: "program-execution"
+description: "Application compatibility flags, shim layers, and compatibility database entries for legacy application support"
+
+paths:
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags"
+  - "HKCU\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Layers"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\InstalledSDB"
+
+details:
+  what: |
+    Application Compatibility Flags control compatibility shims and layers applied to 
+    applications for legacy support. Includes execution flags, application-specific fixes, 
+    and shim database installations for running older applications on newer operating systems.
+
+  forensic_value: |
+    Shows applications requiring compatibility fixes and reveals execution history through 
+    compatibility layer application. Can indicate malware masquerading as legacy applications 
+    or attempting to bypass security measures. May reveal unauthorized compatibility database 
+    installations or malicious shim applications designed to evade detection.
+
+  structure: |
+    Layers subkey contains compatibility layer definitions and application assignments. 
+    CompatTelRunner tracks compatibility telemetry execution. InstalledSDB manages custom 
+    shim database installations. Application names as subkeys contain specific compatibility flags.
+
+  examples:
+    - "Layers\\application.exe: WIN98 WINXPSP3 256COLOR"
+    - "Layers\\malware.exe: RUNASADMIN HIGHDPIAWARE"
+    - "CompatTelRunner\\LastRunTime: 0x01DA2E8F5C6A0000 (FILETIME)"
+    - "InstalledSDB\\{12345678-1234-5678-9abc-123456789abc}: Custom.sdb"
+    - "Compatibility Assistant\\Store\\program.exe: 1"
+    - "ExecutionAlias\\notepad.exe: C:\\Windows\\System32\\notepad.exe"
+    - "Custom\\suspicious_app.exe: ELEVATECREATEPROCESS"
+    - "ProcessHistory\\malware.exe: compatibility_check_timestamp"
+    
+  tools:
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry browser for compatibility flags analysis"
+    - name: "Compatibility Administrator"
+      description: "Microsoft Application Compatibility Toolkit for shim management"
+    - name: "sdbinst.exe"
+      description: "Windows shim database installation and management utility"
+    - name: "Application Compatibility Toolkit"
+      url: "https://docs.microsoft.com/en-us/windows/deployment/planning/act-technical-reference"
+      description: "Microsoft toolkit for application compatibility analysis"
+    - name: "ShimView"
+      description: "Tools for analyzing installed compatibility shims and databases"
+
+limitations:
+  - "Compatibility layer assignment does NOT prove program execution occurred"
+  - "Shim database installation may be legitimate enterprise software compatibility"
+  - "Compatibility settings can be applied by administrators without user execution"
+  - "CompatTelRunner timestamps show telemetry collection, not program execution"
+  - "Custom shim databases may be installed but never actively used"
+  - "Compatibility flags may be set proactively for programs never launched"
+  - "Layer assignments may persist after application uninstallation"
+
+correlation:
+  required_for_definitive_execution_proof:
+    - "Process execution logs showing actual program launch with compatibility layers"
+    - "Application event logs confirming successful program startup"
+    - "File system artifacts showing program execution and operation"
+    - "ShimCache or AmCache entries with matching application paths"
+    
+  strengthens_evidence:
+    - "Registry Run keys showing persistence through compatibility mechanisms"
+    - "UserAssist entries showing user-initiated launches with compatibility layers"
+    - "Application logs showing compatibility layer activation during execution"
+
+metadata:
+  windows_versions:
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows XP"
+  criticality: "medium"
+
+  investigation_types:
+    - "malware-analysis"
+    - "behavioral-analysis"
+    - "incident-response"
+    - "program-execution"
+
+  tags:
+    - "execution"
+    - "compatibility"
+    - "shims"
+    - "legacy-applications"
+    - "execution-history"
+    - "application-layers"
+    - "compatibility-database"
+    - "process-behavior"
+
+  references:
+    - title: "Application Compatibility in Windows"
+      url: "https://docs.microsoft.com/en-us/windows/deployment/planning/compatibility-fixes-for-windows-10"
+      type: "official"
+    - title: "Windows Application Compatibility"
+      url: "https://docs.microsoft.com/en-us/windows/deployment/planning/act-technical-reference"
+      type: "official"
+    - title: "Shim Database Analysis"
+      url: "https://www.sans.org/blog/application-compatibility-shims/"
+      type: "research"
+    - title: "Compatibility Flags Forensics"
+      url: "https://www.forensicfocus.com/articles/application-compatibility-forensics/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hives (SOFTWARE, NTUSER.DAT)"
+    persistence: "Survives reboots and application updates, persists until compatibility changes"
+    volatility: "Compatibility settings preserved across system updates"
+
+  related_artifacts:
+    - "appcompat_cache"
+    - "amcache"
+    - "userassist"
+    - "app_paths"
+    - "image_hijack"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-12"
+  version: "3.0"

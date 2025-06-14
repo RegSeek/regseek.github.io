@@ -1,0 +1,111 @@
+title: "Dropbox Desktop Client"
+category: "user-behaviour"
+description: "Dropbox desktop application configuration, sync settings, and account management"
+
+paths:
+  - "HKCU\\Software\\Dropbox"
+  - "HKLM\\SOFTWARE\\Dropbox"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Dropbox"
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\Dropbox"
+
+details:
+  what: |
+    Dropbox Desktop Client manages file synchronization configuration including sync
+    folder locations, account authentication, selective sync preferences, bandwidth
+    controls, and LAN sync settings. Registry stores installation paths, user credentials,
+    and team folder configurations.
+
+  forensic_value: |
+    Essential for investigating data exfiltration through Dropbox and unauthorized file
+    sharing. Shows evidence of Dropbox usage patterns, shared folder access, team
+    memberships, and potential data leakage vectors. Can reveal deliberate data theft
+    through personal Dropbox accounts or unauthorized sharing of sensitive information.
+
+  structure: |
+    Dropbox configuration includes account identifiers, sync folder paths, selective
+    sync exclusions, bandwidth settings, LAN sync preferences, and Smart Sync policies.
+    Team configuration shows business account integration and shared folder access.
+
+  examples:
+    - "DropboxPath: C:\\Users\\user\\Dropbox"
+    - "AccountEmail: user@company.com (Business Dropbox account)"
+    - "AccountEmail: personal@email.com (Personal Dropbox account)"
+    - "SelectiveSync: {Private, Confidential} (Excluded folders)"
+    - "LanSync: 1 (Local network synchronization enabled)"
+    - "SmartSync: 1 (Online-only files enabled)"
+    - "BandwidthLimit: 100 (Upload limit in KB/s)"
+
+  tools:
+    - name: "Dropbox Desktop Preferences"
+      description: "Built-in Dropbox configuration and account management"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis tool"
+    - name: "Dropbox Business Admin Console"
+      description: "Enterprise Dropbox monitoring and audit tools"
+
+limitations:
+  - "Registry shows configuration only, not actual files synced or shared"
+  - "Account email doesn't prove active file synchronization occurred"
+  - "Selective sync settings may not reflect current folder exclusions"
+  - "Personal and business account mixing may obscure actual usage patterns"
+
+correlation:
+  required_for_definitive_conclusions:
+    - "Dropbox sync cache and metadata files"
+    - "File system artifacts showing Dropbox folder contents"
+    - "Network traffic logs showing Dropbox API communications"
+    - "Dropbox account activity logs from Dropbox servers"
+  
+  strengthens_evidence:
+    - "Timeline analysis of Dropbox folder file modifications"
+    - "User activity showing Dropbox application usage"
+    - "Email sharing notifications from Dropbox"
+
+metadata:
+  windows_versions:
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+
+  introduced: "Dropbox Desktop Client"
+  criticality: "high"
+
+  investigation_types:
+    - "data-exfiltration"
+    - "insider-threat"
+    - "behavioral-analysis"
+    - "incident-response"
+
+  tags:
+    - "dropbox"
+    - "cloud-storage"
+    - "file-sharing"
+    - "team-folders"
+    - "smart-sync"
+
+  references:
+    - title: "Dropbox Desktop App"
+      url: "https://help.dropbox.com/desktop/get-started"
+      type: "official"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
+    persistence: "Sync settings persist until manually changed or app removal"
+    volatility: "Real-time sync activity provides data movement evidence"
+
+  related_artifacts:
+    - "file_access_history"
+    - "recent_documents"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-06-08"
+  last_updated: "2025-06-08"
+  version: "3.0"

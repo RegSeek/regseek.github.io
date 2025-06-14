@@ -1,0 +1,135 @@
+title: "BitLocker Drive Encryption Settings"
+category: "security-monitoring"
+description: "BitLocker encryption configuration, drive protection status, recovery policies, and TPM integration"
+
+paths:
+  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\FVE"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\BitLocker"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\BitLocker"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\BDESVC"
+
+details:
+  what: |
+    BitLocker Full Volume Encryption manages drive-level encryption configuration including encryption 
+    algorithms, authentication methods, TPM integration, recovery key policies, and administrative 
+    settings. Controls system drive encryption, removable media protection, and enterprise key management.
+
+  forensic_value: |
+    Critical for understanding data protection mechanisms that may prevent forensic access. Shows 
+    encryption bypass attempts, policy violations, and security-conscious behavior. Configuration 
+    changes may reveal insider threats protecting stolen data or attackers disabling encryption.
+
+  structure: |
+    BitLocker configuration includes encryption method settings (AES-128/256), authentication 
+    requirements (TPM, PIN, USB key), recovery options, startup authentication policies, and enterprise 
+    management settings. Service configuration controls behavior and policy enforcement.
+
+  examples:
+    - "EncryptionMethod: 3 (AES 128-bit with Diffuser)"
+    - "EncryptionMethod: 4 (AES 256-bit with Diffuser)"
+    - "UseTPM: 2 (TPM required for system drive)"
+    - "UseTPMPIN: 1 (TPM + PIN authentication required)"
+    - "UseTPMKey: 0 (USB key not required)"
+    - "EnableBDEWithNoTPM: 0 (BitLocker requires TPM)"
+    - "RecoveryKeyMessageSource: IT Department Contact: helpdesk@company.com"
+    - "BDESVC\\Start: 3 (BitLocker service manual startup)"
+
+  tools:
+    - name: "BitLocker Drive Encryption (Control Panel)"
+      description: "Built-in Windows BitLocker management interface"
+    - name: "manage-bde.exe"
+      description: "Command-line BitLocker administration and status utility"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "Group Policy Editor (gpedit.msc)"
+      description: "BitLocker policy configuration and enterprise management"
+    - name: "TPM Management Console"
+      description: "Trusted Platform Module configuration and monitoring"
+
+limitations:
+  - "BitLocker configuration does NOT prove drives are currently encrypted"
+  - "Policy settings don't indicate successful encryption deployment"
+  - "Recovery key configuration doesn't prove key backup occurred"
+  - "TPM settings may be configured but TPM hardware could be disabled"
+  - "Encryption method settings don't prove data protection is active"
+  - "Service configuration doesn't indicate BitLocker operational status"
+
+correlation:
+  required_for_definitive_encryption_proof:
+    - "File system artifacts showing encrypted drive headers"
+    - "Event logs (Event ID 24577-24585) showing BitLocker operations"
+    - "TPM event logs confirming hardware-based key operations"
+    - "manage-bde status output showing actual encryption status"
+    - "Recovery key files or Active Directory BitLocker recovery information"
+    
+  strengthens_evidence:
+    - "Group Policy settings showing enterprise BitLocker deployment"
+    - "Event logs showing successful TPM operations during encryption"
+    - "File system analysis showing encrypted volume structure"
+    - "Registry changes showing BitLocker service activation"
+
+metadata:
+  windows_versions:
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows Vista"
+  criticality: "high"
+
+  investigation_types:
+    - "incident-response"
+    - "insider-threat"
+    - "data-exfiltration"
+    - "anti-forensics"
+
+  tags:
+    - "security"
+    - "bitlocker"
+    - "encryption"
+    - "data-protection"
+    - "tpm"
+    - "drive-encryption"
+    - "recovery-keys"
+    - "authentication"
+
+  references:
+    - title: "Microsoft Documentation: BitLocker"
+      url: "https://docs.microsoft.com/en-us/windows/security/information-protection/bitlocker/"
+      type: "official"
+    - title: "BitLocker Security and Forensic Considerations"
+      url: "https://www.sans.org/white-papers/33649/"
+      type: "research"
+    - title: "Enterprise BitLocker Management"
+      url: "https://docs.microsoft.com/en-us/windows/security/information-protection/bitlocker/bitlocker-overview"
+      type: "official"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, SYSTEM)"
+    persistence: "Encryption settings persist until administratively changed"
+    volatility: "Critical security configuration affecting data access and forensic investigations"
+
+  related_artifacts:
+    - "security_policy"
+    - "tpm_configuration"
+    - "recovery_keys"
+    - "authentication_methods"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-06-07"
+  last_updated: "2025-06-13"
+  version: "3.0"

@@ -50,7 +50,7 @@ RegSeek is a comprehensive reference tool for Windows Registry forensics artifac
 - Direct links to analysis tools and references
 
 
-# Quick Start
+## Quick Start
 
 ### Using the Web Interface
 
@@ -90,7 +90,7 @@ Visit the deployed site: [https://regseek.github.io/](https://regseek.github.io/
    start site/index.html # Windows
    ```
 
-# Contributing
+## Contributing
 
 We welcome contributions from the digital forensics community! See our [Contributing Guidelines](CONTRIBUTING.md) for details on:
 
@@ -99,7 +99,7 @@ We welcome contributions from the digital forensics community! See our [Contribu
 - Suggesting new features or categories
 - Reporting bugs or inaccuracies
 
-# License
+## License
 
 This project is licensed under GPL-3.0 license - see [LICENSE](LICENSE) file for details.
 

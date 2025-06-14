@@ -1,0 +1,110 @@
+title: "iCloud for Windows Client"
+category: "user-behaviour"
+description: "iCloud for Windows configuration, Apple ID integration, and sync settings"
+
+paths:
+  - "HKCU\\Software\\Apple Inc.\\iCloud"
+  - "HKLM\\SOFTWARE\\Apple Inc.\\iCloud"
+  - "HKCU\\Software\\Apple Inc.\\Mobile Device Support"
+  - "HKLM\\SOFTWARE\\Apple Inc.\\Apple Application Support"
+
+details:
+  what: |
+    iCloud for Windows enables synchronization between Windows computers and Apple's
+    iCloud services including iCloud Drive, Photos, Mail, Contacts, Calendar, and
+    Bookmarks. Registry stores Apple ID authentication, sync preferences, and
+    storage locations for data sharing between Windows and Apple devices.
+
+  forensic_value: |
+    Important for investigating data synchronization between Windows systems and Apple
+    devices, cross-platform data exfiltration, and unauthorized access to Apple
+    ecosystem data. Shows evidence of iCloud usage and potential data leakage
+    between corporate Windows systems and personal Apple devices.
+
+  structure: |
+    iCloud configuration includes Apple ID credentials, sync service enablement
+    (Drive, Photos, Mail, Contacts, Calendar), storage locations, and device
+    associations. Integration settings control Windows Explorer and Outlook
+    synchronization with iCloud services.
+
+  examples:
+    - "AppleID: user@icloud.com (Associated Apple ID)"
+    - "iCloudDrive: 1 (iCloud Drive sync enabled)"
+    - "Photos: 1 (iCloud Photos sync enabled)"
+    - "Mail: 0 (iCloud Mail sync disabled)"
+    - "Contacts: 1 (Contact synchronization enabled)"
+    - "Calendar: 1 (Calendar sync with Outlook enabled)"
+    - "BookmarkSync: 1 (Safari bookmark synchronization)"
+
+  tools:
+    - name: "iCloud for Windows Settings"
+      description: "Built-in iCloud configuration and sync management"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis tool"
+
+limitations:
+  - "Registry shows configuration only, not actual synced content or activity"
+  - "Enabled services don't prove active synchronization occurred"
+  - "Apple ID presence doesn't indicate frequency or volume of data sync"
+  - "Cross-platform sync may bypass traditional Windows logging"
+
+correlation:
+  required_for_definitive_conclusions:
+    - "iCloud Drive files and folders in Windows file system"
+    - "Apple device logs showing sync activity"
+    - "Network traffic logs showing iCloud communication"
+    - "Apple ID account activity logs from Apple"
+  
+  strengthens_evidence:
+    - "Timeline analysis of iCloud folder file modifications"
+    - "User activity showing iCloud application usage"
+    - "Mobile device connection artifacts"
+
+metadata:
+  windows_versions:
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+
+  introduced: "iCloud for Windows"
+  criticality: "medium"
+
+  investigation_types:
+    - "data-exfiltration"
+    - "behavioral-analysis"
+    - "insider-threat"
+
+  tags:
+    - "icloud"
+    - "apple-ecosystem"
+    - "cross-platform"
+    - "data-sync"
+    - "apple-id"
+    - "mobile-integration"
+
+  references:
+    - title: "iCloud for Windows Support"
+      url: "https://support.apple.com/en-us/HT204283"
+      type: "official"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
+    persistence: "Apple ID and sync settings persist until manually changed"
+    volatility: "Cross-platform sync provides ongoing data movement evidence"
+
+  related_artifacts:
+    - "mobile_sync"
+    - "file_associations"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-06-08"
+  last_updated: "2025-06-08"
+  version: "3.0"

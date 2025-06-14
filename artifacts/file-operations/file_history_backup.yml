@@ -1,0 +1,128 @@
+title: "File History and Backup System Configuration"
+category: "file-operations"
+description: "File History backup settings, backup destinations, excluded folders, and automated backup policies"
+
+paths:
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\FileHistory"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\FileHistory"
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackupRestore"
+  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\FileHistory"
+
+details:
+  what: |
+    Windows File History service provides automated backup and versioning for user files, documents, 
+    pictures, music, and desktop contents. Configuration includes backup destinations, inclusion/exclusion 
+    rules, backup frequency, retention policies, and network backup locations for comprehensive 
+    data protection and file recovery.
+
+  forensic_value: |
+    Critical for data recovery investigations, timeline reconstruction using historical file versions, 
+    and detecting attempts to hide evidence through file deletion. File History configuration reveals 
+    backup locations that may contain deleted evidence and shows user data protection awareness.
+
+  structure: |
+    File History configuration includes TargetUrl (backup destination), LocalUserConfigPath 
+    (configuration location), ProtectedFolders (included directories), ExcludedFolders (excluded 
+    directories), and backup frequency settings. Policy configurations control enterprise backup 
+    enforcement and retention periods.
+
+  examples:
+    - "TargetUrl: D:\\FileHistory (Local drive backup destination)"
+    - "TargetUrl: \\\\\\\\server\\\\backups\\\\user (Network backup location)"
+    - "ConfigStatus: 0 (File History not configured)"
+    - "ConfigStatus: 2 (File History enabled and running)"
+    - "FrequencyInHours: 1 (Hourly backup frequency)"
+    - "RetainedVersions: 720 (Retain versions for 720 hours/30 days)"
+    - "ExcludedFolders: AppData, .git, node_modules (Excluded folder patterns)"
+    - "LastBackupTime: 2024-01-20 15:30:25 UTC (Most recent backup)"
+
+  tools:
+    - name: "File History Settings (ms-settings:backup)"
+      description: "Built-in Windows File History configuration interface"
+    - name: "Control Panel File History"
+      description: "Legacy File History management and configuration panel"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "File History Restore"
+      description: "Built-in file recovery and version history browsing interface"
+    - name: "Backup and Restore Analysis Tools"
+      description: "Third-party utilities for backup configuration analysis"
+
+limitations:
+  - "File History configuration does NOT prove backup operations actually occurred"
+  - "Backup destination settings don't indicate successful file backup completion"
+  - "Retention policies don't prove historical file versions are available"
+  - "Backup frequency settings don't indicate actual backup execution success"
+  - "Configuration status may show enabled but backups could be failing"
+  - "Excluded folder settings don't prove files were intentionally hidden from backup"
+
+correlation:
+  required_for_definitive_backup_proof:
+    - "Actual File History backup files and folders at configured destinations"
+    - "Event logs showing File History service execution and backup operations"
+    - "File system artifacts showing backup destination activity and file transfers"
+    - "Registry changes showing File History configuration during backup periods"
+    - "Process execution logs showing File History service running during backup times"
+    
+  strengthens_evidence:
+    - "File modification times in backup directories correlating with configuration settings"
+    - "Network logs showing backup traffic to configured network destinations"
+    - "Registry changes showing File History status updates during backup operations"
+    - "Event logs showing backup success or failure events"
+
+metadata:
+  windows_versions:
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+
+  introduced: "Windows 8"
+  criticality: "high"
+
+  investigation_types:
+    - "data-exfiltration"
+    - "timeline-analysis"
+    - "incident-response"
+
+  tags:
+    - "file-history"
+    - "backup"
+    - "data-recovery"
+    - "version-control"
+    - "evidence-preservation"
+    - "timeline-reconstruction"
+    - "file-versioning"
+
+  references:
+    - title: "Microsoft Documentation: File History"
+      url: "https://docs.microsoft.com/en-us/windows/client-management/mdm/policy-csp-filehistory"
+      type: "official"
+    - title: "Windows Backup and Recovery Forensics"
+      url: "https://www.forensicfocus.com/articles/windows-backup-forensics/"
+      type: "research"
+    - title: "File Recovery and Timeline Analysis"
+      url: "https://www.sans.org/white-papers/33649/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT), File History storage"
+    persistence: "Backup configuration persists until manually changed, historical versions until retention expiry"
+    volatility: "File versions provide historical evidence crucial for timeline reconstruction"
+
+  related_artifacts:
+    - "volume_shadow_copy"
+    - "recent_docs"
+    - "opensavemru"
+    - "shellbags"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-06-07"
+  last_updated: "2025-06-13"
+  version: "3.0"

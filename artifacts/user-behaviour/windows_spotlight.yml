@@ -1,0 +1,112 @@
+title: "Windows Spotlight and Lock Screen Data"
+category: "user-behaviour"
+description: "Lock screen personalization, Windows Spotlight content, and user interaction tracking"
+
+paths:
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager"
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Lock Screen"
+  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent"
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize"
+
+details:
+  what: |
+    Windows Spotlight manages lock screen background images, suggested content, tips and tricks,
+    app suggestions, and personalization features. Registry tracks user interactions with
+    spotlight content, downloaded image metadata, content preferences, and engagement metrics.
+    Controls automatic content updates and cloud-sourced backgrounds.
+
+  forensic_value: |
+    Reveals user behavior patterns, content interaction history, and system usage characteristics.
+    Shows evidence of user engagement with system features, potential indicators of user presence
+    and activity, and timeline information for system access patterns. Can indicate user
+    preferences and provide context for user behavior analysis.
+
+  structure: |
+    ContentDeliveryManager contains feature enablement flags, content subscription settings,
+    interaction counters, and download preferences. Lock Screen entries include image sources,
+    update frequencies, and user customization preferences. Binary values track engagement
+    metrics and content delivery statistics.
+
+  examples:
+    - "RotatingLockScreenEnabled: 1 (Windows Spotlight enabled)"
+    - "RotatingLockScreenOverlayEnabled: 1 (Lock screen tips enabled)"
+    - "SoftLandingEnabled: 1 (App suggestions enabled)"
+    - "SystemPaneSuggestionsEnabled: 0 (Start menu suggestions disabled)"
+    - "SubscribedContent-338387Enabled: 1 (Tips and tricks enabled)"
+    - "SubscribedContent-353698Enabled: 0 (Timeline suggestions disabled)"
+
+  tools:
+    - name: "Windows Settings (Personalization)"
+      description: "Built-in Windows lock screen and background configuration"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "Group Policy Editor"
+      description: "Enterprise control over Windows Spotlight and content delivery"
+
+limitations:
+  - "Spotlight configuration does NOT prove content was actually viewed or interacted with"
+  - "Enabled features don't indicate user engagement or attention to spotlight content"
+  - "Content subscriptions don't show content was downloaded or displayed"
+  - "Lock screen settings don't prove user saw or interacted with lock screen images"
+  - "App suggestions don't indicate suggested apps were installed or used"
+  - "Tips and tricks settings don't show tips were read or followed"
+  - "Interaction counters may reflect automatic system behavior rather than user action"
+
+correlation:
+  required_for_definitive_interaction_proof:
+    - "Spotlight image cache files showing downloaded content"
+    - "Windows Event Logs showing user logon/logoff activity at lock screen"
+    - "Network traffic logs showing content downloads from Microsoft servers"
+    - "User interface interaction logs showing lock screen engagement"
+    
+  strengthens_evidence:
+    - "User account activity showing lock screen interaction patterns"
+    - "System personalization settings showing user customization preferences"
+    - "Application installation logs correlating with app suggestions"
+    - "File system artifacts showing Spotlight content storage and access"
+
+metadata:
+  windows_versions:
+    - "Windows 10"
+    - "Windows 11"
+
+  introduced: "Windows 10"
+  criticality: "low"
+
+  investigation_types:
+    - "behavioral-analysis"
+    - "timeline-analysis"
+
+  tags:
+    - "lock-screen"
+    - "spotlight"
+    - "personalization"
+    - "user-behavior"
+    - "content-delivery"
+    - "preferences"
+
+  references:
+    - title: "Windows Spotlight Documentation"
+      url: "https://docs.microsoft.com/en-us/windows/configuration/windows-spotlight"
+      type: "official"
+
+  retention:
+    default_location: "Registry hive files (NTUSER.DAT)"
+    persistence: "Settings persist until user modifications or policy changes"
+    volatility: "Interaction data provides ongoing user behavior insights"
+
+  related_artifacts:
+    - "user_preferences"
+    - "system_personalization"
+    - "content_consumption"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-06-08"
+  last_updated: "2025-06-12"
+  version: "3.0"

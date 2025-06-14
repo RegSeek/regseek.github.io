@@ -1,0 +1,111 @@
+title: "Docker Desktop Container Platform"
+category: "virtualization"
+description: "Docker Desktop configuration, container management, and development environment settings"
+
+paths:
+  - "HKCU\\Software\\Docker Inc\\Docker Desktop"
+  - "HKLM\\SOFTWARE\\Docker Inc\\Docker Desktop"
+  - "HKCU\\Software\\Classes\\docker"
+  - "HKLM\\SOFTWARE\\Classes\\docker"
+
+details:
+  what: |
+    Docker Desktop configuration for container development including container creation, 
+    image management, volume mounting, and network configuration. Registry stores installation 
+    settings, runtime preferences, and resource allocations.
+
+  forensic_value: |
+    Important for investigating containerized application development, potential isolation bypass 
+    attempts, and container-based malware analysis. Shows evidence of container usage, image downloads, 
+    and can reveal container-based data exfiltration or isolated development activities.
+
+  structure: |
+    Docker Desktop configuration includes installation paths, resource settings, container runtime 
+    preferences, volume mount configurations, and network settings. Container registry tracks 
+    image repositories and development workflows.
+
+  examples:
+    - "InstallPath: C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe"
+    - "ResourceSettings: CPUs=4, Memory=8GB"
+    - "EnableKubernetesCluster: 1 (Kubernetes integration enabled)"
+    - "ShareDrives: C:\\ (Host drive sharing enabled)"
+    - "FileSharing: C:\\Development (Shared development directory)"
+    - "ProxySettings: http://proxy.company.com:8080"
+    - "WSL2Backend: 1 (Windows Subsystem for Linux backend)"
+
+  tools:
+    - name: "Docker Desktop GUI"
+      description: "Docker's graphical container management interface"
+    - name: "docker CLI"
+      description: "Docker command-line interface for container operations"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+
+limitations:
+  - "Docker registry configuration does NOT prove containers were created or executed"
+  - "Installation presence doesn't indicate active container development or deployment"
+  - "Resource allocation settings don't show what containers actually used resources"
+  - "File sharing configuration doesn't prove files were shared with containers"
+  - "Drive sharing settings don't indicate data was accessed from containers"
+  - "Kubernetes integration settings don't prove orchestration was used"
+  - "WSL2 backend configuration doesn't show Linux containers were run"
+
+correlation:
+  required_for_definitive_execution_proof:
+    - "Docker daemon logs showing container creation and execution"
+    - "Process execution logs showing docker.exe commands"
+    - "File system artifacts showing Docker images and container files"
+    - "Network logs showing container communication"
+    
+  strengthens_evidence:
+    - "WSL configuration artifacts for Docker backend"
+    - "Development tools artifacts showing container integration"
+    - "File modifications in shared directories indicating container access"
+
+metadata:
+  windows_versions:
+    - "Windows 10"
+    - "Windows 11"
+
+  introduced: "Docker Desktop for Windows"
+  criticality: "medium"
+
+  investigation_types:
+    - "behavioral-analysis"
+    - "incident-response"
+    - "anti-forensics"
+
+  tags:
+    - "docker"
+    - "containers"
+    - "virtualization"
+    - "development"
+    - "microservices"
+    - "deployment"
+    - "isolation"
+
+  references:
+    - title: "Docker Desktop Documentation"
+      url: "https://docs.docker.com/desktop/"
+      type: "official"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
+    persistence: "Container platform settings persist until reconfiguration"
+    volatility: "Container development activity provides modern application deployment evidence"
+
+  related_artifacts:
+    - "development_tools"
+    - "virtualization_settings"
+    - "wsl_configuration"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-06-08"
+  last_updated: "2025-06-12"
+  version: "3.0"

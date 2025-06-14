@@ -1,0 +1,147 @@
+title: "Event Log Configuration and Settings"
+category: "security-monitoring"
+description: "Windows Event Log size limits, retention policies, enabled/disabled logging channels, and audit configuration"
+
+paths:
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\EventLog"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Channels"
+  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\EventLog"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\Audit"
+
+details:
+  what: |
+    Windows stores comprehensive event log configuration including maximum log sizes, retention 
+    policies, enabled/disabled channels, log file locations, access permissions, and audit policy 
+    settings. Controls logging behavior for Security, Application, System, Setup, and custom event 
+    logs including modern Windows Event Log (EVTX) channels.
+
+  forensic_value: |
+    Critical for forensic investigations as it reveals if attackers disabled logging to hide malicious 
+    activity, modified log retention to prevent evidence preservation, or altered audit policies to 
+    avoid detection. Shows evidence tampering attempts and insufficient logging configurations that 
+    may result in missing evidence.
+
+  structure: |
+    EventLog service configuration includes log names as subkeys containing MaxSize (maximum bytes), 
+    Retention (retention days), File (log file path), RestrictGuestAccess (access permissions), 
+    and Sources (event sources). WINEVT Channels contain modern event log configuration with 
+    Enabled status and MaxSize settings.
+
+  examples:
+    - "Security\\MaxSize: 0x6400000 (100MB maximum log size)"
+    - "Security\\Retention: 0 (overwrite events as needed)"
+    - "Application\\File: %SystemRoot%\\System32\\Winevt\\Logs\\Application.evtx"
+    - "Microsoft-Windows-PowerShell/Operational\\Enabled: 0 (PowerShell logging disabled)"
+    - "Security\\RestrictGuestAccess: 1 (guest access restricted)"
+    - "Microsoft-Windows-Sysmon/Operational\\MaxSize: 0x40000000 (1GB Sysmon log)"
+    - "System\\AutoBackupLogFiles: 1 (automatic log backup enabled)"
+    - "AuditLogonEvents: 0 (logon auditing disabled)"
+
+  tools:
+    - name: "Event Viewer (eventvwr.msc)"
+      description: "Built-in Windows event log viewer and configuration interface"
+    - name: "wevtutil.exe"
+      description: "Command-line event log configuration and management utility"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "LogParser"
+      url: "https://www.microsoft.com/en-us/download/details.aspx?id=24659"
+      description: "Powerful log analysis and query tool"
+    - name: "Get-WinEvent PowerShell"
+      description: "PowerShell cmdlets for event log analysis and configuration"
+    - name: "Event Log Explorer"
+      url: "https://eventlogxp.com/"
+      description: "Advanced event log analysis and management tool"
+
+limitations:
+  - "Event log configuration does NOT prove logging tampering or evidence destruction occurred"
+  - "Disabled logging channels don't indicate malicious activity caused the changes"
+  - "Log size limits don't prove events were lost due to insufficient retention"
+  - "Audit policy settings don't indicate actual audit events were generated"
+  - "Configuration modifications may be legitimate administrative log management"
+  - "Log retention settings don't prove evidence was intentionally destroyed"
+
+correlation:
+  required_for_definitive_tampering_proof:
+    - "Event logs showing configuration changes and log clearing events"
+    - "Registry change logs showing event log configuration modifications"
+    - "File system artifacts showing log file deletion or modification"
+    - "Audit logs showing unauthorized access to event log configuration"
+    - "Process execution logs showing log management utilities being run"
+    
+  strengthens_evidence:
+    - "Event logs showing gaps in logging during suspicious periods"
+    - "Registry changes in audit policy settings correlating with attack timelines"
+    - "File modifications in event log directories during configuration changes"
+    - "Event logs showing log service restarts or configuration reloads"
+
+metadata:
+  windows_versions:
+    - "Windows NT"
+    - "Windows 2000"
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2000"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows NT 3.1"
+  criticality: "high"
+
+  investigation_types:
+    - "incident-response"
+    - "malware-analysis"
+    - "timeline-analysis"
+    - "anti-forensics"
+
+  tags:
+    - "event-logs"
+    - "logging-config"
+    - "audit-policy"
+    - "evidence-tampering"
+    - "log-retention"
+    - "security-logging"
+    - "winevt"
+    - "sysmon"
+
+  references:
+    - title: "Microsoft Documentation: Windows Event Logging"
+      url: "https://docs.microsoft.com/en-us/windows/win32/eventlog/event-logging"
+      type: "official"
+    - title: "Windows Event Log Analysis for Incident Response"
+      url: "https://www.sans.org/white-papers/32949/"
+      type: "research"
+    - title: "Advanced Windows Event Log Forensics"
+      url: "https://www.forensicfocus.com/articles/advanced-windows-event-log-forensics/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (SYSTEM, SOFTWARE), event log files"
+    persistence: "Configuration settings persist until manually changed"
+    volatility: "Critical settings that affect all future evidence collection and analysis"
+
+  related_artifacts:
+    - "security_policy"
+    - "audit_settings"
+    - "windows_defender"
+    - "performance_monitoring"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-13"
+  version: "3.0"

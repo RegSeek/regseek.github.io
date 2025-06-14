@@ -1,0 +1,139 @@
+title: "Certificate Stores and Cryptographic Configuration"
+category: "security-monitoring"
+description: "PKI certificate stores, trusted root authorities, cryptographic settings, and SSL/TLS trust relationships"
+
+paths:
+  - "HKLM\\SOFTWARE\\Microsoft\\SystemCertificates"
+  - "HKCU\\SOFTWARE\\Microsoft\\SystemCertificates"
+  - "HKLM\\SOFTWARE\\Microsoft\\Cryptography"
+  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\SystemCertificates"
+
+details:
+  what: |
+    Windows certificate stores manage Public Key Infrastructure (PKI) components including trusted 
+    root certificate authorities, intermediate certificates, personal certificates, revoked certificates, 
+    and cryptographic service provider configurations. Controls SSL/TLS trust relationships and 
+    code signing verification.
+
+  forensic_value: |
+    Critical for detecting man-in-the-middle attacks through unauthorized certificate installation, 
+    identifying certificate-based persistence mechanisms, and analyzing SSL/TLS interception attempts. 
+    Reveals malicious certificate authorities installed by attackers and indicates advanced persistent 
+    threat techniques using certificate manipulation.
+
+  structure: |
+    Certificate stores organized by purpose including ROOT (trusted authorities), CA (intermediate), 
+    MY (personal), TrustedPeople (trusted users), and Disallowed (revoked). Each certificate stored 
+    with binary data including public key, issuer information, validity dates, and thumbprint hash.
+
+  examples:
+    - "ROOT\\Certificates\\{SHA1-Thumbprint}: VeriSign Class 3 Public Primary CA"
+    - "CA\\Certificates\\{Thumbprint}: Microsoft IT TLS CA 1 (Intermediate)"
+    - "MY\\Certificates\\{Thumbprint}: Personal Authentication Certificate"
+    - "Disallowed\\Certificates\\{Thumbprint}: Revoked DigiNotar Certificate"
+    - "TrustedPeople\\{Thumbprint}: Corporate Code Signing Certificate"
+    - "Cryptography\\Defaults\\Provider: Microsoft Enhanced Cryptographic Provider v1.0"
+    - "CertificateTransparency\\Logs: Certificate Transparency log configurations"
+
+  tools:
+    - name: "Certificate Manager (certmgr.msc)"
+      description: "Built-in Windows certificate store management interface"
+    - name: "Certificate Console (certlm.msc)"
+      description: "Local machine certificate store management"
+    - name: "certutil.exe"
+      description: "Command-line certificate services utility"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "Certificate Authority Analyzer"
+      description: "Third-party tools for certificate trust analysis"
+    - name: "SSL Certificate Checker"
+      description: "Tools for validating certificate chains and trust"
+
+limitations:
+  - "Certificate installation does NOT prove man-in-the-middle attacks occurred"
+  - "Trusted certificate presence doesn't indicate actual SSL/TLS interception happened"
+  - "Certificate authority modifications may be legitimate enterprise security requirements"
+  - "Cryptographic configuration changes don't prove security compromise"
+  - "Root certificate additions may be for legitimate corporate monitoring or security tools"
+  - "Certificate revocation doesn't indicate malicious activity was detected"
+
+correlation:
+  required_for_definitive_attack_proof:
+    - "Network traffic logs showing SSL/TLS connections using suspicious certificates"
+    - "Application logs showing certificate validation failures or warnings"
+    - "Browser logs showing certificate override events or security warnings"
+    - "File system artifacts showing certificate installation during attack timeframes"
+    - "Event logs showing certificate service operations and validation events"
+    
+  strengthens_evidence:
+    - "Network logs showing encrypted traffic patterns consistent with certificate interception"
+    - "Registry changes showing certificate installation correlating with attack periods"
+    - "File modifications in certificate directories during suspicious activity"
+    - "Event logs showing certificate errors or trust failures during communication"
+
+metadata:
+  windows_versions:
+    - "Windows 2000"
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2000"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows 2000"
+  criticality: "high"
+
+  investigation_types:
+    - "malware-analysis"
+    - "incident-response"
+    - "timeline-analysis"
+    - "persistence-analysis"
+    - "lateral-movement"
+    
+  tags:
+    - "certificates"
+    - "pki"
+    - "cryptography"
+    - "ssl-tls"
+    - "mitm-attacks"
+    - "trust-relationships"
+    - "certificate-authorities"
+
+  references:
+    - title: "Microsoft Documentation: Certificate Stores"
+      url: "https://docs.microsoft.com/en-us/windows/win32/seccrypto/certificate-stores"
+      type: "official"
+    - title: "Certificate-Based Attacks and Defense"
+      url: "https://attack.mitre.org/techniques/T1553/004/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
+    persistence: "Certificates persist until expiration or manual removal"
+    volatility: "Trust relationships critical for ongoing security verification"
+
+  related_artifacts:
+    - "security_policy"
+    - "network_security"
+    - "browser_certificates"
+    - "cryptographic_settings"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-13"
+  version: "3.0"

@@ -1,0 +1,131 @@
+title: "Windows Activation and License Management"
+category: "system-modifications"
+description: "Windows activation status, licensing information, KMS configuration, and digital entitlement settings"
+
+paths:
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\SoftwareProtectionPlatform"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Setup\\OOBE"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DefaultProductKey"
+  - "HKLM\\SYSTEM\\WPA"
+
+details:
+  what: |
+    Windows activation and licensing infrastructure controls activation status verification, 
+    product key management, Key Management Service (KMS) configuration, digital entitlement 
+    validation, and Software Protection Platform settings for license enforcement.
+
+  forensic_value: |
+    Important for system identification, compliance verification, and detecting unauthorized 
+    or pirated Windows installations. Shows activation bypass attempts, KMS server redirection 
+    for unauthorized activation, and license tampering correlating with security violations.
+
+  structure: |
+    Software Protection Platform contains activation tokens, license status, KMS client 
+    configuration, and digital rights management data. OOBE settings control initial setup 
+    behavior. WPA maintains activation state and hardware fingerprinting.
+
+  examples:
+    - "SoftwareProtectionPlatform\\ActivationStatus: 1 (Windows activated)"
+    - "KMSServerName: kms.company.com (Corporate KMS server)"
+    - "GracePeriodRemaining: 30 (Days remaining before activation required)"
+    - "LicenseStatus: Licensed (Valid license detected)"
+    - "DigitalEntitlement: 1 (Digital license linked to Microsoft account)"
+    - "ProductKeyChannel: Volume:GVLK (Volume license activation)"
+    - "OOBE\\MediaBootInstall: 1 (Installed from media)"
+    - "ActivationMethod: KMS (Key Management Service activation)"
+
+  tools:
+    - name: "slmgr.vbs"
+      description: "Windows Software Licensing Management Tool"
+    - name: "Windows Activation Technologies"
+      description: "Built-in activation status and troubleshooting utilities"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "License Status Checker"
+      description: "Third-party tools for Windows license verification"
+
+limitations:
+  - "Activation status does NOT prove system usage patterns or security compliance"
+  - "KMS server settings don't confirm actual communication or activation occurred"
+  - "Licensed status may not reflect current activation state accuracy"
+  - "Digital entitlement doesn't prove legitimate software acquisition"
+  - "Grace period settings don't indicate when activation attempts were made"
+  - "Product key information doesn't prove software was legally obtained"
+  - "Activation bypass may be legitimate enterprise configuration, not piracy"
+
+correlation:
+  required_for_definitive_licensing_compliance_proof:
+    - "Software licensing audit logs showing legitimate acquisition"
+    - "Network logs confirming KMS server communications"
+    - "Purchase records or enterprise licensing agreements"
+    - "System event logs showing activation service operations"
+    
+  strengthens_evidence:
+    - "Hardware device fingerprinting correlating with licensed installations"
+    - "Registry modification timestamps showing activation attempts"
+    - "Network traffic logs showing activation server communications"
+    - "Application logs showing licensing service operations"
+
+metadata:
+  windows_versions:
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows XP"
+  criticality: "low"
+
+  investigation_types:
+    - "incident-response"
+    - "behavioral-analysis"
+
+  tags:
+    - "activation"
+    - "licensing"
+    - "compliance"
+    - "kms"
+    - "digital-entitlement"
+    - "product-key"
+    - "genuine-validation"
+
+  references:
+    - title: "Windows Activation"
+      url: "https://docs.microsoft.com/en-us/windows/deployment/volume-activation/"
+      type: "official"
+    - title: "Volume Activation Management Tool"
+      url: "https://docs.microsoft.com/en-us/windows/deployment/volume-activation/volume-activation-management-tool"
+      type: "official"
+    - title: "Windows Licensing and Compliance"
+      url: "https://www.microsoft.com/en-us/licensing/learn-more/"
+      type: "official"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, SYSTEM)"
+    persistence: "Activation status persists until system changes or reactivation"
+    volatility: "License information stable but may change with hardware modifications"
+
+  related_artifacts:
+    - "version_info"
+    - "computer_name"
+    - "hardware_devices"
+    - "installed_programs"
+
+author:
+  name: "RegSeek Migration"
+  github: "regseek"
+
+contribution:
+  date_added: "2025-06-13"
+  last_updated: "2025-06-13"
+  version: "3.0"

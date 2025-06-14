@@ -1,0 +1,140 @@
+title: "Windows Explorer Policies and Restrictions"
+category: "security-monitoring"
+description: "Explorer restrictions, folder access policies, user interface limitations, and administrative controls"
+
+paths:
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
+  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer"
+
+details:
+  what: |
+    Windows Explorer policy framework controls user interface restrictions, folder access permissions, 
+    desktop limitations, shell behavior modifications, and administrative security controls. Manages 
+    Group Policy enforcement for Explorer functionality and file system access restrictions.
+
+  forensic_value: |
+    Critical for investigating administrative security bypass attempts, policy modifications that 
+    facilitate unauthorized access, and evidence of system restrictions being circumvented. Shows 
+    if attackers disabled security controls to hide malicious activity or modified restrictions.
+
+  structure: |
+    Policy values stored as REG_DWORD entries controlling specific Explorer restrictions and behaviors. 
+    Common policies include NoRun (disable Run dialog), NoControlPanel (hide Control Panel), and 
+    folder access restrictions. Advanced settings control file system behavior.
+
+  examples:
+    - "NoRun: 1 (Run dialog disabled - restricts command execution)"
+    - "NoControlPanel: 1 (Control Panel access hidden - limits system configuration)"
+    - "NoDesktop: 1 (Desktop functionality disabled - severe restriction)"
+    - "NoFileMenu: 1 (File menu disabled in Explorer - limits file operations)"
+    - "Hidden: 2 (Show hidden files and folders - security setting modified)"
+    - "HideFileExt: 0 (Show file extensions - security enhancement)"
+    - "NoFolderOptions: 1 (Folder Options access disabled)"
+    - "RestrictRun: 1 (Restrict specific executable execution)"
+    
+  tools:
+    - name: "Group Policy Editor (gpedit.msc)"
+      description: "Built-in Windows Group Policy management interface"
+    - name: "Local Security Policy (secpol.msc)"
+      description: "Security policy configuration and analysis tool"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "Folder Options (Control Panel)"
+      description: "Windows built-in folder and file display configuration"
+    - name: "PolicyAnalyzer"
+      description: "Third-party tools for comprehensive Group Policy analysis"
+
+limitations:
+  - "Policy settings do NOT prove security bypass attempts occurred"
+  - "Restriction modifications may be legitimate administrative changes"
+  - "Explorer limitations don't indicate successful policy circumvention"
+  - "Interface restrictions don't prove unauthorized access happened"
+  - "Policy enforcement may have legitimate business or security justifications"
+  - "Setting modifications don't indicate malicious intent or compromise"
+
+correlation:
+  required_for_definitive_bypass_proof:
+    - "Event logs showing unauthorized access despite policy restrictions"
+    - "Process execution logs showing restricted applications launched successfully"
+    - "File system artifacts showing access to restricted folders or files"
+    - "Registry changes showing policy modifications during suspicious timeframes"
+    - "Application logs showing successful operations despite interface restrictions"
+    
+  strengthens_evidence:
+    - "User activity logs showing attempts to access restricted functionality"
+    - "Registry changes in other security settings during policy modification periods"
+    - "Event logs showing Group Policy refresh attempts during restriction changes"
+    - "File modifications in system areas despite access restrictions"
+
+metadata:
+  windows_versions:
+    - "Windows 95"
+    - "Windows NT"
+    - "Windows 2000"
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2000"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows 95"
+  criticality: "medium"
+
+  investigation_types:
+    - "insider-threat"
+    - "lateral-movement"
+    - "behavioral-analysis"
+    - "privilege-escalation"
+
+  tags:
+    - "security"
+    - "policies"
+    - "restrictions"
+    - "explorer"
+    - "group-policy"
+    - "user-interface"
+    - "access-control"
+
+  references:
+    - title: "Microsoft Documentation: Group Policy Settings Reference"
+      url: "https://docs.microsoft.com/en-us/windows/client-management/mdm/policy-configuration-service-provider"
+      type: "official"
+    - title: "Windows Explorer Security Policies"
+      url: "https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/dn789189(v=ws.11)"
+      type: "official"
+    - title: "Group Policy Security Analysis"
+      url: "https://www.sans.org/white-papers/33492/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
+    persistence: "Policy restrictions persist until Group Policy update or manual modification"
+    volatility: "Security policies affect immediate user interface and system access capabilities"
+
+  related_artifacts:
+    - "security_policy"
+    - "user_profiles"
+    - "file_associations"
+    - "software_restriction"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-13"
+  version: "3.0"

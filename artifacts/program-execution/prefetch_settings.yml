@@ -1,0 +1,142 @@
+title: "Prefetch Service Configuration"
+category: "program-execution"
+description: "Prefetch service settings, SuperFetch/SysMain behavior, and execution optimization configuration"
+
+paths:
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\SysMain"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\WMI\\Autologger\\ReadyBoot"
+
+details:
+  what: |
+    Windows Prefetch service configuration controls prefetch file creation, SuperFetch/SysMain 
+    service behavior, ReadyBoot optimization, and application launch optimization. Determines 
+    what execution evidence is preserved in prefetch files.
+
+  forensic_value: |
+    Shows if prefetch was disabled to hide execution evidence, reveals prefetch configuration 
+    that affects forensic artifact availability, and indicates system optimization settings that 
+    impact investigation capabilities. Critical for understanding why prefetch evidence may be missing.
+
+  structure: |
+    EnablePrefetcher controls prefetch functionality (0=disabled, 1=application, 2=boot, 3=both). 
+    EnableSuperfetch controls intelligent memory management. SysMain service settings control 
+    advanced prefetch and memory optimization. MaxPrefetchFiles limits retention.
+
+  examples:
+    - "EnablePrefetcher: 3 (Applications and boot prefetch enabled)"
+    - "EnableSuperfetch: 1 (SuperFetch enabled)"
+    - "SysMain\\Start: 2 (Automatic startup)"
+    - "SysMain\\Type: 32 (Win32 service, share process)"
+    - "MaxPrefetchFiles: 128 (maximum prefetch file retention)"
+    - "EnableBootTrace: 1 (boot tracing enabled)"
+    - "TracingPath: %SystemRoot%\\Prefetch"
+    - "BootTracingPolicy: 3 (comprehensive boot tracing)"
+    - "Disabled: EnablePrefetcher: 0 (forensic evidence disabled)"
+
+  tools:
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry browser for prefetch configuration analysis"
+    - name: "PECmd"
+      url: "https://github.com/EricZimmerman/PECmd"
+      description: "Eric Zimmerman's Prefetch analysis tool"
+    - name: "Services.msc"
+      description: "Windows Services management console for SysMain configuration"
+    - name: "WinPrefetchView"
+      url: "https://www.nirsoft.net/utils/win_prefetch_view.html"
+      description: "NirSoft tool for prefetch file analysis and configuration"
+    - name: "Prefetch Analyzer"
+      description: "Specialized tools for prefetch configuration and forensic analysis"
+
+limitations:
+  - "Prefetch configuration settings do NOT prove any applications were executed"
+  - "Enabled prefetch doesn't guarantee prefetch files were created for all executions"
+  - "Disabled prefetch may be legitimate performance optimization, not evidence hiding"
+  - "SysMain service status doesn't indicate what applications were optimized"
+  - "MaxPrefetchFiles setting affects retention but doesn't show execution history"
+  - "Boot tracing settings don't prove boot-time program execution"
+  - "Service configuration may be changed multiple times without logging"
+
+correlation:
+  required_for_definitive_execution_proof:
+    - "Actual prefetch files (.pf) in Windows\\Prefetch directory"
+    - "Process execution logs showing programs launched"
+    - "File system artifacts showing application execution evidence"
+    - "Service Control Manager logs showing SysMain service activity"
+    
+  strengthens_evidence:
+    - "Timeline analysis correlating prefetch settings changes with execution patterns"
+    - "System performance logs showing prefetch optimization effects"
+    - "Boot logs showing ReadyBoot optimization activity"
+
+metadata:
+  windows_versions:
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows XP"
+  criticality: "medium"
+
+  investigation_types:
+    - "timeline-analysis"
+    - "incident-response"
+    - "anti-forensics"
+    - "program-execution"
+
+  tags:
+    - "execution"
+    - "prefetch"
+    - "superfetch"
+    - "sysmain"
+    - "execution-evidence"
+    - "forensic-artifacts"
+    - "performance-optimization"
+    - "evidence-preservation"
+
+  references:
+    - title: "Windows Prefetch"
+      url: "https://docs.microsoft.com/en-us/windows/win32/memory/prefetching"
+      type: "official"
+    - title: "SuperFetch and SysMain"
+      url: "https://docs.microsoft.com/en-us/windows/win32/services/service-security-and-access-rights"
+      type: "official"
+    - title: "Prefetch Analysis in Digital Forensics"
+      url: "https://www.sans.org/blog/prefetch-analysis-digital-forensics/"
+      type: "research"
+    - title: "Windows Performance Optimization Forensics"
+      url: "https://www.forensicfocus.com/articles/prefetch-forensics/"
+      type: "research"
+
+  retention:
+    default_location: "SYSTEM registry hive"
+    persistence: "Survives reboots, persists until configuration changes"
+    volatility: "Configuration settings preserved across system updates"
+
+  related_artifacts:
+    - "appcompat_cache"
+    - "amcache"
+    - "userassist"
+    - "performance_monitoring"
+    - "startup_programs"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-12"
+  version: "3.0"

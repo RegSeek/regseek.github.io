@@ -1,0 +1,121 @@
+title: "Windows Subsystem for Linux (WSL) Configuration"
+category: "virtualization"
+description: "WSL installation settings, Linux distribution management, interoperability configuration, and development environment tracking"
+
+paths:
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Lxss"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Lxss"
+  - "HKCU\\Software\\Microsoft\\WSL"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\LxssManager"
+
+details:
+  what: |
+    Windows Subsystem for Linux enables running Linux distributions natively on Windows
+    through compatibility layer technology. Registry configuration includes installed
+    distributions, default distribution settings, user mappings, file system
+    interoperability, and network configuration.
+
+  forensic_value: |
+    Critical for investigating Linux-based attack tools, cross-platform malware,
+    development environment abuse, and sophisticated attacks that leverage Linux
+    capabilities within Windows. Shows evidence of Linux tool usage and potential
+    security bypasses through Linux environment.
+
+  structure: |
+    WSL configuration includes DefaultDistribution (default Linux distro), installed
+    distribution metadata, user ID mappings, interoperability settings, and file
+    system mount configurations. Distribution entries contain installation paths,
+    kernel versions, and default user settings.
+
+  examples:
+    - "DefaultDistribution: Ubuntu-20.04 (Default Linux distribution)"
+    - "Distribution: {12345678-1234-5678-9abc-123456789abc} Ubuntu installation"
+    - "DefaultUid: 1000 (Default Linux user ID)"
+    - "DistributionName: kali-linux (Penetration testing distribution)"
+    - "BasePath: C:\\Users\\user\\AppData\\Local\\Packages\\CanonicalGroupLimited.Ubuntu20.04onWindows"
+    - "PackageFamilyName: CanonicalGroupLimited.Ubuntu20.04onWindows_79rhkp1fndgsc"
+    - "State: 1 (Distribution installed and running)"
+    - "Version: 2 (WSL 2 with Linux kernel)"
+
+  tools:
+    - name: "wsl.exe"
+      description: "Windows Subsystem for Linux command-line management tool"
+    - name: "Windows Features (optionalfeatures.exe)"
+      description: "Windows feature management including WSL enablement"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis tool"
+
+limitations:
+  - "Registry shows installed distributions only, not actual Linux command execution"
+  - "Distribution presence doesn't prove Linux tools were actively used"
+  - "WSL configuration doesn't indicate specific commands or scripts run"
+  - "State values show installation status, not usage patterns or frequency"
+  - "Kali Linux installation suggests penetration testing but doesn't prove malicious activity"
+
+correlation:
+  required_for_definitive_conclusions:
+    - "WSL process execution logs showing actual Linux command activity"
+    - "Linux command history files within WSL distributions"
+    - "File system artifacts showing Linux tool execution"
+    - "Network traffic logs showing connections from WSL processes"
+    - "PowerShell or cmd logs showing wsl.exe invocations"
+  
+  strengthens_evidence:
+    - "Timeline analysis of WSL distribution installations"
+    - "User activity showing WSL command usage"
+    - "File operations between Windows and Linux file systems"
+
+metadata:
+  windows_versions:
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows 10 Anniversary Update (2016)"
+  criticality: "high"
+
+  investigation_types:
+    - "malware-analysis"
+    - "incident-response"
+    - "behavioral-analysis"
+    - "lateral-movement"
+    - "anti-forensics"
+    - "privilege-escalation"
+
+  tags:
+    - "wsl"
+    - "linux"
+    - "cross-platform"
+    - "development"
+    - "attack-tools"
+    - "compatibility-layer"
+    - "linux-tools"
+
+  references:
+    - title: "Microsoft Documentation: Windows Subsystem for Linux"
+      url: "https://docs.microsoft.com/en-us/windows/wsl/"
+      type: "official"
+    - title: "WSL Security Considerations"
+      url: "https://docs.microsoft.com/en-us/windows/wsl/wsl2-kernel"
+      type: "official"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT, SYSTEM)"
+    persistence: "WSL configuration persists until distribution removal or feature disabling"
+    volatility: "Linux environment settings affect cross-platform attack capabilities"
+
+  related_artifacts:
+    - "hyperv"
+    - "windows_containers"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-06-07"
+  last_updated: "2025-06-07"
+  version: "3.0"

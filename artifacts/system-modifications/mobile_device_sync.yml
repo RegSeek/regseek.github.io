@@ -1,0 +1,128 @@
+title: "Mobile Device Synchronization and Integration"
+category: "system-modifications"
+description: "Mobile device pairing, Your Phone app configuration, and cross-device integration settings"
+
+paths:
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\CDP"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WINEVT\\Channels\\Microsoft-Windows-DeviceSync"
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\DeviceAccess"
+  - "HKLM\\SOFTWARE\\Microsoft\\PolicyManager\\current\\device\\Connectivity"
+
+details:
+  what: |
+    Windows mobile device integration includes Cross-Device Platform (CDP) configuration, device 
+    synchronization settings, Your Phone app connections, Bluetooth pairing, notification mirroring, 
+    and cross-platform continuity features for smartphone and tablet integration.
+
+  forensic_value: |
+    Shows evidence of paired mobile devices, synchronization activities, and cross-platform file access. 
+    Useful for investigating mobile attack vectors, BYOD policy violations, and multi-device security 
+    incidents. Can reveal data synchronization between corporate systems and personal devices.
+
+  structure: |
+    CDP configuration includes device discovery settings, paired device information, and sync preferences. 
+    DeviceAccess controls mobile device permissions and notification access. WINEVT channels track 
+    device synchronization events and connection history.
+
+  examples:
+    - "CDP\\UserActivities\\EnableCdpUserService: 1 (Cross-device platform enabled)"
+    - "DeviceAccess\\Global\\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}: Allow (Location access)"
+    - "Bluetooth\\PairedDevices\\iPhone_User: Mobile device pairing information"
+    - "YourPhone\\ConnectedDevices\\Samsung Galaxy S21: Smartphone integration"
+    - "NotificationMirroring: 1 (Mobile notification sync enabled)"
+    - "Connectivity\\AllowPhonePC: 1 (Phone-PC linking permitted)"
+    - "CrossDeviceClipboard: 1 (Clipboard sharing between devices)"
+
+  tools:
+    - name: "Your Phone App"
+      description: "Built-in Windows mobile device integration and management interface"
+    - name: "Settings - Phone (ms-settings:mobile-devices)"
+      description: "Windows mobile device configuration and connection settings"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "Bluetooth Device Manager"
+      description: "Windows Bluetooth device pairing and management utilities"
+    - name: "Mobile Device Management Tools"
+      description: "Enterprise MDM solutions for mobile device policy and monitoring"
+
+limitations:
+  - "Pairing configuration does NOT prove active data synchronization occurred"
+  - "Device permissions don't indicate what data was actually accessed"
+  - "Cross-device settings show capability, not actual usage or file transfers"
+  - "Notification mirroring enablement doesn't prove sensitive data was shared"
+  - "Your Phone app connection doesn't indicate what content was synchronized"
+  - "Bluetooth pairing may be for legitimate productivity purposes"
+
+correlation:
+  required_for_definitive_sync_proof:
+    - "File system artifacts showing actual synchronized files or photos"
+    - "Network traffic logs showing data transfer between devices"
+    - "Application logs from Your Phone app showing successful sync operations"
+    - "Bluetooth connection logs with data transfer indicators"
+    - "Event logs showing successful device authentication and data access"
+    
+  strengthens_evidence:
+    - "Recent documents created or modified during device connection periods"
+    - "Clipboard history showing cross-device copy/paste operations"
+    - "Photo/video files with metadata indicating mobile device origin"
+    - "Network connections to cloud services during sync periods"
+
+metadata:
+  windows_versions:
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows 10"
+  criticality: "medium"
+
+  investigation_types:
+    - "data-exfiltration"
+    - "insider-threat"
+    - "behavioral-analysis"
+    - "incident-response"
+
+  tags:
+    - "mobile"
+    - "device-sync"
+    - "cross-device"
+    - "smartphone-integration"
+    - "byod"
+    - "mobile-security"
+    - "device-pairing"
+    - "your-phone"
+
+  references:
+    - title: "Microsoft Documentation: Your Phone App"
+      url: "https://support.microsoft.com/en-us/topic/getting-started-with-your-phone-app-2d0fe4c3-36dd-43aa-9d1e-6b8a745c7e43"
+      type: "official"
+    - title: "Windows Cross-Device Platform"
+      url: "https://docs.microsoft.com/en-us/windows/uwp/launch-resume/connected-apps-and-devices"
+      type: "official"
+    - title: "Mobile Device Security in Enterprise Environments"
+      url: "https://www.sans.org/white-papers/36240/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
+    persistence: "Mobile device configuration persists until device unpairing or policy changes"
+    volatility: "Device sync status provides real-time mobile integration intelligence"
+
+  related_artifacts:
+    - "bluetooth_devices"
+    - "network_interfaces"
+    - "user_profiles"
+    - "device_permissions"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-13"
+  version: "3.0"

@@ -1,0 +1,97 @@
+title: "Microsoft Teams Desktop Client"
+category: "communication-apps"
+description: "Microsoft Teams configuration, account integration, and collaboration settings"
+
+paths:
+  - "HKCU\\Software\\Microsoft\\Office\\Teams"
+  - "HKLM\\SOFTWARE\\Microsoft\\Teams"
+  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ApplicationFrame\\Positions\\MSTeams_8wekyb3d8bbwe!MSTeams"
+  - "HKCU\\Software\\Microsoft\\Office\\16.0\\Teams"
+
+details:
+  what: |
+    Teams client settings for enterprise communication. Stores user authentication,
+    tenant configurations, meeting settings, and Office 365 integration preferences.
+
+  forensic_value: |
+    Critical for investigating internal communications, unauthorized external contacts,
+    and data sharing through Teams channels. Shows tenant memberships, external meeting
+    participation, and potential data exfiltration in enterprise environments.
+
+  structure: |
+    Configuration includes tenant identifiers, user principal names, meeting policies,
+    chat settings, file sharing permissions, and device integration preferences.
+
+  examples:
+    - "TenantId: company.onmicrosoft.com (Office 365 tenant)"
+    - "UserPrincipalName: user@company.com (Teams account identifier)"
+    - "AllowExternalAccess: 0 (External Teams communication blocked)"
+    - "AllowGuestAccess: 1 (Guest users allowed in meetings)"
+    - "RecordingPolicy: Enabled (Meeting recording allowed)"
+    - "FileSharing: Restricted (Limited file sharing capabilities)"
+
+  tools:
+    - name: "Microsoft Teams Admin Center"
+      description: "Enterprise Teams administration and policy management"
+    - name: "Teams Desktop Client Settings"
+      description: "Built-in configuration interface"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Registry analysis tool"
+
+limitations:
+  - "Shows configuration only, not actual chat messages or meeting content"
+  - "Policy settings don't prove what communications actually occurred"
+  - "External access configuration doesn't indicate actual external communication"
+
+correlation:
+  required_for_definitive_conclusions:
+    - "Teams audit logs from Microsoft 365 admin center showing actual activities"
+    - "Network traffic analysis confirming Teams communication sessions"
+    - "File system artifacts showing downloaded or shared Teams files"
+  
+  strengthens_evidence:
+    - "Office 365 login logs confirming account access"
+    - "Email artifacts showing Teams meeting invitations"
+    - "SharePoint artifacts showing Teams-integrated file activities"
+
+metadata:
+  windows_versions:
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+
+  introduced: "Microsoft Teams (2017)"
+  criticality: "high"
+
+  investigation_types:
+    - "insider-threat"
+    - "data-exfiltration"
+    - "behavioral-analysis"
+    - "incident-response"
+
+  tags:
+    - "teams"
+    - "microsoft-365"
+    - "enterprise-communication"
+    - "collaboration"
+    - "video-conferencing"
+    - "file-sharing"
+
+  references:
+    - title: "Microsoft Teams Documentation"
+      url: "https://docs.microsoft.com/en-us/microsoftteams/"
+      type: "official"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-06-08"
+  last_updated: "2025-06-12"
+  version: "3.0
+  "

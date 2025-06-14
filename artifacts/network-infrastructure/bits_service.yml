@@ -1,0 +1,143 @@
+title: "BITS Background Transfer Service"
+category: "network-infrastructure"
+description: "Background Intelligent Transfer Service configuration, job history, and file transfer management"
+
+paths:
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\BITS\\StateIndex"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\BITS"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\BITS\\Jobs"
+  - "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\BITS"
+
+details:
+  what: |
+    Background Intelligent Transfer Service (BITS) manages file transfers in the background 
+    using spare network bandwidth. Registry contains service configuration, transfer job metadata, 
+    bandwidth throttling settings, and job state information for system and user-initiated transfers.
+
+  forensic_value: |
+    BITS is increasingly used by malware for stealthy file downloads, data exfiltration, and 
+    command and control communication. Shows evidence of background file transfers, download sources, 
+    upload destinations, and can reveal malicious file distribution, data theft operations, or unauthorized software installation.
+
+  structure: |
+    Service configuration includes startup type, dependencies, and bandwidth management settings. 
+    StateIndex contains job identifiers and transfer metadata. Jobs subkey tracks active and 
+    completed transfers with source URLs, destination paths, and authentication information.
+
+  examples:
+    - "BITS\\Start: 3 (Manual startup)"
+    - "BITS\\Type: 20 (Win32 service, share process)"
+    - "BITS\\ObjectName: LocalSystem"
+    - "MaxBandwidthPerJob: 2000000 (bytes per second)"
+    - "EnableBitsMaxBandwidth: 1"
+    - "Job State: Transfer in progress"
+    - "StateIndex\\{12345678-1234-5678-9abc-123456789abc}: Job identifier"
+    - "Source URL: http://malicious-server.com/payload.exe"
+    - "Destination: C:\\temp\\downloaded_malware.exe"
+
+  tools:
+    - name: "bitsadmin.exe"
+      description: "Built-in Windows command-line tool for BITS job management and monitoring"
+    - name: "Get-BitsTransfer PowerShell"
+      description: "PowerShell cmdlet for comprehensive BITS transfer analysis"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry browser for BITS configuration analysis"
+    - name: "BITS Job Monitor"
+      description: "Real-time monitoring tools for BITS transfer activity"
+    - name: "BITSInspector"
+      description: "Specialized tools for BITS forensic analysis and job enumeration"
+
+limitations:
+  - "BITS job configuration does NOT prove file transfers completed successfully"
+  - "Job entries may be created by Windows Update or legitimate applications"
+  - "Source URLs in configuration don't prove files were actually downloaded"
+  - "Bandwidth settings don't indicate what data was transferred"
+  - "Service startup configuration doesn't show actual service activity"
+  - "Job state information may be cleared after transfer completion"
+  - "Authentication settings don't prove successful server connections"
+
+correlation:
+  required_for_definitive_execution_proof:
+    - "BITS service logs showing actual transfer activity and completion status"
+    - "Network traffic logs confirming connections to source/destination servers"
+    - "File system artifacts showing downloaded files at specified destinations"
+    - "Process execution logs showing BITS service and related process activity"
+    
+  strengthens_evidence:
+    - "Windows Update logs showing legitimate vs. suspicious BITS usage"
+    - "Event logs showing BITS service starts and job completions"
+    - "File creation timestamps correlating with BITS transfer windows"
+
+metadata:
+  windows_versions:
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows XP"
+  criticality: "medium"
+
+  investigation_types:
+    - "malware-analysis"
+    - "data-exfiltration"
+    - "lateral-movement"
+    - "incident-response"
+    - "behavioral-analysis"
+
+  tags:
+    - "network"
+    - "bits"
+    - "background-transfer"
+    - "malware-communication"
+    - "data-exfiltration"
+    - "stealth-downloads"
+    - "command-control"
+    - "file-transfers"
+    - "covert-channels"
+
+  references:
+    - title: "Background Intelligent Transfer Service"
+      url: "https://docs.microsoft.com/en-us/windows/win32/bits/background-intelligent-transfer-service-portal"
+      type: "official"
+    - title: "BITS Security Considerations"
+      url: "https://docs.microsoft.com/en-us/windows/win32/bits/security-considerations"
+      type: "official"
+    - title: "BITS Malware Analysis"
+      url: "https://www.sans.org/blog/bits-malware-analysis/"
+      type: "research"
+    - title: "Background Transfer Service Forensics"
+      url: "https://www.forensicfocus.com/articles/bits-forensics/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hives (SYSTEM, SOFTWARE)"
+    persistence: "Job information persists across reboots until job completion or removal"
+    volatility: "Transfer history may be limited by job retention policies"
+
+  related_artifacts:
+    - "proxy_settings"
+    - "network_interfaces"
+    - "firewall_rules"
+    - "scheduled_tasks"
+    - "prefetch_settings"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-12"
+  version: "3.0"

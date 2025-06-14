@@ -1,0 +1,121 @@
+title: "Oracle VirtualBox Configuration"
+category: "virtualization"
+description: "Oracle VirtualBox virtualization software configuration, VM management, and hypervisor settings"
+
+paths:
+  - "HKCU\\Software\\Oracle\\VirtualBox"
+  - "HKLM\\SOFTWARE\\Oracle\\VirtualBox"
+  - "HKCU\\Software\\Oracle\\VirtualBox Guest Additions"
+  - "HKLM\\SOFTWARE\\Oracle\\VirtualBox Guest Additions"
+
+details:
+  what: |
+    Oracle VirtualBox manages free desktop virtualization including virtual machine
+    creation, hardware emulation, network configuration, and hypervisor management.
+    Registry stores VM definitions, guest operating system configurations, shared
+    folder settings, and snapshot management.
+
+  forensic_value: |
+    Critical for investigating virtual machine usage in security research, malware
+    analysis, evidence isolation, and potential evasion techniques using free
+    virtualization software. Shows evidence of VM creation, guest OS installations,
+    and network isolation setups that could conceal activities.
+
+  structure: |
+    VirtualBox configuration includes virtual machine registry data, guest additions
+    status, network adapter settings, shared folder configurations, and snapshot
+    information. VM entries track hardware allocations, ISO mounting history,
+    and virtual device assignments.
+
+  examples:
+    - "InstallDir: C:\\Program Files\\Oracle\\VirtualBox"
+    - "Version: 7.0.12 (VirtualBox version)"
+    - "Default Machine Folder: C:\\Users\\user\\VirtualBox VMs"
+    - "RecentVMList: Windows_10_Test, Kali_Linux_Pen_Test"
+    - "HostOnlyNetworking: vboxnet0 (Host-only network interface)"
+    - "SharedFolders: Downloads -> C:\\Users\\user\\Downloads"
+    - "GuestAdditionsInstalled: 1 (Guest additions present)"
+    - "SnapshotFolder: C:\\VMs\\Snapshots (VM snapshot storage)"
+
+  tools:
+    - name: "Oracle VirtualBox Manager"
+      description: "VirtualBox graphical management interface"
+    - name: "VBoxManage"
+      description: "VirtualBox command-line management utility"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis tool"
+
+limitations:
+  - "Registry shows configuration only, not actual VM usage or guest OS activity"
+  - "Recent VM list doesn't prove virtual machines were actively used"
+  - "Shared folder mappings don't indicate actual file transfers occurred"
+  - "Guest additions presence doesn't prove VM integration was used"
+  - "Kali Linux VMs suggest penetration testing but don't prove malicious activity"
+
+correlation:
+  required_for_definitive_conclusions:
+    - "VirtualBox log files showing actual VM operations"
+    - "Virtual machine disk files (.vdi, .vmdk, .vhd)"
+    - "Process execution logs showing VirtualBox.exe activity"
+    - "File system artifacts in shared folder locations"
+    - "Network traffic logs showing VM communications"
+  
+  strengthens_evidence:
+    - "Timeline analysis of VM creation and configuration changes"
+    - "User activity showing VirtualBox Manager usage"
+    - "File operations in VM storage directories"
+
+metadata:
+  windows_versions:
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+
+  introduced: "Oracle VirtualBox"
+  criticality: "medium"
+
+  investigation_types:
+    - "malware-analysis"
+    - "incident-response"
+    - "behavioral-analysis"
+    - "anti-forensics"
+
+  tags:
+    - "virtualbox"
+    - "oracle"
+    - "virtual-machines"
+    - "free-hypervisor"
+    - "isolation"
+    - "security-research"
+
+  references:
+    - title: "Oracle VirtualBox Documentation"
+      url: "https://www.virtualbox.org/wiki/Documentation"
+      type: "official"
+    - title: "VirtualBox User Manual"
+      url: "https://www.virtualbox.org/manual/"
+      type: "official"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
+    persistence: "VM configurations and settings persist until manual deletion or software removal"
+    volatility: "Virtual machine usage patterns provide evidence of virtualization activities"
+
+  related_artifacts:
+    - "vmware"
+    - "hyperv"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-06-08"
+  last_updated: "2025-06-08"
+  version: "3.0"

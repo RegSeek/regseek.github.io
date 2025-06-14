@@ -1,0 +1,130 @@
+title: "Windows Features and Optional Components"
+category: "system-modifications"
+description: "Enabled/disabled Windows features, optional components, role installations, and capability management"
+
+paths:
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Component Based Servicing"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\OptionalFeatures"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Servicing"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FeatureManagement"
+
+details:
+  what: |
+    Windows Features configuration controls optional component management, server role 
+    installations, and capability packages. Manages which Windows features are installed 
+    and active, affecting system functionality and attack surface.
+
+  forensic_value: |
+    Critical for understanding system capabilities and enabled attack vectors. Shows evidence 
+    of features enabled for malicious purposes (Telnet, IIS, developer tools), reveals system 
+    hardening through feature disabling, and indicates specialized functionality abuse.
+
+  structure: |
+    Component Based Servicing maintains feature installation status and dependency tracking. 
+    OptionalFeatures contains user-accessible feature toggles and server role configurations. 
+    Feature management controls enterprise policies and administrative restrictions.
+
+  examples:
+    - "TelnetClient: 4 (Telnet client enabled - potential security risk)"
+    - "IIS-WebServerRole: 2 (Internet Information Services installed)"
+    - "Microsoft-Windows-Subsystem-Linux: 2 (WSL feature enabled)"
+    - "HypervisorPlatform: 2 (Windows Hypervisor Platform enabled)"
+    - "Containers: 2 (Windows containers feature enabled)"
+    - "TFTP: 4 (TFTP client enabled)"
+    - "SimpleTCP: 4 (Simple TCP/IP services enabled)"
+    - "WindowsMediaPlayer: 3 (Windows Media Player disabled)"
+
+  tools:
+    - name: "Windows Features"
+      description: "Built-in Windows features management interface"
+    - name: "DISM (dism.exe)"
+      description: "Deployment Image Servicing and Management command-line tool"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "PowerShell Get-WindowsFeature"
+      description: "PowerShell cmdlets for Windows feature management and analysis"
+
+limitations:
+  - "Feature installation status does NOT prove feature was actually used"
+  - "Enabled features don't indicate when they were activated or by whom"
+  - "Feature configuration shows availability, not actual utilization"
+  - "Administrative installation may enable features without user knowledge"
+  - "Disabled features may be legitimate security hardening, not evidence tampering"
+  - "Feature states don't prove specific activities or attacks occurred"
+  - "Installation timestamps show registry changes, not feature usage"
+
+correlation:
+  required_for_definitive_feature_usage_proof:
+    - "Application event logs showing feature utilization"
+    - "Service execution logs confirming feature services were started"
+    - "Network logs showing traffic through enabled network features"
+    - "Process execution logs showing feature-related programs running"
+    
+  strengthens_evidence:
+    - "Registry Run keys or services related to enabled features"
+    - "File system artifacts showing feature configuration or data"
+    - "User activity artifacts related to feature-specific applications"
+    - "Security logs showing feature-based authentication or access"
+
+metadata:
+  windows_versions:
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows Vista"
+  criticality: "medium"
+
+  investigation_types:
+    - "incident-response"
+    - "malware-analysis"
+    - "lateral-movement"
+
+  tags:
+    - "windows-features"
+    - "optional-components"
+    - "attack-surface"
+    - "system-capabilities"
+    - "server-roles"
+    - "security-configuration"
+    - "feature-management"
+
+  references:
+    - title: "Windows Features"
+      url: "https://docs.microsoft.com/en-us/windows/application-management/manage-optional-features"
+      type: "official"
+    - title: "Windows Server Roles and Features"
+      url: "https://docs.microsoft.com/en-us/windows-server/get-started/server-role-upgradeability-table"
+      type: "official"
+    - title: "Windows Attack Surface Analysis"
+      url: "https://www.sans.org/white-papers/36240/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, SYSTEM), component store"
+    persistence: "Feature settings persist until manually changed or system reconfiguration"
+    volatility: "Feature enablement affects ongoing system capabilities and security posture"
+
+  related_artifacts:
+    - "installed_programs"
+    - "windows_services"
+    - "security_policy"
+    - "windows_activation"
+
+author:
+  name: "RegSeek Migration"
+  github: "regseek"
+
+contribution:
+  date_added: "2025-06-13"
+  last_updated: "2025-06-13"
+  version: "3.0"

@@ -1,0 +1,132 @@
+title: "Time Zone and Clock Configuration"
+category: "system-modifications"
+description: "System time zone settings, NTP configuration, daylight saving time policies, and time synchronization"
+
+paths:
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\DateTime\\Servers"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\W32Time"
+  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Time Service"
+
+details:
+  what: |
+    Windows time configuration controls time zone settings, Network Time Protocol (NTP) 
+    server configuration, daylight saving time policies, and automatic time synchronization. 
+    Manages system clock accuracy and timezone conversions for timeline reconstruction.
+
+  forensic_value: |
+    Critical for accurate timeline analysis and correlation across systems. Time zone 
+    modifications may indicate attempts to obscure activity timing or manipulate log 
+    timestamps. Essential for establishing event timing and detecting temporal anomalies.
+
+  structure: |
+    TimeZoneInformation contains StandardName, DaylightName, Bias (UTC offset), and 
+    transition dates. W32Time service controls NTP behavior and synchronization intervals. 
+    DateTime\\Servers maintains time server lists and synchronization preferences.
+
+  examples:
+    - "StandardName: Pacific Standard Time"
+    - "DaylightName: Pacific Daylight Time"
+    - "Bias: 480 (UTC-8, 480 minutes behind UTC)"
+    - "StandardBias: 0 (No additional offset for standard time)"
+    - "DaylightBias: -60 (1 hour ahead during daylight saving)"
+    - "NtpServer: time.windows.com,0x9"
+    - "UpdateInterval: 604800 (Weekly synchronization)"
+    - "W32Time\\Type: NTP (Network Time Protocol client)"
+
+  tools:
+    - name: "Date and Time Settings"
+      description: "Built-in Windows time and timezone configuration interface"
+    - name: "w32tm.exe"
+      description: "Windows Time service command-line configuration utility"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+    - name: "tzutil.exe"
+      description: "Windows timezone utility for querying and setting timezone"
+
+limitations:
+  - "Time zone configuration does NOT prove when changes were made"
+  - "NTP server settings don't prove actual time synchronization occurred"
+  - "Configuration may exist without active time synchronization service"
+  - "Manual time changes may not leave registry traces"
+  - "Time zone modifications don't indicate who made the changes"
+  - "Settings show configuration state, not historical time synchronization activity"
+
+correlation:
+  required_for_definitive_timing_proof:
+    - "Event logs with original timestamps showing time zone changes"
+    - "File system timestamps confirming time synchronization activity"
+    - "Network logs showing NTP traffic and synchronization attempts"
+    - "System audit logs capturing time configuration changes"
+    
+  strengthens_evidence:
+    - "Multiple system clocks for cross-correlation verification"
+    - "External time sources for independent timeline verification"
+    - "Application logs with consistent timezone interpretation"
+
+metadata:
+  windows_versions:
+    - "Windows NT 4.0"
+    - "Windows 2000"
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2000"
+    - "Windows Server 2003"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows NT 3.1"
+  criticality: "medium"
+
+  investigation_types:
+    - "timeline-analysis"
+    - "incident-response"
+    - "behavioral-analysis"
+    - "anti-forensics"
+
+  tags:
+    - "system"
+    - "timezone"
+    - "time-synchronization"
+    - "ntp"
+    - "timeline-analysis"
+    - "clock-settings"
+    - "daylight-saving"
+    - "temporal-correlation"
+
+  references:
+    - title: "Windows Time Service"
+      url: "https://docs.microsoft.com/en-us/windows-server/networking/windows-time-service/"
+      type: "official"
+    - title: "Time Zone Forensics and Timeline Analysis"
+      url: "https://www.sans.org/white-papers/33927/"
+      type: "research"
+
+  retention:
+    default_location: "Registry hive files (SYSTEM, SOFTWARE)"
+    persistence: "Time zone settings persist until manually changed"
+    volatility: "Critical for accurate timestamp interpretation and timeline reconstruction"
+
+  related_artifacts:
+    - "version_info"
+    - "computer_name"
+    - "event_log_config"
+    - "regional_settings"
+
+author:
+  name: "RegSeek Migration"
+  github: "regseek"
+
+contribution:
+  date_added: "2025-06-13"
+  last_updated: "2025-06-13"
+  version: "3.0"

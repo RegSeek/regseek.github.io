@@ -1,0 +1,121 @@
+title: "WinZip Commercial Archive Tool"
+category: "file-operations"
+description: "WinZip configuration, archive management, cloud integration, and commercial compression features"
+
+paths:
+  - "HKCU\\Software\\WinZip Computing\\WinZip"
+  - "HKLM\\SOFTWARE\\WinZip Computing\\WinZip"
+  - "HKCU\\Software\\Classes\\WinZip"
+  - "HKLM\\SOFTWARE\\Classes\\WinZip"
+
+details:
+  what: |
+    WinZip commercial archive utility stores configuration including compression preferences,
+    cloud service integration, security settings, and enterprise features. Registry tracks
+    archive operations, cloud backup preferences, encryption settings, and collaboration
+    features for comprehensive commercial archive tool usage analysis.
+
+  forensic_value: |
+    Important for investigating professional data packaging, commercial archive tool usage,
+    cloud integration activities, and enterprise file management. Shows evidence of commercial
+    software usage, cloud storage integration, professional archive handling, and can reveal
+    business-level data organization and cloud-based file sharing.
+
+  structure: |
+    WinZip configuration includes licensing information, cloud service connections, compression
+    algorithms, security preferences, and collaboration settings. Enterprise features track
+    policy compliance, backup configurations, and professional archive management capabilities
+    for comprehensive commercial tool analysis.
+
+  examples:
+    - "InstallPath: C:\\Program Files\\WinZip"
+    - "LicenseKey: WZFM-XXXX-XXXX-XXXX (Commercial license)"
+    - "CloudServices: Dropbox, Google Drive, OneDrive"
+    - "EncryptionStrength: AES-256 (Enterprise encryption)"
+    - "BackupSchedule: Daily (Automated backup configuration)"
+    - "ZipShare: 1 (Cloud sharing service enabled)"
+    - "EnterpriseFeatures: 1 (Business features activated)"
+
+  tools:
+    - name: "WinZip Interface"
+      description: "WinZip's commercial archive management application"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+
+limitations:
+  - "WinZip configuration does NOT prove archives were created or cloud services used"
+  - "Cloud service settings don't indicate files were uploaded or shared"
+  - "Encryption settings don't prove encrypted archives were created"
+  - "License information doesn't show software was actively used"
+  - "Backup schedules don't indicate backups were successfully created"
+  - "Enterprise features don't prove business-level archive operations occurred"
+  - "Collaboration settings don't show files were shared or accessed by others"
+
+correlation:
+  required_for_definitive_usage_proof:
+    - "File system artifacts showing WinZip-created archives or extracted files"
+    - "Process execution logs showing WinZip application startup and operations"
+    - "Cloud service logs showing file uploads or synchronization activity"
+    - "Network traffic logs showing cloud service communications"
+    
+  strengthens_evidence:
+    - "Recent documents showing archive files created with WinZip"
+    - "Registry keys modified during WinZip operations"
+    - "File system timestamps showing archive creation and extraction activity"
+    - "Browser history showing cloud service access correlating with WinZip usage"
+
+metadata:
+  windows_versions:
+    - "Windows 95"
+    - "Windows 98"
+    - "Windows 2000"
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+
+  introduced: "WinZip"
+  criticality: "medium"
+
+  investigation_types:
+    - "data-exfiltration"
+    - "behavioral-analysis"
+    - "incident-response"
+
+  tags:
+    - "winzip"
+    - "commercial-archive"
+    - "compression"
+    - "cloud-integration"
+    - "enterprise-features"
+    - "backup"
+    - "collaboration"
+
+  references:
+    - title: "WinZip Official Site"
+      url: "https://www.winzip.com/"
+      type: "official"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
+    persistence: "Commercial license and configuration data persist until software removal"
+    volatility: "Professional archive usage provides evidence of business-level file management"
+
+  related_artifacts:
+    - "archive_tools"
+    - "cloud_integration"
+    - "commercial_software"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-06-08"
+  last_updated: "2025-06-12"
+  version: "3.0"

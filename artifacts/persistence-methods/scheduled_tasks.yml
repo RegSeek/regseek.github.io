@@ -1,0 +1,151 @@
+title: "Scheduled Tasks Registry Entries"
+category: "persistence-methods"
+description: "Registry traces of scheduled tasks used for persistence, automation, and system maintenance"
+
+paths:
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\TaskCache\\Tasks"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\TaskCache\\Tree"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\TaskCache\\Boot"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\TaskCache\\Logon"
+  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\TaskCache\\Maintenance"
+
+details:
+  what: |
+    Windows Task Scheduler maintains registry entries for all scheduled tasks, including task
+    metadata, execution history, hierarchical organization, and trigger information. Tracks both
+    system tasks and user-created automation with detailed execution statistics, security contexts,
+    and scheduling patterns. Registry data complements XML task definitions.
+
+  forensic_value: |
+    Scheduled tasks are a common persistence mechanism for malware and legitimate automation.
+    Shows task creation times, execution patterns, authors, and can reveal malicious automation,
+    unauthorized access schedules, or privilege escalation attempts. Critical for identifying
+    advanced persistent threats (APTs) that use legitimate Windows scheduling for persistence.
+
+  structure: |
+    Tasks subkey contains binary task metadata including Author, Date, Path, URI, Actions, and
+    execution history. Tree subkey maintains hierarchical task organization with folder structures.
+    Binary data includes GUID identifiers, security descriptors, trigger definitions, and
+    execution statistics in proprietary Microsoft format.
+
+  examples:
+    - "Author: Microsoft Corporation"
+    - "Path: \\Microsoft\\Windows\\UpdateOrchestrator\\Schedule Scan"
+    - "URI: \\MaliciousTask"
+    - "Date: 2024-01-15T14:30:00Z"
+    - "Actions: C:\\Windows\\System32\\cmd.exe /c malicious_script.bat"
+    - "Triggers: Daily at 3:00 AM"
+    - "Security Context: SYSTEM"
+    - "Last Run: 2024-01-20 03:00:15"
+    - "Next Run: 2024-01-21 03:00:00"
+    - "Run Count: 47"
+
+  tools:
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry browser with task scheduler analysis"
+    - name: "Task Scheduler"
+      description: "Built-in Windows Task Scheduler management interface"
+    - name: "schtasks.exe"
+      description: "Command-line interface for task scheduling operations"
+    - name: "TaskSchedulerView"
+      url: "https://www.nirsoft.net/utils/task_scheduler_view.html"
+      description: "NirSoft tool for viewing scheduled tasks with detailed information"
+    - name: "Get-ScheduledTask PowerShell"
+      description: "PowerShell cmdlet for comprehensive task analysis"
+    - name: "Autoruns"
+      url: "https://docs.microsoft.com/en-us/sysinternals/downloads/autoruns"
+      description: "Microsoft Sysinternals tool including scheduled task enumeration"
+
+limitations:
+  - "Scheduled task registry entries do NOT prove tasks were executed"
+  - "Task metadata doesn't indicate successful task completion or failure"
+  - "Execution history may not reflect actual program execution or results"
+  - "Task scheduling doesn't prove scheduled programs were found or functional"
+  - "Registry entries don't show task output, errors, or runtime behavior"
+  - "Task triggers don't indicate trigger conditions were met or actions taken"
+  - "Security context doesn't prove tasks ran with specified privileges"
+
+correlation:
+  required_for_definitive_execution_proof:
+    - "Task Scheduler event logs showing actual task execution (Event ID 100, 101)"
+    - "Process execution logs showing scheduled programs launching"
+    - "File system artifacts showing task output, logs, or modified files"
+    - "Windows Event Logs showing process creation from Task Scheduler service"
+    
+  strengthens_evidence:
+    - "Registry modifications made by executed scheduled tasks"
+    - "Network traffic initiated by scheduled programs"
+    - "File system changes indicating scheduled task activity"
+    - "Application event logs showing scheduled program execution"
+
+metadata:
+  windows_versions:
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2008"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows Vista (Task Scheduler 2.0)"
+  criticality: "high"
+
+  investigation_types:
+    - "persistence-analysis"
+    - "malware-analysis"
+    - "timeline-analysis"
+    - "incident-response"
+    - "privilege-escalation"
+
+  tags:
+    - "persistence"
+    - "scheduled-tasks"
+    - "automation"
+    - "malware"
+    - "timeline"
+    - "privilege-escalation"
+    - "task-scheduler"
+    - "system-maintenance"
+    - "lateral-movement"
+
+  references:
+    - title: "Task Scheduler for Windows Vista"
+      url: "https://docs.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-start-page"
+      type: "official"
+    - title: "MITRE ATT&CK: Scheduled Task/Job"
+      url: "https://attack.mitre.org/techniques/T1053/005/"
+      type: "research"
+    - title: "Windows Task Scheduler Forensics"
+      url: "https://www.sans.org/blog/digital-forensics-scheduled-tasks/"
+      type: "research"
+    - title: "Malware Persistence via Scheduled Tasks"
+      url: "https://www.crowdstrike.com/blog/how-to-hunt-for-persistence-with-scheduled-tasks/"
+      type: "research"
+
+  retention:
+    default_location: "SOFTWARE registry hive and %SystemRoot%\\System32\\Tasks"
+    persistence: "Survives reboots, persists until tasks are explicitly deleted"
+    volatility: "Historical execution data may be overwritten but task definitions persist"
+
+  related_artifacts:
+    - "registry_run_keys"
+    - "winlogon_userinit"
+    - "wmi_events"
+    - "shell_extensions"
+    - "com_objects"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-06-12"
+  version: "3.0"

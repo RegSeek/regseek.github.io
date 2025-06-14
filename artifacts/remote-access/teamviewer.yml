@@ -1,0 +1,120 @@
+title: "TeamViewer Remote Access Configuration"
+category: "remote-access"
+description: "TeamViewer remote desktop settings, connection history, and access control preferences"
+
+paths:
+  - "HKCU\\Software\\TeamViewer"
+  - "HKLM\\SOFTWARE\\TeamViewer"
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\TeamViewer"
+  - "HKCU\\Software\\Classes\\teamviewer"
+
+details:
+  what: |
+    TeamViewer configuration including connection preferences, security settings, account
+    integration, and access control policies. Stores configuration data, connection history,
+    authentication methods, and collaboration settings for remote access analysis.
+
+  forensic_value: |
+    Critical for investigating remote access activities and unauthorized system access.
+    Shows evidence of remote desktop usage, connection patterns, and access permissions.
+    Can indicate unauthorized remote access, insider collaboration, external technical
+    support, or potential command and control activities.
+
+  structure: |
+    TeamViewer configuration includes account credentials, connection settings, security
+    policies, and access permissions. Connection data tracks remote session history,
+    partner information, and access control settings stored in registry values.
+
+  examples:
+    - "InstallPath: C:\\Program Files\\TeamViewer"
+    - "TeamViewerID: 123456789 (Unique system identifier)"
+    - "AccountEmail: user@company.com (TeamViewer account)"
+    - "SecurityPassword: (Encrypted access password)"
+    - "AllowRemoteControl: 1 (Remote control permitted)"
+    - "FileTransfer: 1 (File transfer enabled)"
+    - "ConnectionHistory: Partner-987654321 (Recent connections)"
+    - "UnattendedAccess: 1 (Permanent access configured)"
+
+  tools:
+    - name: "TeamViewer Application"
+      description: "TeamViewer remote desktop and collaboration software"
+    - name: "TeamViewer Management Console"
+      description: "Enterprise TeamViewer administration interface"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis and browsing tool"
+
+limitations:
+  - "Configuration settings do NOT prove TeamViewer sessions actually occurred"
+  - "Connection history may not show complete session details or duration"
+  - "Account settings don't indicate actual remote access usage"
+  - "File transfer enablement doesn't prove files were transferred"
+  - "Unattended access settings don't show when remote access happened"
+  - "TeamViewer ID presence doesn't prove remote connections were established"
+  - "Security settings can be bypassed or modified by remote operators"
+
+correlation:
+  required_for_definitive_usage_proof:
+    - "TeamViewer connection logs showing actual session establishment and duration"
+    - "Windows Event Logs showing TeamViewer process execution and network activity"
+    - "Network traffic analysis showing TeamViewer protocol communications"
+    - "TeamViewer session recordings or audit logs from TeamViewer servers"
+    
+  strengthens_evidence:
+    - "Process execution logs showing TeamViewer service and client activity"
+    - "File system artifacts showing TeamViewer temporary files and logs"
+    - "Registry keys modified during TeamViewer sessions"
+    - "Network connection logs correlating with TeamViewer activity"
+
+metadata:
+  windows_versions:
+    - "Windows XP"
+    - "Windows Vista"
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+
+  introduced: "TeamViewer"
+  criticality: "high"
+
+  investigation_types:
+    - "remote-access"
+    - "incident-response"
+    - "behavioral-analysis"
+    - "insider-threat"
+
+  tags:
+    - "teamviewer"
+    - "remote-access"
+    - "remote-desktop"
+    - "collaboration"
+    - "technical-support"
+    - "unauthorized-access"
+    - "insider-threat"
+
+  references:
+    - title: "TeamViewer Documentation"
+      url: "https://community.teamviewer.com/"
+      type: "official"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT, SYSTEM)"
+    persistence: "Remote access settings persist until manual reconfiguration"
+    volatility: "Connection history provides evidence of remote access activities"
+
+  related_artifacts:
+    - "remote_desktop_connections"
+    - "network_connections"
+    - "remote_assistance"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-06-08"
+  last_updated: "2025-06-12"
+  version: "3.0"

@@ -1,0 +1,126 @@
+title: "Chrome and Edge Browser Registry Data"
+category: "browser-activity"
+description: "Chrome and Edge browser preferences, extensions, policies, and configuration stored in registry"
+
+paths:
+  - "HKCU\\Software\\Google\\Chrome"
+  - "HKCU\\Software\\Microsoft\\Edge"
+  - "HKLM\\SOFTWARE\\Policies\\Google\\Chrome"
+  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge"
+  - "HKCU\\Software\\Chromium"
+
+details:
+  what: |
+    Chrome and Edge store configuration data in the registry including extension information,
+    security policies, homepage settings, search preferences, and profile configurations.
+    Enterprise policies control browser behavior and security restrictions.
+
+  forensic_value: |
+    Shows evidence of malicious extensions, homepage hijacking, policy bypasses, and 
+    browser-based attacks. Critical for detecting browser malware, data exfiltration 
+    through extensions, and unauthorized configuration changes.
+
+  structure: |
+    Hierarchical registry structure with JSON-formatted values for complex settings,
+    REG_DWORD for boolean options, and REG_SZ for text preferences. Separate branches
+    for user preferences and machine-wide policies.
+
+  examples:
+    - "HomepageLocation: http://malicious-site.com"
+    - "Extensions\\Installed: [{\"extension_id\": \"malicious_extension\"}]"
+    - "DefaultSearchProviderSearchURL: http://evil-search.com/search?q={searchTerms}"
+    - "Policies\\URLBlocklist: [\"*.security-site.com\"]"
+    - "PreferenceMACs: [integrity verification values]"
+    - "Profile Path: C:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Google\\\\Chrome\\\\User Data"
+    - "BookmarkBarEnabled: 1 (Bookmark bar visibility)"
+
+  tools:
+    - name: "Chrome Browser Policy List"
+      url: "https://chromeenterprise.google/policies/"
+      description: "Complete Chrome enterprise policy reference"
+    - name: "ChromeHistoryView"
+      url: "https://www.nirsoft.net/utils/chrome_history_view.html"
+      description: "Chrome browsing history viewer"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis tool"
+    - name: "BrowsingHistoryView"
+      url: "https://www.nirsoft.net/utils/browsing_history_view.html"
+      description: "Universal browser history viewer"
+
+limitations:
+  - "Registry data shows configuration only, not actual browsing history or file downloads"
+  - "Extensions listed may be disabled or not actively used"
+  - "Policy settings don't prove actual enforcement or user compliance"
+  - "Malicious extensions can hide from registry detection"
+
+correlation:
+  required_for_definitive_conclusions:
+    - "Browser history databases for actual usage evidence"
+    - "Downloaded files and extension directories"
+    - "Process execution logs showing browser activity"
+    - "Network logs showing connections to malicious sites"
+  
+  strengthens_evidence:
+    - "Timeline artifacts showing when changes occurred"
+    - "User activity showing who made configuration changes"
+    - "File operations related to extension installations"
+
+metadata:
+  windows_versions:
+    - "Windows 7"
+    - "Windows 8"
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2012"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows XP"
+  criticality: "high"
+
+  investigation_types:
+    - "malware-analysis"
+    - "incident-response"
+    - "behavioral-analysis"
+    - "initial-access"
+    - "data-exfiltration"
+    - "persistence-analysis"
+
+  tags:
+    - "browser"
+    - "chrome"
+    - "edge"
+    - "extensions"
+    - "policies"
+    - "hijacking"
+
+  references:
+    - title: "Google Chrome Enterprise Documentation"
+      url: "https://support.google.com/chrome/a/answer/7532015"
+      type: "official"
+    - title: "Microsoft Edge Enterprise Documentation"
+      url: "https://docs.microsoft.com/en-us/deployedge/"
+      type: "official"
+
+  retention:
+    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
+    persistence: "Configuration persists until manually changed or policy update"
+    volatility: "Changes affect immediate browser behavior"
+
+  related_artifacts:
+    - "firefox_registry"
+    - "file_associations"
+    - "default_applications"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-01-15"
+  last_updated: "2025-01-15"
+  version: "3.0"
