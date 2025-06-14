@@ -2,7 +2,10 @@
 # File naming: use_lowercase_with_underscore.yml
 
 title: "Artifact Display Name"
-category: "execution|network|usb|user-activity|persistence|system|security|cloud|browser|malware|mobile|virtualization|communication"
+category: "program-execution|browser-activity|file-operations|user-behavior|external-storage|persistence-methods|system-modifications|network-infrastructure|remote-access|security-monitoring|communication-apps|virtualization|authentication
+
+# Top 8 categories appear in quick filters: program-execution, browser-activity, file-operations, user-behavior, persistence-methods, system-modifications, network-infrastructure, security-monitoring
+# All 13 categories available in advanced search
 
 description: "Brief description of what this artifact reveals (focus on forensic value)"
 
@@ -38,6 +41,21 @@ details:
     - name: "Another Tool"
       description: "Alternative analysis method"
 
+# CRITICAL: Anti-checklist methodology sections
+limitations:
+  - "Specific things this artifact cannot determine"
+  - "Common false positives or misinterpretations"
+  - "What this artifact does NOT prove"
+
+correlation:
+  required_for_definitive_conclusions:
+    - "List other artifacts needed to prove what people assume this one proves"
+    - "Required evidence for court presentation"
+  
+  strengthens_evidence:
+    - "Artifacts that support but don't prove the same conclusions"
+    - "Supporting evidence that adds context"
+
 metadata:
   windows_versions:
     - "Windows 10"
@@ -53,13 +71,25 @@ metadata:
 
   criticality: "high|medium|low"
 
-  # Investigation types where this is particularly useful
+  # Investigation types where this is particularly useful (choose multiple from 14 types)
   investigation_types:
-    - "malware-analysis"
-    - "data-exfiltration"
-    - "insider-threat"
-    - "incident-response"
-    - "timeline-analysis"
+    # Investigation Phases (how you're investigating):
+    - "incident-response"          # Emergency response situations
+    - "malware-analysis"           # Analyzing malicious software
+    - "timeline-analysis"          # Reconstructing sequence of events
+    - "behavioral-analysis"        # Understanding user/system behavior
+    - "insider-threat"             # Internal threat investigations
+    
+    # Attack Techniques (what the attacker did):
+    - "initial-access"             # How attackers got in
+    - "program-execution"          # What programs were run
+    - "persistence-analysis"       # How threats maintain presence
+    - "privilege-escalation"       # Elevation of privileges
+    - "credential-theft"           # Credential harvesting/dumping
+    - "lateral-movement"           # Movement across network
+    - "remote-access"              # Remote access tools/methods
+    - "data-exfiltration"          # Data theft and staging
+    - "anti-forensics"             # Evidence destruction/hiding
 
   tags:
     - "specific-keyword"

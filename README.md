@@ -2,37 +2,53 @@
 
 > Advanced Windows Registry forensics reference and search engine
 
-RegSeek is a comprehensive reference tool for Windows Registry forensics artifacts. It provides detailed information about registry locations that are valuable for digital forensics investigations, incident response, and malware analysis.
+## What is RegSeek?
 
-# Features
+RegSeek is a comprehensive reference tool for Windows Registry forensics artifacts. It provides detailed information about registry locations that are valuable for digital forensics investigations, incident response, and malware analysis including:
 
-- Extensive collection of Windows Registry forensics artifacts
-- Multi-criteria search with filters for category, criticality, investigation type, and more
-- Filter by Windows version, registry hive, criticality level, and analysis tools
-- Each artifact includes forensic value, data structure, examples, and analysis tools
-- Artifacts tagged by investigation scenarios (malware analysis, data exfiltration, etc.)
+- **Forensic limitations** and what artifacts **cannot prove**
+- **Correlation requirements** for definitive conclusions  
+- **Analysis tools** and investigation techniques
+- **Real-world examples** and data structures
+- **Windows version compatibility**
 
-# Categories
+## Artifact Categories
 
-- **Execution**: Program execution tracking and artifacts
-- **Network**: Network connections, shares, and communication
-- **Persistence**: Autostart locations and persistence mechanisms
-- **User Activity**: User behavior and document access patterns
-- **System**: System configuration and installed software
-- **USB/Storage**: USB device history and storage artifacts
-- **Security**: Security settings and access controls
-- **Browser**: Web browser artifacts and configurations
-- **Malware**: Malware-specific registry artifacts
-- **Communication**: Messaging and communication applications
+| Category | Count | Key Use Cases |
+|----------|-------|---------------|
+| **Program Execution** | 15+ | Application usage, malware execution tracking |
+| **Browser Activity** | 8+ | Web browsing history, security zone configurations |
+| **User Behavior** | 20+ | Application usage patterns, cloud storage sync |
+| **File Operations** | 12+ | Recent documents, file associations, jump lists |
+| **External Storage** | 5+ | USB device history, removable media tracking |
+| **Persistence Methods** | 10+ | Autostart locations, service configurations |
+| **System Modifications** | 15+ | Windows settings, security configurations |
+| **Network Infrastructure** | 12+ | Network connections, DNS configurations |
+| **Remote Access** | 8+ | RDP settings, VPN configurations |
+| **Security Monitoring** | 10+ | Windows Defender, audit configurations |
+| **Communication Apps** | 7+ | Teams, Discord, email client settings |
+| **Virtualization** | 6+ | VMware, VirtualBox, container settings |
+| **Authentication** | 4+ | Credential providers, account information |
 
-# Advanced Search
+## Key Features
 
-- **Category**: Filter by artifact category
-- **Criticality**: High/Medium/Low priority filtering
-- **Investigation Type**: Filter by investigation scenario
-- **Windows Version**: Version-specific artifacts
-- **Registry Hive**: HKLM, HKCU, HKCR, etc.
-- **Analysis Tools**: Artifacts with or without tools
+### **Advanced Search & Filtering**
+- Full-text search across artifact titles, descriptions, and registry paths
+- Filter by category, criticality level, Windows version, and registry hive
+- Investigation type filtering (incident response, malware analysis, etc.)
+
+### **Forensic Intelligence**
+- **Limitations warnings**: What each artifact CANNOT prove
+- **Correlation requirements**: Additional artifacts needed for conclusions
+- **Criticality levels**: High/Medium/Low priority classifications
+- **Tool recommendations**: Specific analysis tools for each artifact
+
+### **Investigation-Focused**
+- Organized by forensic investigation types
+- Real-world examples and data structures
+- Windows version compatibility information
+- Direct links to analysis tools and references
+
 
 # Quick Start
 
@@ -76,8 +92,15 @@ Visit the deployed site: [https://regseek.github.io/](https://regseek.github.io/
 
 # Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions from the digital forensics community! See our [Contributing Guidelines](CONTRIBUTING.md) for details on:
+
+- Adding new registry artifacts
+- Improving existing documentation
+- Suggesting new features or categories
+- Reporting bugs or inaccuracies
 
 # License
 
-GPL-3.0 license - see [LICENSE](LICENSE) file for details.
+This project is licensed under GPL-3.0 license - see [LICENSE](LICENSE) file for details.
+
+*RegSeek is a comprehensive Windows Registry forensics reference tool designed to assist digital forensics professionals, incident response teams, and cybersecurity analysts in their investigations.*

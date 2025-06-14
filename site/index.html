@@ -3,6 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    <!-- Primary SEO Meta Tags -->
+    <title>RegSeek - Windows Registry Forensics Reference | 136+ Registry Artifacts Database</title>
+    <meta name="title" content="RegSeek - Windows Registry Forensics Reference | 136+ Registry Artifacts Database">
+    <meta name="description" content="Advanced Windows Registry forensics reference with 136+ artifacts across 13 categories. Search program execution, browser activity, user behavior, persistence methods, and more for digital forensics investigations.">
+    <meta name="keywords" content="windows registry forensics, digital forensics, registry artifacts, incident response, malware analysis, forensic investigation, windows forensics, registry analysis, DFIR, cyber forensics">
+    <meta name="author" content="RegSeek">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://regseek.github.io/">
+        
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="RegSeek">
+    <meta property="og:title" content="RegSeek - Windows Registry Forensics Reference">
+    <meta property="og:description" content="Advanced Windows Registry forensics reference with 136+ artifacts across 13 categories for digital forensics investigations.">
+    <meta property="og:image" content="https://avatars.githubusercontent.com/u/215176684?s=96&v=4">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="RegSeek Windows Registry Forensics Reference Tool">
+    <meta property="og:url" content="https://regseek.github.io/">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@tonmoy0010">
+    <meta name="twitter:creator" content="@tonmoy0010">
+    <meta name="twitter:title" content="RegSeek - Windows Registry Forensics Reference">
+    <meta name="twitter:description" content="Advanced Windows Registry forensics reference with 136+ artifacts across 13 categories for digital forensics investigations.">
+    <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/215176684?s=96&v=4">
+    <meta name="twitter:image:alt" content="RegSeek Windows Registry Forensics Reference Tool">
+
+    <!-- Performance and Preloading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="//unpkg.com">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css">
     
     <!-- Conditional Google Analytics - Only loads if user consents -->
     <script>
@@ -81,9 +122,6 @@
             }
         }
     </script>
-    
-    <title>RegSeek - Windows Registry Forensics Reference</title>
-    <link rel="stylesheet" href="css/styles.css">
     
     <!-- Cookie Banner Styles -->
     <style>
@@ -200,18 +238,24 @@
         </div>
     </div>
 
-    <!-- Rest of your existing HTML content -->
+    <!-- Header -->
     <header>
         <div class="container">
             <div class="header-content">
-                <h1 class="logo">RegSeek</h1>
+                <a href="https://github.com/RegSeek/regseek.github.io" target="_blank" rel="noopener" class="logo-link">
+                    <h1 class="logo">RegSeek</h1>
+                </a>
                 <p class="tagline">Advanced Windows Registry forensics reference and search engine</p>
+                <p class="project-info">
+                    For more info on the project, click on the logo. If you want to contribute, check out our
+                    <a href="https://github.com/RegSeek/regseek.github.io/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener" class="contribute-link">contribution guide</a>.
+                </p>
             </div>
         </div>
     </header>
 
     <main class="container">
-        <!-- Your existing content continues here... -->
+        <!-- Search Container -->
         <div class="search-container">
             <div class="search-wrapper">
                 <input
@@ -224,7 +268,7 @@
             </div>
         </div>
 
-        <!-- Advanced Search Panel -->
+        <!-- Advanced Search Panel - Clean Split Version -->
         <div class="advanced-search-panel" id="advanced-search-panel">
             <div class="advanced-search-content">
                 <h3>Advanced Search Filters</h3>
@@ -234,6 +278,19 @@
                         <label>Category</label>
                         <select id="filter-category">
                             <option value="">All Categories</option>
+                            <option value="program-execution">Program Execution</option>
+                            <option value="browser-activity">Browser Activity</option>
+                            <option value="file-operations">File Operations</option>
+                            <option value="user-behavior">User Behavior</option>
+                            <option value="external-storage">External Storage</option>
+                            <option value="persistence-methods">Persistence Methods</option>
+                            <option value="system-modifications">System Modifications</option>
+                            <option value="network-infrastructure">Network Infrastructure</option>
+                            <option value="remote-access">Remote Access</option>
+                            <option value="security-monitoring">Security Monitoring</option>
+                            <option value="communication-apps">Communication Apps</option>
+                            <option value="virtualization">Virtualization</option>
+                            <option value="authentication">Authentication</option>
                         </select>
                     </div>
                     
@@ -247,19 +304,32 @@
                         </select>
                     </div>
                     
+                    <!-- Clean split dropdowns without guide or tooltips -->
                     <div class="filter-group">
-                        <label>Investigation Type</label>
-                        <select id="filter-investigation">
-                            <option value="">All Types</option>
-                            <option value="malware-analysis">Malware Analysis</option>
-                            <option value="data-exfiltration">Data Exfiltration</option>
-                            <option value="insider-threat">Insider Threat</option>
+                        <label>Investigation Phase</label>
+                        <select id="filter-investigation-phase">
+                            <option value="">All Phases</option>
                             <option value="incident-response">Incident Response</option>
+                            <option value="malware-analysis">Malware Analysis</option>
                             <option value="timeline-analysis">Timeline Analysis</option>
-                            <option value="privilege-escalation">Privilege Escalation</option>
-                            <option value="lateral-movement">Lateral Movement</option>
-                            <option value="persistence-analysis">Persistence Analysis</option>
                             <option value="behavioral-analysis">Behavioral Analysis</option>
+                            <option value="insider-threat">Insider Threat</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Attack Technique</label>
+                        <select id="filter-attack-technique">
+                            <option value="">All Techniques</option>
+                            <option value="initial-access">Initial Access</option>
+                            <option value="program-execution">Program Execution</option>
+                            <option value="persistence-analysis">Persistence Analysis</option>
+                            <option value="privilege-escalation">Privilege Escalation</option>
+                            <option value="credential-theft">Credential Theft</option>
+                            <option value="lateral-movement">Lateral Movement</option>
+                            <option value="remote-access">Remote Access</option>
+                            <option value="data-exfiltration">Data Exfiltration</option>
+                            <option value="anti-forensics">Anti-Forensics</option>
                         </select>
                     </div>
                     
@@ -305,12 +375,14 @@
                 <label>Quick Category Filter:</label>
                 <div class="quick-filter-buttons">
                     <button class="filter-btn active" data-filter="all">All</button>
-                    <button class="filter-btn" data-filter="execution">Execution</button>
-                    <button class="filter-btn" data-filter="network">Network</button>
-                    <button class="filter-btn" data-filter="persistence">Persistence</button>
-                    <button class="filter-btn" data-filter="user-activity">User Activity</button>
-                    <button class="filter-btn" data-filter="system">System</button>
-                    <button class="filter-btn" data-filter="usb">USB/Storage</button>
+                    <button class="filter-btn" data-filter="program-execution">Program Execution</button>
+                    <button class="filter-btn" data-filter="browser-activity">Browser Activity</button>
+                    <button class="filter-btn" data-filter="file-operations">File Operations</button>
+                    <button class="filter-btn" data-filter="user-behavior">User Behavior</button>
+                    <button class="filter-btn" data-filter="persistence-methods">Persistence</button>
+                    <button class="filter-btn" data-filter="system-modifications">System</button>
+                    <button class="filter-btn" data-filter="network-infrastructure">Network</button>
+                    <button class="filter-btn" data-filter="security-monitoring">Security</button>
                 </div>
             </div>
         </div>
@@ -353,12 +425,9 @@
         </div>
     </main>
 
-    <!-- Artifact Detail Modal -->
+    <!-- Enhanced Artifact Detail Modal -->
     <div class="modal" id="modal">
-        <div class="modal-content">
-            <span class="close-modal" id="close-modal">&times;</span>
-            <div id="modal-body"></div>
-        </div>
+        <!-- Modal content will be dynamically populated by JavaScript -->
     </div>
 
     <!-- Cookie Banner JavaScript -->
@@ -408,6 +477,7 @@ This tool is provided free for educational and professional use.`);
         });
     </script>
 
+    <script src="https://unpkg.com/feather-icons"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
