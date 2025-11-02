@@ -1,0 +1,153 @@
+title: "LSA Protection (Protected Process Light)"
+category: "authentication"
+description: "LSA Protected Process Light (PPL) configuration controlling LSASS memory protection from credential harvesting attacks"
+
+paths:
+  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa"
+
+details:
+  what: |
+    Local Security Authority (LSA) Protection runs LSASS.exe as a Protected Process Light (PPL),
+    preventing unauthorized code injection and memory reading by non-PPL processes. The RunAsPPL
+    registry value controls this critical security feature that protects against credential theft
+    tools like Mimikatz. When enabled, only signed and trusted code can access LSASS memory.
+
+  forensic_value: |
+    Indicator of credential theft attack preparation. Attackers disable LSA Protection
+    (RunAsPPL=0) to enable LSASS memory dumping and credential harvesting. Finding RunAsPPL disabled
+    or set to 0 on systems where it should be enabled is a strong indicator of compromise, advanced
+    persistent threat activity, or post-exploitation credential access attempts. This is often
+    paired with WDigest enablement for complete credential harvesting capability.
+
+  structure: |
+    Registry key contains RunAsPPL DWORD value in HKLM\SYSTEM\CurrentControlSet\Control\Lsa:
+    - 0 or absent: LSA Protection DISABLED (vulnerable to credential dumping)
+    - 1: LSA Protection ENABLED (LSASS runs as protected process)
+    - 2: LSA Protection with UEFI lock (highest security, requires UEFI variable)
+
+  examples:
+    - "RunAsPPL: 0 (LSA Protection DISABLED, credential dumping possible)"
+    - "RunAsPPL: 1 (LSASS protected from memory dumping)"
+    - "RunAsPPL: 2 (UEFI-locked protection)"
+    - "Value absent: Protection disabled (default on older Windows versions)"
+    - "LsaCfgFlags: 1 (additional LSA configuration flags)"
+
+  tools:
+    - name: "Mimikatz"
+      url: "https://github.com/gentilkiwi/mimikatz"
+      description: "Demonstrates LSA protection bypass techniques and credential extraction"
+    - name: "Registry Explorer"
+      url: "https://ericzimmerman.github.io/#!index.md"
+      description: "Advanced registry analysis for LSA security configuration"
+    - name: "Process Explorer"
+      url: "https://learn.microsoft.com/en-us/sysinternals/downloads/process-explorer"
+      description: "View LSASS process protection status in real-time"
+    - name: "PPLDump"
+      url: "https://github.com/itm4n/PPLdump"
+      description: "Research tool for analyzing PPL protection mechanisms"
+    - name: "Local Security Policy Editor (secpol.msc)"
+      description: "View and configure LSA protection through Windows security policies"
+
+limitations:
+  - "RunAsPPL=0 does NOT prove LSASS memory was actually dumped or credentials stolen"
+  - "Disabled protection doesn't indicate when or by whom LSASS was accessed"
+  - "Registry value doesn't show successful credential harvesting occurred"
+  - "LSA Protection may be legitimately disabled for debugging or compatibility"
+  - "Setting doesn't reveal which credentials were accessed or exfiltrated"
+  - "Modification timestamp can be altered to hide attack timeline"
+  - "Some bypass techniques exist even with RunAsPPL=1 (kernel drivers, exploits)"
+
+correlation:
+  required_for_definitive_credential_theft_proof:
+    - "Security Event Logs showing LSASS process access attempts (Event ID 4656, 4663, 10)"
+    - "Process creation logs showing Mimikatz, ProcDump, or credential dumping tools"
+    - "Memory dump files containing LSASS process memory"
+    - "Network traffic showing lateral movement with stolen credentials"
+    - "File system artifacts showing credential dump output files"
+    - "Sysmon Event ID 10 (ProcessAccess) targeting LSASS.exe"
+
+  strengthens_evidence:
+    - "WDigest UseLogonCredential enabled in same timeframe"
+    - "Windows Defender or security software disabled"
+    - "Event log clearing or security audit policy modifications"
+    - "Driver loading events for unsigned or malicious kernel drivers"
+    - "PowerShell execution with LSASS memory access cmdlets"
+    - "Remote access (RDP, WMI) sessions during modification timeframe"
+    - "Persistence mechanisms for credential harvesting tools"
+
+metadata:
+  windows_versions:
+    - "Windows 8.1"
+    - "Windows 10"
+    - "Windows 11"
+    - "Windows Server 2012 R2"
+    - "Windows Server 2016"
+    - "Windows Server 2019"
+    - "Windows Server 2022"
+
+  introduced: "Windows 8.1 / Windows Server 2012 R2"
+  criticality: "high"
+
+  investigation_types:
+    - "incident-response"
+    - "credential-theft"
+    - "malware-analysis"
+    - "privilege-escalation"
+    - "lateral-movement"
+    - "persistence-analysis"
+
+  tags:
+    - "lsa-protection"
+    - "credential-theft"
+    - "lsass"
+    - "protected-process"
+    - "mimikatz"
+    - "memory-protection"
+    - "authentication-security"
+    - "credential-guard"
+    - "defense-evasion"
+
+  references:
+    - title: "Configuring Additional LSA Protection"
+      url: "https://learn.microsoft.com/en-us/windows-server/security/credentials-protection-and-management/configuring-additional-lsa-protection"
+      type: "official"
+    - title: "MITRE ATT&CK: OS Credential Dumping - LSASS Memory"
+      url: "https://attack.mitre.org/techniques/T1003/001/"
+      type: "research"
+    - title: "MITRE ATT&CK: Impair Defenses - Disable or Modify Tools"
+      url: "https://attack.mitre.org/techniques/T1562/001/"
+      type: "research"
+    - title: "Credential Guard and Protected Processes"
+      url: "https://learn.microsoft.com/en-us/windows/security/identity-protection/credential-guard/credential-guard"
+      type: "official"
+    - title: "Protected Process Light (PPL) Deep Dive"
+      url: "https://www.elastic.co/security-labs/ppl-protection-and-evasion"
+      type: "research"
+    - title: "Detecting LSASS Memory Dumping"
+      url: "https://www.microsoft.com/en-us/security/blog/2022/10/05/detecting-and-preventing-lsass-credential-dumping-attacks/"
+      type: "official"
+
+  retention:
+    default_location: "SYSTEM registry hive"
+    persistence: "Survives reboots until explicitly modified, requires administrator privileges"
+    volatility: "Configuration persists indefinitely, critical security control"
+
+  related_artifacts:
+    - "wdigest_credential_caching"
+    - "lsa_security_packages"
+    - "credential_providers"
+    - "windows_defender_security"
+    - "event_log_config"
+    - "powershell_execution_policy"
+    - "registry_run_keys"
+    - "scheduled_tasks"
+
+author:
+  name: "Tonmoy Jitu"
+  github: "tonmoy0010"
+  x: "tonmoy0010"
+
+contribution:
+  date_added: "2025-11-03"
+  last_updated: "2025-11-03"
+  version: "1.0"
