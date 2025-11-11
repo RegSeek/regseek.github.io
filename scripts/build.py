@@ -163,7 +163,8 @@ def build_site():
     canonical_categories = [
         "program-execution", "browser-activity", "file-operations", "user-behaviour",
         "external-storage", "persistence-methods", "system-modifications", "network-infrastructure",
-        "remote-access", "security-monitoring", "communication-apps", "virtualization", "authentication"
+        "remote-access", "security-monitoring", "communication-apps", "virtualization", "authentication",
+        "ai-features"
     ]
     
     # Filter to only include canonical categories and log any non-standard ones

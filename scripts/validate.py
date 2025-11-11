@@ -15,7 +15,8 @@ from datetime import datetime
 VALID_CATEGORIES = [
     "program-execution", "browser-activity", "file-operations", "user-behaviour",
     "external-storage", "persistence-methods", "system-modifications", "network-infrastructure",
-    "remote-access", "security-monitoring", "communication-apps", "virtualization", "authentication"
+    "remote-access", "security-monitoring", "communication-apps", "virtualization", "authentication",
+    "ai-features"
 ]
 
 PRIORITY_CATEGORIES = [
