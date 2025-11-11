@@ -1,0 +1,123 @@
+title: Windows Subsystem for Android (WSA)
+category: virtualization
+description: Android application execution environment on Windows 11 allowing mobile app forensics and lateral movement analysis
+
+paths:
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss
+- HKLM\SOFTWARE\Microsoft\WSA
+- HKCU\Software\Microsoft\WSAClient
+- HKLM\SYSTEM\CurrentControlSet\Services\WsaService
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\MicrosoftCorporationII.WindowsSubsystemForAndroid
+
+details:
+  what: |
+    Windows Subsystem for Android (WSA) enabled Android mobile applications to run natively on Windows 11 through virtualization technology powered by Intel Bridge or Microsoft's own translation layer. Registry keys tracked WSA installation status, configuration settings, virtual machine parameters, Android version information, Amazon Appstore integration, and application package management. Microsoft announced WSA deprecation in March 2024 with support ending March 5, 2025.
+
+  forensic_value: |
+    Important for mobile forensics on Windows 11 systems where Android applications were executed. Reveals use of mobile apps that may bypass traditional Windows security controls and monitoring. Essential for malware analysis cases involving Android malware tested on Windows platforms. Shows potential lateral movement vectors where attackers used mobile apps as persistence or C2 mechanisms. Identifies installation of side-loaded APKs outside official Amazon Appstore. Important for data exfiltration investigations involving mobile messaging or file transfer apps.
+
+  structure: |
+    Registry values stored as DWORD for feature states, String values for installation paths and configuration, and REG_MULTI_SZ for application lists. Key locations include distribution information in Lxss key (shared with WSL), WSA-specific service configuration, and per-user client settings. Installation state tracked in Uninstall registry entries with version data.
+
+  examples:
+  - 'InstallLocation: C:\Program Files\WindowsApps\MicrosoftCorporationII.WindowsSubsystemForAndroid_*'
+  - 'Version: 2308.40000.4.0 (DWORD Version packed format)'
+  - 'Publisher: CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US'
+  - 'DisplayName: Windows Subsystem for Android™ with Amazon Appstore'
+  - 'WsaVersion: Android 13 (API level 33)'
+  - EnableADB = 1 (DWORD) - Developer mode with ADB debugging enabled
+
+  tools:
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry browser for WSA configuration analysis
+  - name: Android Debug Bridge (ADB)
+    url: https://developer.android.com/tools/adb
+    description: Direct forensic access to WSA Android environment when enabled
+  - name: KAPE
+    url: https://www.kroll.com/en/services/cyber-risk/investigate-and-respond/kroll-artifact-parser-extractor-kape
+    description: Artifact collection framework with WSA registry parsing
+
+limitations:
+- Registry configuration DOES NOT show which Android apps were installed or executed
+- Cannot prove APK side-loading occurred from registry alone
+- Installation presence does not confirm actual usage or Android app execution
+- Does not contain Android application data or forensic artifacts
+- Cannot determine if WSA was used for malware testing or malicious purposes
+- ADB enablement in registry does not prove remote debugging connections occurred
+- Feature deprecated March 2025 - forensically relevant only for historical investigations
+
+correlation:
+  required_for_definitive_conclusions:
+  - Analyze WSA virtual disk at %LOCALAPPDATA%\Packages\MicrosoftCorporationII.WindowsSubsystemForAndroid*\LocalState\*.vhdx
+  - Check Android application data in %LOCALAPPDATA%\Packages\*Android* directories
+  - Review Event Logs for WsaService and Hyper-V related to Android VM activity
+  - Examine network traffic for Android app communications and ADB connections
+  - Verify installed APK packages using 'adb shell pm list packages' if ADB enabled
+  - Check Prefetch files for WsaClient.exe and related Android bridge processes
+
+  strengthens_evidence:
+  - Amazon Appstore download history and installed apps metadata
+  - APK files in Downloads folder or suspicious locations indicating side-loading
+  - Firewall logs showing Android app network activity patterns
+  - Recent documents showing APK file access
+  - Browser history for APK download sites or Android developer resources
+  - ShellBags showing navigation to Android app data directories
+
+metadata:
+  windows_versions:
+  - Windows 11
+
+  introduced: Windows 11 21H2 (October 2021)
+  deprecated: March 5, 2025
+
+  criticality: high
+
+  investigation_types:
+  - malware-analysis
+  - lateral-movement
+  - data-exfiltration
+  - incident-response
+  - anti-forensics
+  - behavioral-analysis
+
+  tags:
+  - windows-11
+  - android
+  - mobile-forensics
+  - virtualization
+  - wsa
+  - apk
+  - side-loading
+  - deprecated-2025
+  - amazon-appstore
+
+  references:
+  - title: Windows Subsystem for Android Documentation
+    url: https://learn.microsoft.com/en-us/windows/android/wsa/
+    type: official
+  - title: Deprecation of Amazon Appstore on Windows Announcement
+    url: https://learn.microsoft.com/en-us/windows/android/wsa/deprecation
+    type: official
+
+  retention:
+    default_location: SOFTWARE and SYSTEM registry hives
+    persistence: Survives reboots until WSA uninstalled; deprecated feature as of 2025
+    volatility: Persistent configuration; Android VM state stored in separate VHDX files
+
+  related_artifacts:
+  - windows_subsystem_linux
+  - hyperv
+  - installed_programs
+  - network_interfaces
+  - windows_firewall
+
+author:
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
+
+contribution:
+  date_added: '2025-01-11'
+  last_updated: '2025-01-11'
+  version: '1.0'

@@ -1,139 +1,133 @@
-title: "DNS Client Configuration Settings"
-category: "network-infrastructure"
-description: "DNS client configuration, name resolution preferences, and DNS security policies (not actual DNS cache contents)"
+title: DNS Client Configuration Settings
+category: network-infrastructure
+description: DNS client configuration, name resolution preferences, and DNS security policies (not actual DNS cache contents)
 
 paths:
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Dnscache\\Parameters"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters"
-  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\DNSClient"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Dnscache\\Parameters\\DnsPolicy"
+- HKLM\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters
+- HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters
+- HKLM\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient
+- HKLM\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DnsPolicy
 
 details:
   what: |
-    DNS client configuration encompasses name resolution settings including cache behavior parameters, 
-    DNS server preferences, DNS-over-HTTPS (DoH) configuration, cache size limits, negative 
-    caching policies, and DNS security settings. Note: This registry location contains DNS 
-    client configuration settings, NOT the actual DNS cache contents (which are stored in memory).
+    DNS client configuration encompasses name resolution settings including cache behavior parameters, DNS server preferences, DNS-over-HTTPS (DoH) configuration, cache size limits, negative caching policies, and DNS security settings. Note: This registry location contains DNS client configuration settings, NOT the actual DNS cache contents (which are stored in memory).
 
   forensic_value: |
-    Critical for investigating DNS hijacking attacks, malicious DNS server usage, DNS tunneling 
-    attempts, and command and control communication through DNS protocols. DNS configuration 
-    changes may indicate network-based attacks, DNS cache poisoning attempts, or DNS exfiltration techniques.
+    Critical for investigating DNS hijacking attacks, malicious DNS server usage, DNS tunneling attempts, and command and control communication through DNS protocols. DNS configuration changes may indicate network-based attacks, DNS cache poisoning attempts, or DNS exfiltration techniques.
 
   structure: |
-    DNS configuration includes MaxCacheTtl (maximum cache time), NegativeCacheTime (failed lookup caching), 
-    CacheHashTableSize (cache table dimensions), EnableAutoDoh (automatic DNS-over-HTTPS), DohPolicy 
-    (DoH enforcement level), and PrimaryDnsServer (preferred DNS server).
+    DNS configuration includes MaxCacheTtl (maximum cache time), NegativeCacheTime (failed lookup caching), CacheHashTableSize (cache table dimensions), EnableAutoDoh (automatic DNS-over-HTTPS), DohPolicy (DoH enforcement level), and PrimaryDnsServer (preferred DNS server).
 
   examples:
-    - "MaxCacheTtl: 604800 (7 days maximum cache retention)"
-    - "NegativeCacheTime: 300 (5 minutes for failed DNS lookups)"
-    - "CacheHashTableSize: 211 (DNS cache hash table size)"
-    - "EnableAutoDoh: 2 (Automatic secure DNS resolution enabled)"
-    - "DohPolicy: 3 (DNS-over-HTTPS required for all queries)"
-    - "PrimaryDnsServer: 8.8.8.8 (Google DNS - potential policy violation)"
-    - "PrimaryDnsServer: 192.168.1.100 (Internal DNS server)"
-    - "DnsPolicy\\\\malicious-domain.com: Block (DNS filtering policy)"
+  - 'MaxCacheTtl: 604800 (7 days maximum cache retention)'
+  - 'NegativeCacheTime: 300 (5 minutes for failed DNS lookups)'
+  - 'CacheHashTableSize: 211 (DNS cache hash table size)'
+  - 'EnableAutoDoh: 2 (Automatic secure DNS resolution enabled)'
+  - 'DohPolicy: 3 (DNS-over-HTTPS required for all queries)'
+  - 'PrimaryDnsServer: 8.8.8.8 (Google DNS - potential policy violation)'
+  - 'PrimaryDnsServer: 192.168.1.100 (Internal DNS server)'
+  - 'DnsPolicy\\malicious-domain.com: Block (DNS filtering policy)'
 
   tools:
-    - name: "ipconfig /displaydns"
-      description: "Built-in Windows DNS cache display and management utility"
-    - name: "nslookup"
-      description: "DNS lookup and troubleshooting command-line tool"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "DNS Cache Monitor"
-      description: "Third-party tools for DNS cache analysis and monitoring"
-    - name: "DNS Security Analysis Tools"
-      description: "Specialized utilities for DNS security assessment and threat detection"
+  - name: ipconfig /displaydns
+    description: Built-in Windows DNS cache display and management utility
+  - name: nslookup
+    description: DNS lookup and troubleshooting command-line tool
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: DNS Cache Monitor
+    description: Third-party tools for DNS cache analysis and monitoring
+  - name: DNS Security Analysis Tools
+    description: Specialized utilities for DNS security assessment and threat detection
 
 limitations:
-  - "DNS configuration settings do NOT prove malicious domains were accessed"
-  - "These registry settings do NOT contain actual DNS cache contents or query history"
-  - "Cache settings don't indicate what DNS queries were actually made"
-  - "DoH configuration doesn't show encrypted DNS queries that occurred"
-  - "DNS server changes may be legitimate network administration"
-  - "Policy settings don't prove DNS filtering was actively enforced"
-  - "Malicious DNS servers may be configured but never used"
-  - "Actual DNS cache contents are volatile and stored in memory, not in these registry locations"
+- DNS configuration settings do NOT prove malicious domains were accessed
+- These registry settings do NOT contain actual DNS cache contents or query history
+- Cache settings don't indicate what DNS queries were actually made
+- DoH configuration doesn't show encrypted DNS queries that occurred
+- DNS server changes may be legitimate network administration
+- Policy settings don't prove DNS filtering was actively enforced
+- Malicious DNS servers may be configured but never used
+- Actual DNS cache contents are volatile and stored in memory, not in these registry locations
 
 correlation:
   required_for_definitive_execution_proof:
-    - "DNS query logs showing actual name resolution requests and responses"
-    - "Network traffic captures showing DNS protocol communication"
-    - "Event logs showing DNS service activity and configuration changes"
-    - "Browser history or application logs showing domain access attempts"
-    
+  - DNS query logs showing actual name resolution requests and responses
+  - Network traffic captures showing DNS protocol communication
+  - Event logs showing DNS service activity and configuration changes
+  - Browser history or application logs showing domain access attempts
+
   strengthens_evidence:
-    - "Firewall logs showing DNS traffic to unauthorized servers"
-    - "Process execution logs showing applications that initiated DNS queries"
-    - "Timeline analysis correlating DNS changes with suspicious network activity"
+  - Firewall logs showing DNS traffic to unauthorized servers
+  - Process execution logs showing applications that initiated DNS queries
+  - Timeline analysis correlating DNS changes with suspicious network activity
 
 metadata:
   windows_versions:
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2000"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2000
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows 2000"
-  criticality: "high"
+  introduced: Windows 2000
+
+  criticality: high
 
   investigation_types:
-    - "data-exfiltration"
-    - "incident-response"
-    - "lateral-movement"
-    - "anti-forensics"
+  - data-exfiltration
+  - incident-response
+  - lateral-movement
+  - anti-forensics
 
   tags:
-    - "network"
-    - "dns"
-    - "name-resolution"
-    - "dns-cache"
-    - "dns-hijacking"
-    - "dns-tunneling"
-    - "dns-security"
+  - network
+  - dns
+  - name-resolution
+  - dns-cache
+  - dns-hijacking
+  - dns-tunneling
+  - dns-security
 
   references:
-    - title: "Microsoft Documentation: DNS Client Service"
-      url: "https://learn.microsoft.com/en-us/windows-server/networking/dns/"
-      type: "official"
-    - title: "DNS Security and Attack Techniques"
-      url: "https://www.sans.org/white-papers/33896/"
-      type: "research"
-    - title: "DNS Tunneling Detection and Analysis"
-      url: "https://attack.mitre.org/techniques/T1071/004/"
-      type: "research"
+  - title: 'Microsoft Documentation: DNS Client Service'
+    url: https://learn.microsoft.com/en-us/windows-server/networking/dns/
+    type: official
+  - title: DNS Security and Attack Techniques
+    url: https://www.sans.org/white-papers/33896/
+    type: research
+  - title: DNS Tunneling Detection and Analysis
+    url: https://attack.mitre.org/techniques/T1071/004/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SYSTEM, SOFTWARE)"
-    persistence: "DNS configuration persists until manually changed or policy update"
-    volatility: "DNS settings affect ongoing name resolution and network communication security"
+    default_location: Registry hive files (SYSTEM, SOFTWARE)
+    persistence: DNS configuration persists until manually changed or policy update
+    volatility: DNS settings affect ongoing name resolution and network communication security
 
   related_artifacts:
-    - "network_interfaces"
-    - "proxy_settings"
-    - "firewall_rules"
-    - "teredo_ipv6"
+  - network_interfaces
+  - proxy_settings
+  - firewall_rules
+  - teredo_ipv6
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-07-06"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-07-06'
+  version: '3.0'

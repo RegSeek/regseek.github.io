@@ -1,110 +1,105 @@
-title: "Browser Download History and Settings"
-category: "browser-activity"
-description: "Browser download preferences, default locations, and security settings"
+title: Browser Download History and Settings
+category: browser-activity
+description: Browser download preferences, default locations, and security settings
 
 paths:
-  - "HKCU\\Software\\Microsoft\\Internet Explorer\\Main"
-  - "HKCU\\Software\\Microsoft\\Internet Explorer\\Download Directory"
-  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\Internet Explorer\\Restrictions"
-  - "HKCU\\Software\\Microsoft\\Windows\\Shell\\Associations\\UrlAssociations\\http"
+- HKCU\Software\Microsoft\Internet Explorer\Main
+- HKCU\Software\Microsoft\Internet Explorer\Download Directory
+- HKLM\SOFTWARE\Policies\Microsoft\Internet Explorer\Restrictions
+- HKCU\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http
 
 details:
   what: |
-    Browser download configuration controls default download locations, security restrictions,
-    file type handling, and automatic download behavior. Manages download folder settings,
-    security zone restrictions, and malware protection settings.
+    Browser download configuration controls default download locations, security restrictions, file type handling, and automatic download behavior. Manages download folder settings, security zone restrictions, and malware protection settings.
 
   forensic_value: |
-    Critical for investigating malware delivery and unauthorized downloads. Shows evidence
-    of download folder modifications that could facilitate malware execution, security
-    bypasses, and attempts to weaken browser defenses for malware distribution.
+    Important for investigating malware delivery and unauthorized downloads. Shows evidence of download folder modifications that could facilitate malware execution, security bypasses, and attempts to weaken browser defenses for malware distribution.
 
   structure: |
-    Download configuration includes Download Directory (default save location), security
-    settings for different zones, file type associations, and download notification preferences.
-    Security restrictions control download behavior with policy enforcement.
+    Download configuration includes Download Directory (default save location), security settings for different zones, file type associations, and download notification preferences. Security restrictions control download behavior with policy enforcement.
 
   examples:
-    - "Download Directory: C:\\Users\\user\\Downloads (Standard download location)"
-    - "Download Directory: C:\\Temp\\Malware (Suspicious download location)"
-    - "DisableFirstRunCustomize: 1 (Skip security setup wizard)"
-    - "Check_Associations: no (Disable file association checking)"
-    - "Safety Warning Level: Low (Reduced download security warnings)"
-    - "NoSelectDownloadDir: 1 (Prevent download folder selection)"
-    - "RestrictFileDownload: 0 (Allow all file downloads)"
+  - 'Download Directory: C:\Users\user\Downloads (Standard download location)'
+  - 'Download Directory: C:\Temp\Malware (Suspicious download location)'
+  - 'DisableFirstRunCustomize: 1 (Skip security setup wizard)'
+  - 'Check_Associations: no (Disable file association checking)'
+  - 'Safety Warning Level: Low (Reduced download security warnings)'
+  - 'NoSelectDownloadDir: 1 (Prevent download folder selection)'
+  - 'RestrictFileDownload: 0 (Allow all file downloads)'
 
   tools:
-    - name: "Internet Options (inetcpl.cpl)"
-      description: "Built-in IE download and security configuration"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis tool"
+  - name: Internet Options (inetcpl.cpl)
+    description: Built-in IE download and security configuration
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis tool
 
 limitations:
-  - "Registry shows download configuration only, not actual downloaded files"
-  - "Download directory setting doesn't prove files were downloaded there"
-  - "Security settings may be overridden by Group Policy"
-  - "Configuration changes don't indicate when downloads occurred"
+- Registry shows download configuration only, not actual downloaded files
+- Download directory setting doesn't prove files were downloaded there
+- Security settings may be overridden by Group Policy
+- Configuration changes don't indicate when downloads occurred
 
 correlation:
   required_for_definitive_conclusions:
-    - "Downloaded files in specified directories"
-    - "Browser history showing download URLs"
-    - "File system timestamps matching download activity"
-    - "Network logs showing file downloads"
-  
+  - Downloaded files in specified directories
+  - Browser history showing download URLs
+  - File system timestamps matching download activity
+  - Network logs showing file downloads
+
   strengthens_evidence:
-    - "Timeline analysis of configuration changes"
-    - "User activity showing download folder access"
-    - "Malware analysis of downloaded files"
+  - Timeline analysis of configuration changes
+  - User activity showing download folder access
+  - Malware analysis of downloaded files
 
 metadata:
   windows_versions:
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Internet Explorer 4.0"
-  criticality: "high"
+  introduced: Internet Explorer 4.0
+
+  criticality: high
 
   investigation_types:
-    - "malware-analysis"
-    - "incident-response"
-    - "initial-access"
-    - "data-exfiltration"
-    - "behavioral-analysis"
+  - malware-analysis
+  - incident-response
+  - initial-access
+  - data-exfiltration
+  - behavioral-analysis
 
   tags:
-    - "browser"
-    - "downloads"
-    - "malware-delivery"
-    - "security-settings"
+  - browser
+  - downloads
+  - malware-delivery
+  - security-settings
 
   references:
-    - title: "Microsoft Documentation: Internet Explorer Security"
-      url: "https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/"
-      type: "official"
+  - title: 'Microsoft Documentation: Internet Explorer Security'
+    url: https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/
+    type: official
 
   retention:
-    default_location: "Registry hive files (NTUSER.DAT, SOFTWARE)"
-    persistence: "Download settings persist until manually changed"
-    volatility: "Configuration affects ongoing download security"
+    default_location: Registry hive files (NTUSER.DAT, SOFTWARE)
+    persistence: Download settings persist until manually changed
+    volatility: Configuration affects ongoing download security
 
   related_artifacts:
-    - "security_zones"
-    - "typed_urls"
-    - "file_associations"
+  - security_zones
+  - typed_urls
+  - file_associations
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-07"
-  last_updated: "2025-06-07"
-  version: "3.0"
+  date_added: '2025-06-07'
+  last_updated: '2025-06-07'
+  version: '3.0'

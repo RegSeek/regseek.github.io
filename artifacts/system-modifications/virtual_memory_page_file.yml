@@ -1,136 +1,128 @@
-title: "Virtual Memory and Page File Configuration"
-category: "system-modifications"
-description: "Page file settings, virtual memory configuration, swap file management, and memory forensics"
+title: Virtual Memory and Page File Configuration
+category: system-modifications
+description: Page file settings, virtual memory configuration, swap file management, and memory forensics
 
 paths:
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AeDebug"
+- HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management
+- HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
+- HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AeDebug
 
 details:
   what: |
-    Virtual memory and page file configuration controls how Windows manages memory when physical 
-    RAM is insufficient. Settings include page file locations, size limits, memory management 
-    parameters, virtual address space configuration, and swap file behavior. Manages memory 
-    allocation policies and virtual memory security settings.
+    Virtual memory and page file configuration controls how Windows manages memory when physical RAM is insufficient. Settings include page file locations, size limits, memory management parameters, virtual address space configuration, and swap file behavior. Manages memory allocation policies and virtual memory security settings.
 
   forensic_value: |
-    Critical for memory forensics as page files contain sensitive data including passwords, 
-    encryption keys, process memory, and document contents that persist after process termination. 
-    Page file security settings reveal if sensitive data clearing was disabled, enabling forensic 
-    memory recovery. Configuration changes may indicate attempts to hide memory artifacts.
+    Critical for memory forensics as page files contain sensitive data including passwords, encryption keys, process memory, and document contents that persist after process termination. Page file security settings reveal if sensitive data clearing was disabled, enabling forensic memory recovery. Configuration changes may indicate attempts to hide memory artifacts.
 
   structure: |
-    Memory Management contains PagingFiles (page file configuration string), ClearPageFileAtShutdown 
-    (security setting for data erasure), ExistingPageFiles (current active page files), SessionPoolSize 
-    (session memory allocation), SystemPages (system memory configuration), and DisablePagingExecutive 
-    (kernel memory paging control).
+    Memory Management contains PagingFiles (page file configuration string), ClearPageFileAtShutdown (security setting for data erasure), ExistingPageFiles (current active page files), SessionPoolSize (session memory allocation), SystemPages (system memory configuration), and DisablePagingExecutive (kernel memory paging control).
 
   examples:
-    - "PagingFiles: C:\\\\pagefile.sys 2048 4096 (2GB initial, 4GB maximum)"
-    - "ClearPageFileAtShutdown: 0 (Pagefile not cleared - potential data recovery)"
-    - "ExistingPageFiles: \\\\??\\\\C:\\\\pagefile.sys (Active page file location)"
-    - "SessionPoolSize: 192 (Session pool memory allocation in MB)"
-    - "SystemPages: 0 (System uses default page table size)"
-    - "DisablePagingExecutive: 1 (Kernel memory not paged - security enhancement)"
-    - "PagingFiles: D:\\\\swap.sys 8192 16384 (Custom location with larger size)"
+  - 'PagingFiles: C:\\pagefile.sys 2048 4096 (2GB initial, 4GB maximum)'
+  - 'ClearPageFileAtShutdown: 0 (Pagefile not cleared - potential data recovery)'
+  - 'ExistingPageFiles: \\??\\C:\\pagefile.sys (Active page file location)'
+  - 'SessionPoolSize: 192 (Session pool memory allocation in MB)'
+  - 'SystemPages: 0 (System uses default page table size)'
+  - 'DisablePagingExecutive: 1 (Kernel memory not paged - security enhancement)'
+  - 'PagingFiles: D:\\swap.sys 8192 16384 (Custom location with larger size)'
 
   tools:
-    - name: "System Properties - Performance"
-      description: "Windows built-in virtual memory configuration interface"
-    - name: "Memory Analysis Toolkit"
-      description: "Forensic tools for analyzing page file contents and memory artifacts"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "Virtual Memory Manager Tools"
-      description: "System administration utilities for memory management"
-    - name: "Page File Forensics Tools"
-      description: "Specialized tools for extracting data from Windows page files"
+  - name: System Properties - Performance
+    description: Windows built-in virtual memory configuration interface
+  - name: Memory Analysis Toolkit
+    description: Forensic tools for analyzing page file contents and memory artifacts
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: Virtual Memory Manager Tools
+    description: System administration utilities for memory management
+  - name: Page File Forensics Tools
+    description: Specialized tools for extracting data from Windows page files
 
 limitations:
-  - "Page file configuration does NOT prove sensitive data exists in page files"
-  - "Memory management settings don't indicate actual memory forensic evidence"
-  - "Disabled page file clearing doesn't prove sensitive data was recovered"
-  - "Virtual memory configuration may be for legitimate performance optimization"
-  - "Page file size settings don't indicate actual memory usage or contents"
-  - "Security settings may be configured for operational rather than forensic reasons"
+- Page file configuration does NOT prove sensitive data exists in page files
+- Memory management settings don't indicate actual memory forensic evidence
+- Disabled page file clearing doesn't prove sensitive data was recovered
+- Virtual memory configuration may be for legitimate performance optimization
+- Page file size settings don't indicate actual memory usage or contents
+- Security settings may be configured for operational rather than forensic reasons
 
 correlation:
   required_for_definitive_memory_evidence:
-    - "Actual page file analysis showing recovery of sensitive data or artifacts"
-    - "Memory dumps showing process memory contents and sensitive information"
-    - "File system artifacts showing page file creation and modification during investigation periods"
-    - "Event logs showing memory management service activity and page file operations"
-    - "Process execution logs showing memory-intensive applications using virtual memory"
-    
+  - Actual page file analysis showing recovery of sensitive data or artifacts
+  - Memory dumps showing process memory contents and sensitive information
+  - File system artifacts showing page file creation and modification during investigation periods
+  - Event logs showing memory management service activity and page file operations
+  - Process execution logs showing memory-intensive applications using virtual memory
+
   strengthens_evidence:
-    - "Registry changes showing memory configuration modifications during attack timeframes"
-    - "File modifications in page file directories during configuration changes"
-    - "Event logs showing virtual memory allocation events during suspicious activity"
-    - "Process execution showing applications with high memory usage during investigation periods"
+  - Registry changes showing memory configuration modifications during attack timeframes
+  - File modifications in page file directories during configuration changes
+  - Event logs showing virtual memory allocation events during suspicious activity
+  - Process execution showing applications with high memory usage during investigation periods
 
 metadata:
   windows_versions:
-    - "Windows NT"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2000"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows NT
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2000
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows NT 3.1"
-  criticality: "high"
+  introduced: Windows NT 3.1
+
+  criticality: high
 
   investigation_types:
-    - "malware-analysis"
-    - "data-exfiltration"
-    - "incident-response"
-    - "lateral-movement"
+  - malware-analysis
+  - data-exfiltration
+  - incident-response
+  - lateral-movement
 
   tags:
-    - "virtual-memory"
-    - "page-file"
-    - "memory-management"
-    - "forensic-memory"
-    - "data-recovery"
-    - "swap-file"
+  - virtual-memory
+  - page-file
+  - memory-management
+  - forensic-memory
+  - data-recovery
+  - swap-file
 
   references:
-    - title: "Microsoft Documentation: Virtual Memory"
-      url: "https://learn.microsoft.com/en-us/windows/win32/memory/virtual-memory"
-      type: "official"
-    - title: "Windows Page File Forensics"
-      url: "https://www.sans.org/white-papers/33649/"
-      type: "research"
+  - title: 'Microsoft Documentation: Virtual Memory'
+    url: https://learn.microsoft.com/en-us/windows/win32/memory/virtual-memory
+    type: official
+  - title: Windows Page File Forensics
+    url: https://www.sans.org/white-papers/33649/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SYSTEM), page file on disk"
-    persistence: "Page files may contain sensitive data until overwritten"
-    volatility: "Memory contents reflect recent system activity and sensitive information"
+    default_location: Registry hive files (SYSTEM), page file on disk
+    persistence: Page files may contain sensitive data until overwritten
+    volatility: Memory contents reflect recent system activity and sensitive information
 
   related_artifacts:
-    - "performance_monitoring"
-    - "error_reporting"
-    - "volume_shadow_copy"
-    - "startup_programs"
+  - performance_monitoring
+  - error_reporting
+  - volume_shadow_copy
+  - startup_programs
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-13"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-13'
+  version: '3.0'

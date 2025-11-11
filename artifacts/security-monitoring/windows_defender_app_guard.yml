@@ -1,116 +1,111 @@
-title: "Windows Defender Application Guard"
-category: "security-monitoring"
-description: "Application Guard isolation, virtualization settings, and enterprise security configuration"
+title: Windows Defender Application Guard
+category: security-monitoring
+description: Application Guard isolation, virtualization settings, and enterprise security configuration
 
 paths:
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsApplicationGuard"
-  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\AppHVSI"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\HvHost"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\msedge.exe"
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsApplicationGuard
+- HKLM\SOFTWARE\Policies\Microsoft\AppHVSI
+- HKLM\SYSTEM\CurrentControlSet\Services\HvHost
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe
 
 details:
   what: |
-    Windows Defender Application Guard (WDAG) provides hardware-based isolation for Microsoft Edge 
-    and Office applications using Hyper-V virtualization technology. Registry manages isolation 
-    policies, virtualization settings, data persistence rules, and enterprise configuration.
+    Windows Defender Application Guard (WDAG) provides hardware-based isolation for Microsoft Edge and Office applications using Hyper-V virtualization technology. Registry manages isolation policies, virtualization settings, data persistence rules, and enterprise configuration.
 
   forensic_value: |
-    Critical for investigating attempts to bypass enterprise security controls, reveals configuration 
-    changes that could weaken isolation protections, and shows evidence of sophisticated attacks 
-    targeting virtualized environments. Can reveal attempts to disable security features.
+    Critical for investigating attempts to bypass enterprise security controls, reveals configuration changes that could weaken isolation protections, and shows evidence of sophisticated attacks targeting virtualized environments. Can reveal attempts to disable security features.
 
   structure: |
-    WindowsApplicationGuard contains feature enablement settings, isolation policies, and data 
-    persistence configuration. AppHVSI policy entries control enterprise settings for clipboard 
-    access, file downloads, printing, and camera/microphone usage within isolated environments.
+    WindowsApplicationGuard contains feature enablement settings, isolation policies, and data persistence configuration. AppHVSI policy entries control enterprise settings for clipboard access, file downloads, printing, and camera/microphone usage within isolated environments.
 
   examples:
-    - "Enabled: 1 (Application Guard enabled)"
-    - "AllowPersistence: 0 (Non-persistent mode - data deleted on restart)"
-    - "AllowClipboard: 1 (Clipboard access between host and container allowed)"
-    - "BlockNonEnterpriseContent: 1 (Block non-enterprise websites)"
-    - "CertificateThumbprints: Enterprise certificate validation"
-    - "SaveFilesToHost: 0 (File downloads to container only)"
+  - 'Enabled: 1 (Application Guard enabled)'
+  - 'AllowPersistence: 0 (Non-persistent mode - data deleted on restart)'
+  - 'AllowClipboard: 1 (Clipboard access between host and container allowed)'
+  - 'BlockNonEnterpriseContent: 1 (Block non-enterprise websites)'
+  - 'CertificateThumbprints: Enterprise certificate validation'
+  - 'SaveFilesToHost: 0 (File downloads to container only)'
 
   tools:
-    - name: "Windows Features (Turn Windows features on or off)"
-      description: "Built-in Windows Application Guard enablement interface"
-    - name: "Group Policy Editor"
-      description: "Enterprise Application Guard policy configuration"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "Hyper-V Manager"
-      description: "Virtualization platform management for Application Guard"
+  - name: Windows Features (Turn Windows features on or off)
+    description: Built-in Windows Application Guard enablement interface
+  - name: Group Policy Editor
+    description: Enterprise Application Guard policy configuration
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: Hyper-V Manager
+    description: Virtualization platform management for Application Guard
 
 limitations:
-  - "Application Guard configuration does NOT prove isolation bypass occurred"
-  - "Policy settings don't indicate successful security feature circumvention"
-  - "Configuration changes may be legitimate enterprise security adjustments"
-  - "Isolation settings don't prove malicious activity within containerized environments"
-  - "Virtualization configuration doesn't indicate actual threat protection effectiveness"
-  - "Enterprise policies may be modified for operational rather than malicious purposes"
+- Application Guard configuration does NOT prove isolation bypass occurred
+- Policy settings don't indicate successful security feature circumvention
+- Configuration changes may be legitimate enterprise security adjustments
+- Isolation settings don't prove malicious activity within containerized environments
+- Virtualization configuration doesn't indicate actual threat protection effectiveness
+- Enterprise policies may be modified for operational rather than malicious purposes
 
 correlation:
   required_for_definitive_bypass_proof:
-    - "Event logs showing successful isolation container escapes"
-    - "Process execution logs showing unauthorized access to host system from container"
-    - "Network traffic logs showing unauthorized communication from isolated environment"
-    - "File system artifacts showing data exfiltration from containerized applications"
-    - "Registry changes showing Application Guard policy modifications during attacks"
-    
+  - Event logs showing successful isolation container escapes
+  - Process execution logs showing unauthorized access to host system from container
+  - Network traffic logs showing unauthorized communication from isolated environment
+  - File system artifacts showing data exfiltration from containerized applications
+  - Registry changes showing Application Guard policy modifications during attacks
+
   strengthens_evidence:
-    - "Browser logs showing attempts to access restricted content during isolation"
-    - "Hyper-V event logs showing container creation and modification events"
-    - "File system access logs showing unauthorized file operations in isolation mode"
-    - "Network logs showing communication attempts blocked by Application Guard"
+  - Browser logs showing attempts to access restricted content during isolation
+  - Hyper-V event logs showing container creation and modification events
+  - File system access logs showing unauthorized file operations in isolation mode
+  - Network logs showing communication attempts blocked by Application Guard
 
 metadata:
   windows_versions:
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 10
+  - Windows 11
 
-  introduced: "Windows 10 Anniversary Update (1607)"
-  criticality: "high"
+  introduced: Windows 10 Anniversary Update (1607)
+
+  criticality: high
 
   investigation_types:
-    - "incident-response"
-    - "insider-threat"
-    - "malware-analysis"
+  - incident-response
+  - insider-threat
+  - malware-analysis
 
   tags:
-    - "application-guard"
-    - "isolation"
-    - "virtualization"
-    - "edge-security"
-    - "enterprise-protection"
-    - "hyper-v"
-    - "containerization"
+  - application-guard
+  - isolation
+  - virtualization
+  - edge-security
+  - enterprise-protection
+  - hyper-v
+  - containerization
 
   references:
-    - title: "Windows Defender Application Guard Documentation"
-      url: "https://learn.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-application-guard/"
-      type: "official"
-    - title: "Application Guard Enterprise Configuration"
-      url: "https://learn.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-application-guard/configure-md-app-guard"
-      type: "official"
+  - title: Windows Defender Application Guard Documentation
+    url: https://learn.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-application-guard/
+    type: official
+  - title: Application Guard Enterprise Configuration
+    url: https://learn.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-application-guard/configure-md-app-guard
+    type: official
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, SYSTEM)"
-    persistence: "Configuration persists until administratively changed"
-    volatility: "Critical enterprise security configuration affecting threat protection"
+    default_location: Registry hive files (SOFTWARE, SYSTEM)
+    persistence: Configuration persists until administratively changed
+    volatility: Critical enterprise security configuration affecting threat protection
 
   related_artifacts:
-    - "windows_defender"
-    - "virtualization_settings"
-    - "enterprise_security"
+  - windows_defender
+  - virtualization_settings
+  - enterprise_security
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-08"
-  last_updated: "2025-06-13"
-  version: "3.0"
+  date_added: '2025-06-08'
+  last_updated: '2025-06-13'
+  version: '3.0'

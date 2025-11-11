@@ -1,151 +1,143 @@
-title: "Print Processors and Print Monitor DLLs"
-category: "persistence-methods"
-description: "Print system DLL persistence through processors, monitors, and print providers"
+title: Print Processors and Print Monitor DLLs
+category: persistence-methods
+description: Print system DLL persistence through processors, monitors, and print providers
 
 paths:
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\\Processors"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\\Monitors"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\\Providers"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\\Printers"
+- HKLM\SYSTEM\CurrentControlSet\Control\Print\Processors
+- HKLM\SYSTEM\CurrentControlSet\Control\Print\Monitors
+- HKLM\SYSTEM\CurrentControlSet\Control\Print\Providers
+- HKLM\SYSTEM\CurrentControlSet\Control\Print\Printers
 
 details:
   what: |
-    Windows print system configuration including print processors, print monitors, print providers,
-    and printer-specific settings. These DLLs are loaded by the spooler service (spoolsv.exe) and
-    provide opportunities for persistent code execution with SYSTEM privileges. Controls print job
-    processing, printer communication, and network printing functionality.
+    Windows print system configuration including print processors, print monitors, print providers, and printer-specific settings. These DLLs are loaded by the spooler service (spoolsv.exe) and provide opportunities for persistent code execution with SYSTEM privileges. Controls print job processing, printer communication, and network printing functionality.
 
   forensic_value: |
-    Advanced persistence technique where malware registers malicious DLLs as print processors,
-    monitors, or providers. Shows unauthorized print system modifications that can provide persistent
-    access with high privileges. Can indicate sophisticated attacks targeting the print spooler
-    service for privilege escalation, lateral movement, or persistent access to critical systems.
+    Advanced persistence technique where malware registers malicious DLLs as print processors, monitors, or providers. Shows unauthorized print system modifications that can provide persistent access with high privileges. Can indicate sophisticated attacks targeting the print spooler service for privilege escalation, lateral movement, or persistent access to critical systems.
 
   structure: |
-    Print processors and monitors registered with DLL paths, entry points, and configuration data.
-    Each entry specifies the DLL location, functionality provided, environment (Windows/NT x86/x64),
-    and load order. Print providers handle network printing, authentication, and print queue
-    management with specific capabilities.
+    Print processors and monitors registered with DLL paths, entry points, and configuration data. Each entry specifies the DLL location, functionality provided, environment (Windows/NT x86/x64), and load order. Print providers handle network printing, authentication, and print queue management with specific capabilities.
 
   examples:
-    - "Processors\\winprint\\Driver: C:\\Windows\\System32\\winprint.dll"
-    - "Processors\\malicious\\Driver: C:\\malware\\evil_processor.dll"
-    - "Monitors\\Standard TCP/IP Port\\Driver: tcpmon.dll"
-    - "Monitors\\Backdoor Monitor\\Driver: C:\\temp\\backdoor.dll"
-    - "Providers\\LanMan Print Services\\Name: win32spl.dll"
-    - "Providers\\Malicious Provider\\Name: C:\\malware\\provider.dll"
-    - "PrinterDriverDir: C:\\Windows\\System32\\spool\\drivers"
-    - "Environment: Windows NT x86"
+  - 'Processors\winprint\Driver: C:\Windows\System32\winprint.dll'
+  - 'Processors\malicious\Driver: C:\malware\evil_processor.dll'
+  - 'Monitors\Standard TCP/IP Port\Driver: tcpmon.dll'
+  - 'Monitors\Backdoor Monitor\Driver: C:\temp\backdoor.dll'
+  - 'Providers\LanMan Print Services\Name: win32spl.dll'
+  - 'Providers\Malicious Provider\Name: C:\malware\provider.dll'
+  - 'PrinterDriverDir: C:\Windows\System32\spool\drivers'
+  - 'Environment: Windows NT x86'
 
   tools:
-    - name: "Print Management Console"
-      description: "Windows Print Management MMC snap-in for print system administration"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry browser for print system configuration analysis"
-    - name: "Autoruns"
-      url: "https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns"
-      description: "Microsoft Sysinternals tool with print processor enumeration"
-    - name: "Process Monitor"
-      url: "https://learn.microsoft.com/en-us/sysinternals/downloads/procmon"
-      description: "Real-time monitoring of print spooler service DLL loading"
-    - name: "Print Spooler Analysis Tools"
-      description: "Specialized tools for print system security and configuration analysis"
+  - name: Print Management Console
+    description: Windows Print Management MMC snap-in for print system administration
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry browser for print system configuration analysis
+  - name: Autoruns
+    url: https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns
+    description: Microsoft Sysinternals tool with print processor enumeration
+  - name: Process Monitor
+    url: https://learn.microsoft.com/en-us/sysinternals/downloads/procmon
+    description: Real-time monitoring of print spooler service DLL loading
+  - name: Print Spooler Analysis Tools
+    description: Specialized tools for print system security and configuration analysis
 
 limitations:
-  - "Print system configuration does NOT prove DLLs were loaded or executed"
-  - "Registered processors don't indicate print jobs were processed through malicious code"
-  - "Monitor registrations don't show printer communication was intercepted"
-  - "Provider entries don't prove network printing services were compromised"
-  - "Print spooler may not load registered DLLs due to service issues or restrictions"
-  - "Malicious print components may fail due to missing dependencies or permissions"
-  - "Configuration doesn't reveal frequency or success of print-based persistence"
+- Print system configuration does NOT prove DLLs were loaded or executed
+- Registered processors don't indicate print jobs were processed through malicious code
+- Monitor registrations don't show printer communication was intercepted
+- Provider entries don't prove network printing services were compromised
+- Print spooler may not load registered DLLs due to service issues or restrictions
+- Malicious print components may fail due to missing dependencies or permissions
+- Configuration doesn't reveal frequency or success of print-based persistence
 
 correlation:
   required_for_definitive_exploitation_proof:
-    - "Process execution logs showing print spooler service loading malicious DLLs"
-    - "File system artifacts showing malicious print DLL files at registered paths"
-    - "Print spooler event logs showing DLL loading and print job processing"
-    - "Memory dumps showing injected code in spoolsv.exe process"
-    
+  - Process execution logs showing print spooler service loading malicious DLLs
+  - File system artifacts showing malicious print DLL files at registered paths
+  - Print spooler event logs showing DLL loading and print job processing
+  - Memory dumps showing injected code in spoolsv.exe process
+
   strengthens_evidence:
-    - "Event logs showing print spooler service restarts or failures"
-    - "Network traffic logs showing print-related communications"
-    - "Registry modifications made by malicious print components"
-    - "File system changes indicating print system exploitation"
+  - Event logs showing print spooler service restarts or failures
+  - Network traffic logs showing print-related communications
+  - Registry modifications made by malicious print components
+  - File system changes indicating print system exploitation
 
 metadata:
   windows_versions:
-    - "Windows NT 3.1"
-    - "Windows NT 4.0"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows NT 3.1
+  - Windows NT 4.0
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows NT 3.1"
-  criticality: "medium"
+  introduced: Windows NT 3.1
+
+  criticality: medium
 
   investigation_types:
-    - "persistence-analysis"
-    - "privilege-escalation"
-    - "malware-analysis"
-    - "incident-response"
-    - "lateral-movement"
+  - persistence-analysis
+  - privilege-escalation
+  - malware-analysis
+  - incident-response
+  - lateral-movement
 
   tags:
-    - "persistence"
-    - "print-processors"
-    - "dll-hijacking"
-    - "system-privileges"
-    - "spooler-service"
-    - "advanced-persistence"
-    - "print-monitors"
-    - "print-providers"
-    - "privilege-escalation"
+  - persistence
+  - print-processors
+  - dll-hijacking
+  - system-privileges
+  - spooler-service
+  - advanced-persistence
+  - print-monitors
+  - print-providers
+  - privilege-escalation
 
   references:
-    - title: "Print Spooler Architecture"
-      url: "https://learn.microsoft.com/en-us/windows-hardware/drivers/print/"
-      type: "official"
-    - title: "Print Processors"
-      url: "https://learn.microsoft.com/en-us/windows-hardware/drivers/print/print-processors"
-      type: "official"
-    - title: "Print Spooler Vulnerabilities"
-      url: "https://www.sans.org/blog/print-spooler-security/"
-      type: "research"
-    - title: "Print System Persistence Techniques"
-      url: "https://attack.mitre.org/techniques/T1547/"
-      type: "research"
+  - title: Print Spooler Architecture
+    url: https://learn.microsoft.com/en-us/windows-hardware/drivers/print/
+    type: official
+  - title: Print Processors
+    url: https://learn.microsoft.com/en-us/windows-hardware/drivers/print/print-processors
+    type: official
+  - title: Print Spooler Vulnerabilities
+    url: https://www.sans.org/blog/print-spooler-security/
+    type: research
+  - title: Print System Persistence Techniques
+    url: https://attack.mitre.org/techniques/T1547/
+    type: research
 
   retention:
-    default_location: "SYSTEM registry hive"
-    persistence: "Survives reboots, highly persistent with system service integration"
-    volatility: "Print system configuration persists until explicit modification"
+    default_location: SYSTEM registry hive
+    persistence: Survives reboots, highly persistent with system service integration
+    volatility: Print system configuration persists until explicit modification
 
   related_artifacts:
-    - "lsa_packages"
-    - "com_objects"
-    - "registry_run_keys"
-    - "winlogon_userinit"
-    - "scheduled_tasks"
+  - lsa_packages
+  - com_objects
+  - registry_run_keys
+  - winlogon_userinit
+  - scheduled_tasks
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

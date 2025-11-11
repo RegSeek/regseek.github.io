@@ -14,21 +14,24 @@ RegSeek is a comprehensive reference tool for Windows Registry forensics artifac
 
 ## Artifact Categories
 
+**148 artifacts across 14 categories**
+
 | Category | Count | Key Use Cases |
 |----------|-------|---------------|
-| **Program Execution** | 15+ | Application usage, malware execution tracking |
-| **Browser Activity** | 8+ | Web browsing history, security zone configurations |
-| **User Behavior** | 20+ | Application usage patterns, cloud storage sync |
-| **File Operations** | 12+ | Recent documents, file associations, jump lists |
-| **External Storage** | 5+ | USB device history, removable media tracking |
-| **Persistence Methods** | 10+ | Autostart locations, service configurations |
-| **System Modifications** | 15+ | Windows settings, security configurations |
-| **Network Infrastructure** | 12+ | Network connections, DNS configurations |
-| **Remote Access** | 8+ | RDP settings, VPN configurations |
-| **Security Monitoring** | 10+ | Windows Defender, audit configurations |
-| **Communication Apps** | 7+ | Teams, Discord, email client settings |
-| **Virtualization** | 6+ | VMware, VirtualBox, container settings |
-| **Authentication** | 4+ | Credential providers, account information |
+| **AI Features** | 2 | Windows Copilot, Recall AI configuration |
+| **Authentication** | 6 | Credential providers, SAM database, LSA protection |
+| **Browser Activity** | 8 | Web browsing history, security zone configurations |
+| **Communication Apps** | 8 | Teams, Discord, Slack, Zoom, email clients |
+| **External Storage** | 5 | USB device history, removable media tracking |
+| **File Operations** | 12 | Recent documents, file associations, jump lists |
+| **Network Infrastructure** | 12 | Network connections, DNS, WiFi profiles |
+| **Persistence Methods** | 15 | Autostart locations, service configurations |
+| **Program Execution** | 13 | Application usage, malware execution tracking |
+| **Remote Access** | 6 | RDP settings, VPN configurations, TeamViewer |
+| **Security Monitoring** | 15 | Windows Defender, firewall, audit configurations |
+| **System Modifications** | 22 | Windows settings, installed programs, updates |
+| **User Behaviour** | 17 | Application usage patterns, cloud storage sync |
+| **Virtualization** | 7 | VMware, VirtualBox, Docker, WSL, containers |
 
 ## Key Features
 
@@ -40,8 +43,7 @@ RegSeek is a comprehensive reference tool for Windows Registry forensics artifac
 ### **Forensic Intelligence**
 - **Limitations warnings**: What each artifact CANNOT prove
 - **Correlation requirements**: Additional artifacts needed for conclusions
-- **Criticality levels**: High/Medium/Low priority classifications
-- **Tool recommendations**: Specific analysis tools for each artifact
+- **Criticality levels**: High (74) / Medium (58) / Low (16) priority classifications
 
 ### **Investigation-Focused**
 - Organized by forensic investigation types
@@ -54,15 +56,17 @@ RegSeek is a comprehensive reference tool for Windows Registry forensics artifac
 
 ### Using the Web Interface
 
-Visit the deployed site: [https://regseek.github.io/](https://regseek.github.io/)
+Visit the deployed site: **[https://regseek.github.io/](https://regseek.github.io/)**
+
+The site is a static web application that works entirely in your browser - no backend required!
 
 ### Local Development
 
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/regseek/regseek.git
-   cd regseek
+   git clone https://github.com/RegSeek/regseek.github.io.git
+   cd regseek.github.io
    ```
 
 2. **Install dependencies**
@@ -102,5 +106,7 @@ We welcome contributions from the digital forensics community! See our [Contribu
 ## License
 
 This project is licensed under GPL-3.0 license - see [LICENSE](LICENSE) file for details.
+
+---
 
 *RegSeek is a comprehensive Windows Registry forensics reference tool designed to assist digital forensics professionals, incident response teams, and cybersecurity analysts in their investigations.*

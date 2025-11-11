@@ -1,136 +1,129 @@
-title: "Remote Assistance and Remote Desktop Settings"
-category: "remote-access"
-description: "RDP configuration, remote assistance settings, and remote access security controls"
+title: Remote Assistance and Remote Desktop Settings
+category: remote-access
+description: RDP configuration, remote assistance settings, and remote access security controls
 
 paths:
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server"
-  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Terminal Services"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Remote Assistance"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System"
+- HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server
+- HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services
+- HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
 
 details:
   what: |
-    Remote Desktop Protocol (RDP) and Remote Assistance configuration including service enablement,
-    port settings, authentication requirements, encryption levels, and session management.
-    Controls terminal services behavior and remote assistance capabilities.
+    Remote Desktop Protocol (RDP) and Remote Assistance configuration including service enablement, port settings, authentication requirements, encryption levels, and session management. Controls terminal services behavior and remote assistance capabilities.
 
   forensic_value: |
-    Critical for investigating unauthorized remote access and lateral movement techniques.
-    Shows if remote access was enabled for malicious connections and reveals configuration
-    changes that facilitate attacker persistence. Essential for detecting advanced persistent
-    threats using legitimate remote access tools.
+    Critical for investigating unauthorized remote access and lateral movement techniques. Shows if remote access was enabled for malicious connections and reveals configuration changes that facilitate attacker persistence. Essential for detecting advanced persistent threats using legitimate remote access tools.
 
   structure: |
-    Terminal Server settings include fDenyTSConnections (RDP enable/disable), PortNumber 
-    (listening port), SecurityLayer (authentication method), UserAuthentication (Network 
-    Level Authentication), and MaxInstanceCount (concurrent sessions). Remote Assistance 
-    contains AllowToGetHelp and MaxTicketExpiry settings.
+    Terminal Server settings include fDenyTSConnections (RDP enable/disable), PortNumber (listening port), SecurityLayer (authentication method), UserAuthentication (Network Level Authentication), and MaxInstanceCount (concurrent sessions). Remote Assistance contains AllowToGetHelp and MaxTicketExpiry settings.
 
   examples:
-    - "fDenyTSConnections: 0 (Remote Desktop enabled - potential security risk)"
-    - "PortNumber: 3389 (Standard RDP port - commonly targeted)"
-    - "PortNumber: 443 (Non-standard RDP port - potential evasion technique)"
-    - "SecurityLayer: 2 (TLS 1.0 authentication required)"
-    - "UserAuthentication: 1 (Network Level Authentication enabled)"
-    - "AllowToGetHelp: 1 (Remote Assistance enabled)"
-    - "MaxTicketExpiry: 6 (6-hour session timeout)"
-    - "CreateEncryptedOnlyTickets: 1 (Require encryption for assistance)"
-    
+  - 'fDenyTSConnections: 0 (Remote Desktop enabled - potential security risk)'
+  - 'PortNumber: 3389 (Standard RDP port - commonly targeted)'
+  - 'PortNumber: 443 (Non-standard RDP port - potential evasion technique)'
+  - 'SecurityLayer: 2 (TLS 1.0 authentication required)'
+  - 'UserAuthentication: 1 (Network Level Authentication enabled)'
+  - 'AllowToGetHelp: 1 (Remote Assistance enabled)'
+  - 'MaxTicketExpiry: 6 (6-hour session timeout)'
+  - 'CreateEncryptedOnlyTickets: 1 (Require encryption for assistance)'
+
   tools:
-    - name: "Remote Desktop Configuration"
-      description: "Windows built-in RDP settings and configuration interface"
-    - name: "Terminal Services Configuration (tsconfig.msc)"
-      description: "Advanced terminal services management console"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "Remote Desktop Connection Manager"
-      description: "Microsoft tool for managing multiple RDP connections"
-    - name: "RDP Security Scanner"
-      description: "Third-party tools for assessing RDP security configuration"
+  - name: Remote Desktop Configuration
+    description: Windows built-in RDP settings and configuration interface
+  - name: Terminal Services Configuration (tsconfig.msc)
+    description: Advanced terminal services management console
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: Remote Desktop Connection Manager
+    description: Microsoft tool for managing multiple RDP connections
+  - name: RDP Security Scanner
+    description: Third-party tools for assessing RDP security configuration
 
 limitations:
-  - "Configuration settings do NOT prove remote access actually occurred"
-  - "Enabled RDP doesn't indicate successful connections or authentication"
-  - "Port settings don't reveal actual network traffic or connection attempts"
-  - "Remote assistance enablement doesn't prove assistance sessions were established"
-  - "Settings can be changed by malware without user knowledge"
-  - "Configuration doesn't indicate who accessed the system or when"
-  - "Security settings may be overridden by group policy or local bypass"
+- Configuration settings do NOT prove remote access actually occurred
+- Enabled RDP doesn't indicate successful connections or authentication
+- Port settings don't reveal actual network traffic or connection attempts
+- Remote assistance enablement doesn't prove assistance sessions were established
+- Settings can be changed by malware without user knowledge
+- Configuration doesn't indicate who accessed the system or when
+- Security settings may be overridden by group policy or local bypass
 
 correlation:
   required_for_definitive_usage_proof:
-    - "Windows Event Logs showing RDP logon events (Event ID 4624, 4625)"
-    - "Network connection logs showing actual RDP traffic on configured ports"
-    - "Terminal Services event logs showing session establishment and termination"
-    - "Authentication logs confirming successful remote logon attempts"
-    
+  - Windows Event Logs showing RDP logon events (Event ID 4624, 4625)
+  - Network connection logs showing actual RDP traffic on configured ports
+  - Terminal Services event logs showing session establishment and termination
+  - Authentication logs confirming successful remote logon attempts
+
   strengthens_evidence:
-    - "Network firewall logs showing RDP port access attempts"
-    - "Process execution logs showing Terminal Services process activity"
-    - "File system artifacts showing user activity during remote sessions"
-    - "Registry keys modified during remote sessions"
+  - Network firewall logs showing RDP port access attempts
+  - Process execution logs showing Terminal Services process activity
+  - File system artifacts showing user activity during remote sessions
+  - Registry keys modified during remote sessions
 
 metadata:
   windows_versions:
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows XP"
-  criticality: "high"
+  introduced: Windows XP
+
+  criticality: high
 
   investigation_types:
-    - "lateral-movement"
-    - "remote-access"
-    - "incident-response"
-    - "persistence-analysis"
-    - "privilege-escalation"
+  - lateral-movement
+  - remote-access
+  - incident-response
+  - persistence-analysis
+  - privilege-escalation
 
   tags:
-    - "rdp"
-    - "remote-assistance"
-    - "remote-access"
-    - "lateral-movement"
-    - "unauthorized-access"
-    - "terminal-services"
-    - "network-security"
+  - rdp
+  - remote-assistance
+  - remote-access
+  - lateral-movement
+  - unauthorized-access
+  - terminal-services
+  - network-security
 
   references:
-    - title: "Microsoft Documentation: Remote Desktop Services"
-      url: "https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/"
-      type: "official"
-    - title: "RDP Attacks and Lateral Movement"
-      url: "https://attack.mitre.org/techniques/T1021/001/"
-      type: "research"
+  - title: 'Microsoft Documentation: Remote Desktop Services'
+    url: https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/
+    type: official
+  - title: RDP Attacks and Lateral Movement
+    url: https://attack.mitre.org/techniques/T1021/001/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SYSTEM, SOFTWARE)"
-    persistence: "Remote access configuration persists until manually changed"
-    volatility: "Critical security settings affecting remote access capabilities"
+    default_location: Registry hive files (SYSTEM, SOFTWARE)
+    persistence: Remote access configuration persists until manually changed
+    volatility: Critical security settings affecting remote access capabilities
 
   related_artifacts:
-    - "network_interfaces"
-    - "firewall_rules"
-    - "user_accounts"
-    - "security_policy"
+  - network_interfaces
+  - firewall_rules
+  - user_accounts
+  - security_policy
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

@@ -1,118 +1,110 @@
-title: "OneDrive Cloud Storage Integration"
-category: "system-modifications"
-description: "OneDrive sync settings, account configuration, file synchronization status, and cloud storage integration"
+title: OneDrive Cloud Storage Integration
+category: system-modifications
+description: OneDrive sync settings, account configuration, file synchronization status, and cloud storage integration
 
 paths:
-  - "HKCU\\Software\\Microsoft\\OneDrive"
-  - "HKLM\\SOFTWARE\\Microsoft\\OneDrive"
-  - "HKCU\\Software\\Microsoft\\OneDrive\\Accounts"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\SyncRootManager"
+- HKCU\Software\Microsoft\OneDrive
+- HKLM\SOFTWARE\Microsoft\OneDrive
+- HKCU\Software\Microsoft\OneDrive\Accounts
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\SyncRootManager
 
 details:
   what: |
-    OneDrive cloud storage integration configuration includes sync folder locations,
-    account details, synchronization preferences, bandwidth settings, and file
-    collaboration configurations. Controls automatic file synchronization and
-    integration with Windows Explorer.
+    OneDrive cloud storage integration configuration includes sync folder locations, account details, synchronization preferences, bandwidth settings, and file collaboration configurations. Controls automatic file synchronization and integration with Windows Explorer.
 
   forensic_value: |
-    Critical for investigating cloud-based data exfiltration and unauthorized file sharing.
-    Shows evidence of files uploaded to cloud storage, account configurations,
-    sync patterns that could reveal data theft timelines, and sharing activities
-    that might expose sensitive information.
+    Critical for investigating cloud-based data exfiltration and unauthorized file sharing. Shows evidence of files uploaded to cloud storage, account configurations, sync patterns that could reveal data theft timelines, and sharing activities that might expose sensitive information.
 
   structure: |
-    OneDrive configuration includes UserFolder (local sync directory), Accounts subkey
-    with cloud account details, Business/Personal account separation, and SyncRootManager
-    entries for cloud storage integration. Settings control synchronization behavior
-    and sharing permissions.
+    OneDrive configuration includes UserFolder (local sync directory), Accounts subkey with cloud account details, Business/Personal account separation, and SyncRootManager entries for cloud storage integration. Settings control synchronization behavior and sharing permissions.
 
   examples:
-    - "UserFolder: C:\\Users\\user\\OneDrive (Default OneDrive sync location)"
-    - "Accounts\\Personal\\UserEmail: user@outlook.com (Personal Microsoft account)"
-    - "Accounts\\Business1\\UserEmail: user@company.com (Corporate OneDrive account)"
-    - "EnableAllOcsiClients: 1 (Office integration enabled)"
-    - "DisablePersonalSync: 1 (Personal OneDrive sync disabled by policy)"
-    - "PreventNetworkTrafficPreUserSignIn: 0 (Allow network traffic before signin)"
-    - "SyncRootManager\\OneDrive: Cloud storage root configuration"
+  - 'UserFolder: C:\Users\user\OneDrive (Default OneDrive sync location)'
+  - 'Accounts\Personal\UserEmail: user@outlook.com (Personal Microsoft account)'
+  - 'Accounts\Business1\UserEmail: user@company.com (Corporate OneDrive account)'
+  - 'EnableAllOcsiClients: 1 (Office integration enabled)'
+  - 'DisablePersonalSync: 1 (Personal OneDrive sync disabled by policy)'
+  - 'PreventNetworkTrafficPreUserSignIn: 0 (Allow network traffic before signin)'
+  - 'SyncRootManager\OneDrive: Cloud storage root configuration'
 
   tools:
-    - name: "OneDrive Settings"
-      description: "Built-in OneDrive configuration and account management"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis tool"
-    - name: "Group Policy Editor"
-      description: "Enterprise OneDrive policy management"
+  - name: OneDrive Settings
+    description: Built-in OneDrive configuration and account management
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis tool
+  - name: Group Policy Editor
+    description: Enterprise OneDrive policy management
 
 limitations:
-  - "Registry shows configuration only, not actual files synced or shared"
-  - "Account presence doesn't prove active data synchronization occurred"
-  - "Sync settings may be overridden by Group Policy or user actions"
-  - "Personal/business account separation may not reflect actual usage patterns"
+- Registry shows configuration only, not actual files synced or shared
+- Account presence doesn't prove active data synchronization occurred
+- Sync settings may be overridden by Group Policy or user actions
+- Personal/business account separation may not reflect actual usage patterns
 
 correlation:
   required_for_definitive_conclusions:
-    - "OneDrive sync logs and metadata files"
-    - "File system artifacts showing actual synced files"
-    - "Network traffic logs showing cloud uploads/downloads"
-    - "OneDrive web activity logs from Microsoft"
-  
+  - OneDrive sync logs and metadata files
+  - File system artifacts showing actual synced files
+  - Network traffic logs showing cloud uploads/downloads
+  - OneDrive web activity logs from Microsoft
+
   strengthens_evidence:
-    - "Timeline analysis of sync folder file modifications"
-    - "User activity showing OneDrive application usage"
-    - "Email or sharing notifications related to OneDrive activity"
+  - Timeline analysis of sync folder file modifications
+  - User activity showing OneDrive application usage
+  - Email or sharing notifications related to OneDrive activity
 
 metadata:
   windows_versions:
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows 8.1"
-  criticality: "high"
+  introduced: Windows 8.1
+
+  criticality: high
 
   investigation_types:
-    - "data-exfiltration"
-    - "insider-threat"
-    - "behavioral-analysis"
-    - "incident-response"
+  - data-exfiltration
+  - insider-threat
+  - behavioral-analysis
+  - incident-response
 
   tags:
-    - "onedrive"
-    - "cloud-storage"
-    - "data-synchronization"
-    - "file-sharing"
-    - "collaboration"
+  - onedrive
+  - cloud-storage
+  - data-synchronization
+  - file-sharing
+  - collaboration
 
   references:
-    - title: "Microsoft Documentation: OneDrive"
-      url: "https://learn.microsoft.com/en-us/onedrive/"
-      type: "official"
-    - title: "OneDrive Security and Compliance"
-      url: "https://learn.microsoft.com/en-us/onedrive/security/"
-      type: "official"
+  - title: 'Microsoft Documentation: OneDrive'
+    url: https://learn.microsoft.com/en-us/onedrive/
+    type: official
+  - title: OneDrive Security and Compliance
+    url: https://learn.microsoft.com/en-us/onedrive/security/
+    type: official
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
-    persistence: "OneDrive settings persist until account removal or policy changes"
-    volatility: "Sync status provides real-time cloud activity evidence"
+    default_location: Registry hive files (SOFTWARE, NTUSER.DAT)
+    persistence: OneDrive settings persist until account removal or policy changes
+    volatility: Sync status provides real-time cloud activity evidence
 
   related_artifacts:
-    - "user_profiles"
-    - "recent_docs"
-    - "file_associations"
+  - user_profiles
+  - recent_docs
+  - file_associations
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-01-15"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-01-15'
+  version: '3.0'

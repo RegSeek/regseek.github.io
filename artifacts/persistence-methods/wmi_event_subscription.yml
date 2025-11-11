@@ -1,149 +1,141 @@
-title: "WMI Event Subscriptions"
-category: "persistence-methods"
-description: "Windows Management Instrumentation event-based persistence through filters, consumers, and bindings"
+title: WMI Event Subscriptions
+category: persistence-methods
+description: Windows Management Instrumentation event-based persistence through filters, consumers, and bindings
 
 paths:
-  - "HKLM\\SOFTWARE\\Microsoft\\Wbem\\ESS\\Root\\Subscription"
-  - "HKLM\\SOFTWARE\\Microsoft\\Wbem\\ESS\\Root\\cimv2"
-  - "HKLM\\SOFTWARE\\Microsoft\\Wbem\\ESS\\Root\\default"
-  - "HKLM\\SOFTWARE\\Microsoft\\Wbem\\CIMOM"
+- HKLM\SOFTWARE\Microsoft\Wbem\ESS\Root\Subscription
+- HKLM\SOFTWARE\Microsoft\Wbem\ESS\Root\cimv2
+- HKLM\SOFTWARE\Microsoft\Wbem\ESS\Root\default
+- HKLM\SOFTWARE\Microsoft\Wbem\CIMOM
 
 details:
   what: |
-    WMI Event Subscriptions create persistent event-driven triggers that execute code when specific
-    system events occur. Consists of Event Filters (WQL queries defining trigger conditions),
-    Event Consumers (actions to execute), and Filter-to-Consumer Bindings (links between filters
-    and consumers). Provides sophisticated, legitimate-seeming persistence that survives reboots.
+    WMI Event Subscriptions create persistent event-driven triggers that execute code when specific system events occur. Consists of Event Filters (WQL queries defining trigger conditions), Event Consumers (actions to execute), and Filter-to-Consumer Bindings (links between filters and consumers). Provides sophisticated, legitimate-seeming persistence that survives reboots.
 
   forensic_value: |
-    Advanced persistence technique used by sophisticated malware, APT groups, and advanced persistent
-    threats. Difficult to detect and remove through traditional means. Shows evidence of advanced
-    persistence mechanisms that survive system reboots, security software removal, and system
-    cleaning. Critical for identifying advanced threat actors and sophisticated malware families.
+    Advanced persistence technique used by sophisticated malware, APT groups, and advanced persistent threats. Difficult to detect and remove through traditional means. Shows evidence of advanced persistence mechanisms that survive system reboots, security software removal, and system cleaning. Critical for identifying advanced threat actors and sophisticated malware families.
 
   structure: |
-    Registry entries for WMI repository objects including __EventFilter (trigger conditions),
-    __EventConsumer (execution actions), and __FilterToConsumerBinding (relationships) classes.
-    Binary data contains serialized WMI objects with WQL queries, PowerShell payloads, executable
-    paths, and scheduling information.
+    Registry entries for WMI repository objects including __EventFilter (trigger conditions), __EventConsumer (execution actions), and __FilterToConsumerBinding (relationships) classes. Binary data contains serialized WMI objects with WQL queries, PowerShell payloads, executable paths, and scheduling information.
 
   examples:
-    - "__EventFilter Name: MaliciousProcessMonitor"
-    - "Query: SELECT * FROM Win32_ProcessStartTrace WHERE ProcessName='notepad.exe'"
-    - "__EventConsumer Type: CommandLineEventConsumer"
-    - "CommandLineTemplate: powershell.exe -enc <base64_encoded_payload>"
-    - "__FilterToConsumerBinding: Links filter to consumer"
-    - "ActiveScriptEventConsumer: VBScript or JScript execution"
-    - "ScriptText: CreateObject(\"WScript.Shell\").Run \"malicious_command\""
-    - "LogFileEventConsumer: Write to log file for persistence verification"
-    - "SMTPEventConsumer: Email-based command and control"
+  - '__EventFilter Name: MaliciousProcessMonitor'
+  - 'Query: SELECT * FROM Win32_ProcessStartTrace WHERE ProcessName=''notepad.exe'''
+  - '__EventConsumer Type: CommandLineEventConsumer'
+  - 'CommandLineTemplate: powershell.exe -enc <base64_encoded_payload>'
+  - '__FilterToConsumerBinding: Links filter to consumer'
+  - 'ActiveScriptEventConsumer: VBScript or JScript execution'
+  - 'ScriptText: CreateObject("WScript.Shell").Run "malicious_command"'
+  - 'LogFileEventConsumer: Write to log file for persistence verification'
+  - 'SMTPEventConsumer: Email-based command and control'
 
   tools:
-    - name: "WMI Explorer"
-      description: "GUI tool for browsing and analyzing WMI namespaces and objects"
-    - name: "Get-WMIObject PowerShell"
-      description: "PowerShell cmdlet for WMI object enumeration and analysis"
-    - name: "WMI-Persistence Toolkit"
-      description: "Specialized tools for WMI persistence detection and analysis"
-    - name: "Autoruns"
-      url: "https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns"
-      description: "Microsoft Sysinternals tool with WMI event subscription enumeration"
-    - name: "WMI Event Monitor"
-      description: "Real-time WMI event monitoring and subscription analysis tools"
+  - name: WMI Explorer
+    description: GUI tool for browsing and analyzing WMI namespaces and objects
+  - name: Get-WMIObject PowerShell
+    description: PowerShell cmdlet for WMI object enumeration and analysis
+  - name: WMI-Persistence Toolkit
+    description: Specialized tools for WMI persistence detection and analysis
+  - name: Autoruns
+    url: https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns
+    description: Microsoft Sysinternals tool with WMI event subscription enumeration
+  - name: WMI Event Monitor
+    description: Real-time WMI event monitoring and subscription analysis tools
 
 limitations:
-  - "WMI event subscriptions do NOT prove events were triggered or consumers executed"
-  - "Event filter queries don't indicate trigger conditions were met"
-  - "Consumer configurations don't show successful payload execution"
-  - "Binding relationships don't prove event processing occurred"
-  - "WMI repository corruption may prevent event subscription functionality"
-  - "Event consumers may fail due to missing dependencies or permission restrictions"
-  - "Registry entries don't reveal frequency or success of event-driven execution"
+- WMI event subscriptions do NOT prove events were triggered or consumers executed
+- Event filter queries don't indicate trigger conditions were met
+- Consumer configurations don't show successful payload execution
+- Binding relationships don't prove event processing occurred
+- WMI repository corruption may prevent event subscription functionality
+- Event consumers may fail due to missing dependencies or permission restrictions
+- Registry entries don't reveal frequency or success of event-driven execution
 
 correlation:
   required_for_definitive_execution_proof:
-    - "WMI event logs showing actual event filter triggering and consumer execution"
-    - "Process execution logs showing programs launched by WMI event consumers"
-    - "File system artifacts showing WMI consumer output, logs, or created files"
-    - "Windows Event Logs showing WMI provider activity and object creation"
-    
+  - WMI event logs showing actual event filter triggering and consumer execution
+  - Process execution logs showing programs launched by WMI event consumers
+  - File system artifacts showing WMI consumer output, logs, or created files
+  - Windows Event Logs showing WMI provider activity and object creation
+
   strengthens_evidence:
-    - "Registry modifications made by executed WMI event consumers"
-    - "Network traffic initiated by WMI consumer payloads"
-    - "File system changes indicating WMI event consumer activity"
-    - "PowerShell execution logs correlating with WMI script consumers"
+  - Registry modifications made by executed WMI event consumers
+  - Network traffic initiated by WMI consumer payloads
+  - File system changes indicating WMI event consumer activity
+  - PowerShell execution logs correlating with WMI script consumers
 
 metadata:
   windows_versions:
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2000"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2000
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows 2000"
-  criticality: "high"
+  introduced: Windows 2000
+
+  criticality: high
 
   investigation_types:
-    - "persistence-analysis"
-    - "malware-analysis"
-    - "incident-response"
-    - "behavioral-analysis"
-    - "lateral-movement"
+  - persistence-analysis
+  - malware-analysis
+  - incident-response
+  - behavioral-analysis
+  - lateral-movement
 
   tags:
-    - "persistence"
-    - "wmi"
-    - "advanced-threats"
-    - "apt"
-    - "event-driven"
-    - "sophisticated-malware"
-    - "stealth-persistence"
-    - "powershell"
-    - "lateral-movement"
+  - persistence
+  - wmi
+  - advanced-threats
+  - apt
+  - event-driven
+  - sophisticated-malware
+  - stealth-persistence
+  - powershell
+  - lateral-movement
 
   references:
-    - title: "Windows Management Instrumentation"
-      url: "https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmi-start-page"
-      type: "official"
-    - title: "WMI Event Subscriptions"
-      url: "https://learn.microsoft.com/en-us/windows/win32/wmisdk/receiving-event-notifications-through-wmi"
-      type: "official"
-    - title: "MITRE ATT&CK: Windows Management Instrumentation Event Subscription"
-      url: "https://attack.mitre.org/techniques/T1546/003/"
-      type: "research"
-    - title: "WMI Persistence and Detection"
-      url: "https://www.sans.org/blog/wmi-persistence-advanced-threat-detection/"
-      type: "research"
+  - title: Windows Management Instrumentation
+    url: https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmi-start-page
+    type: official
+  - title: WMI Event Subscriptions
+    url: https://learn.microsoft.com/en-us/windows/win32/wmisdk/receiving-event-notifications-through-wmi
+    type: official
+  - title: 'MITRE ATT&CK: Windows Management Instrumentation Event Subscription'
+    url: https://attack.mitre.org/techniques/T1546/003/
+    type: research
+  - title: WMI Persistence and Detection
+    url: https://www.sans.org/blog/wmi-persistence-advanced-threat-detection/
+    type: research
 
   retention:
-    default_location: "WMI Repository (%SystemRoot%\\System32\\wbem\\Repository)"
-    persistence: "Survives reboots, system cleaning, and most security software removal"
-    volatility: "Highly persistent until WMI repository corruption or explicit removal"
+    default_location: WMI Repository (%SystemRoot%\System32\wbem\Repository)
+    persistence: Survives reboots, system cleaning, and most security software removal
+    volatility: Highly persistent until WMI repository corruption or explicit removal
 
   related_artifacts:
-    - "scheduled_tasks"
-    - "powershell_policy"
-    - "registry_run_keys"
-    - "com_objects"
-    - "winlogon_userinit"
+  - scheduled_tasks
+  - powershell_policy
+  - registry_run_keys
+  - com_objects
+  - winlogon_userinit
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

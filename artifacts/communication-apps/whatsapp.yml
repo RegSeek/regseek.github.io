@@ -1,94 +1,90 @@
-title: "WhatsApp Desktop Application"
-category: "communication-apps"
-description: "WhatsApp Desktop configuration, account linking, and messaging settings"
+title: WhatsApp Desktop Application
+category: communication-apps
+description: WhatsApp Desktop configuration, account linking, and messaging settings
 
 paths:
-  - "HKCU\\Software\\WhatsApp"
-  - "HKLM\\SOFTWARE\\WhatsApp"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\WhatsApp"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ApplicationFrame\\Positions\\5319275A.WhatsAppDesktop_cv1g1gvanyjgm!App"
+- HKCU\Software\WhatsApp
+- HKLM\SOFTWARE\WhatsApp
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\WhatsApp
+- HKCU\Software\Microsoft\Windows\CurrentVersion\ApplicationFrame\Positions\5319275A.WhatsAppDesktop_cv1g1gvanyjgm!App
 
 details:
   what: |
-    WhatsApp desktop client settings for cross-platform messaging. Stores account
-    linking data, notification preferences, and media download settings.
+    WhatsApp desktop client settings for cross-platform messaging. Stores account linking data, notification preferences, and media download settings.
 
   forensic_value: |
-    Important for investigating personal communication on corporate devices and
-    unauthorized external messaging. Shows personal device linking, messaging
-    activity patterns, and external communication bypassing corporate monitoring.
+    Important for investigating personal communication on corporate devices and unauthorized external messaging. Shows personal device linking, messaging activity patterns, and external communication bypassing corporate monitoring.
 
   structure: |
-    Configuration includes account linking information, notification settings,
-    media auto-download preferences, and desktop integration options.
+    Configuration includes account linking information, notification settings, media auto-download preferences, and desktop integration options.
 
   examples:
-    - "LinkedDevice: Android/iPhone (Linked mobile device type)"
-    - "AutoDownloadMedia: 1 (Automatic media download enabled)"
-    - "Notifications: 1 (Desktop notifications enabled)"
-    - "PlaySounds: 1 (Message notification sounds enabled)"
-    - "LaunchAtStartup: 1 (WhatsApp starts with Windows)"
+  - 'LinkedDevice: Android/iPhone (Linked mobile device type)'
+  - 'AutoDownloadMedia: 1 (Automatic media download enabled)'
+  - 'Notifications: 1 (Desktop notifications enabled)'
+  - 'PlaySounds: 1 (Message notification sounds enabled)'
+  - 'LaunchAtStartup: 1 (WhatsApp starts with Windows)'
 
   tools:
-    - name: "WhatsApp Desktop Settings"
-      description: "Built-in configuration and notification controls"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Registry analysis tool"
-    - name: "Mobile Device Analysis Tools"
-      description: "Complementary mobile forensics for complete analysis"
+  - name: WhatsApp Desktop Settings
+    description: Built-in configuration and notification controls
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Registry analysis tool
+  - name: Mobile Device Analysis Tools
+    description: Complementary mobile forensics for complete analysis
 
 limitations:
-  - "Shows configuration only, not actual message content due to encryption"
-  - "Device linking information doesn't reveal what messages were sent"
-  - "Media download settings don't show what files were actually downloaded"
+- Shows configuration only, not actual message content due to encryption
+- Device linking information doesn't reveal what messages were sent
+- Media download settings don't show what files were actually downloaded
 
 correlation:
   required_for_definitive_conclusions:
-    - "Mobile device analysis showing WhatsApp database and media files"
-    - "Network traffic analysis confirming WhatsApp communication sessions"
-    - "File system artifacts showing WhatsApp media downloads"
-  
+  - Mobile device analysis showing WhatsApp database and media files
+  - Network traffic analysis confirming WhatsApp communication sessions
+  - File system artifacts showing WhatsApp media downloads
+
   strengthens_evidence:
-    - "Browser artifacts showing WhatsApp Web usage"
-    - "Notification logs showing WhatsApp message alerts"
-    - "Process execution logs confirming WhatsApp desktop activity"
+  - Browser artifacts showing WhatsApp Web usage
+  - Notification logs showing WhatsApp message alerts
+  - Process execution logs confirming WhatsApp desktop activity
 
 metadata:
   windows_versions:
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "WhatsApp Desktop (2016)"
-  
-  criticality: "medium"
+  introduced: WhatsApp Desktop (2016)
+
+  criticality: medium
 
   investigation_types:
-    - "behavioral-analysis"
-    - "timeline-analysis"
-    - "incident-response"
-    - "insider-threat"
+  - behavioral-analysis
+  - timeline-analysis
+  - incident-response
+  - insider-threat
 
   tags:
-    - "whatsapp"
-    - "personal-messaging"
-    - "encrypted-communication"
-    - "mobile-linking"
-    - "multimedia-sharing"
+  - whatsapp
+  - personal-messaging
+  - encrypted-communication
+  - mobile-linking
+  - multimedia-sharing
 
   references:
-    - title: "WhatsApp Desktop Support"
-      url: "https://faq.whatsapp.com/general/download-and-installation/how-to-download-and-install-whatsapp-desktop"
-      type: "official"
+  - title: WhatsApp Desktop Support
+    url: https://faq.whatsapp.com/general/download-and-installation/how-to-download-and-install-whatsapp-desktop
+    type: official
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-08"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-06-08'
+  last_updated: '2025-06-12'
+  version: '3.0'

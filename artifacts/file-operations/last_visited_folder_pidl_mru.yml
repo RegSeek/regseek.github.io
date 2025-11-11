@@ -1,144 +1,138 @@
-title: "Last Visited Folder MRU (PidlMRU)"
-category: "file-operations"
-description: "Last visited folders in file dialogs with executable name associations"
+title: Last Visited Folder MRU (PidlMRU)
+category: file-operations
+description: Last visited folders in file dialogs with executable name associations
 
 paths:
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\LastVisitedPidlMRU"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\LastVisitedMRU"
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\LastVisitedPidlMRU
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\LastVisitedMRU
 
 details:
   what: |
-    Windows tracks the last visited folders when applications use standard file dialog boxes,
-    along with the executable name that opened each folder location. Shows detailed folder
-    navigation patterns and application-specific file access in chronological order.
+    Windows tracks the last visited folders when applications use standard file dialog boxes, along with the executable name that opened each folder location. Shows detailed folder navigation patterns and application-specific file access in chronological order.
 
   forensic_value: |
-    Links specific applications to folder locations they accessed, showing user navigation
-    patterns and attempts to access restricted areas. Can indicate data staging, reconnaissance
-    activities, or exfiltration preparation. Critical for proving application-specific folder
-    access and understanding user behavior patterns.
+    Links specific applications to folder locations they accessed, showing user navigation patterns and attempts to access restricted areas. Can indicate data staging, reconnaissance activities, or exfiltration preparation. Critical for proving application-specific folder access and understanding user behavior patterns.
 
   structure: |
-    Sequential entries containing executable name followed by folder path data in binary PIDL
-    (Pointer to Item IDentifier List) format. MRUListEx shows access order with most recent
-    first. Each entry links a specific program to the folder location it accessed.
+    Sequential entries containing executable name followed by folder path data in binary PIDL (Pointer to Item IDentifier List) format. MRUListEx shows access order with most recent first. Each entry links a specific program to the folder location it accessed.
 
   examples:
-    - "Entry 0: notepad.exe -> C:\\Users\\user\\Documents\\Sensitive"
-    - "Entry 1: winrar.exe -> \\\\server\\confidential\\archives"
-    - "Entry 2: cmd.exe -> C:\\Windows\\System32"
-    - "Entry 3: malware.exe -> C:\\Temp\\Staging"
-    - "Entry 4: excel.exe -> \\\\fileserver\\finance\\reports"
-    - "MRUListEx: 4,3,2,1,0 (most recent access order)"
-    - "Network access: powershell.exe -> \\\\192.168.1.100\\admin$"
-    - "USB access: explorer.exe -> E:\\USB_Drive\\confidential"
+  - 'Entry 0: notepad.exe -> C:\Users\user\Documents\Sensitive'
+  - 'Entry 1: winrar.exe -> \\server\confidential\archives'
+  - 'Entry 2: cmd.exe -> C:\Windows\System32'
+  - 'Entry 3: malware.exe -> C:\Temp\Staging'
+  - 'Entry 4: excel.exe -> \\fileserver\finance\reports'
+  - 'MRUListEx: 4,3,2,1,0 (most recent access order)'
+  - 'Network access: powershell.exe -> \\192.168.1.100\admin$'
+  - 'USB access: explorer.exe -> E:\USB_Drive\confidential'
 
   tools:
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry browser with PIDL MRU parsing and application correlation"
-    - name: "LastActivityView"
-      url: "https://www.nirsoft.net/utils/computer_activity_view.html"
-      description: "Comprehensive computer activity viewer including folder access patterns"
-    - name: "RegRipper"
-      url: "https://github.com/keydet89/RegRipper3.0"
-      description: "Registry analysis with lastvisitedmru.pl plugin for detailed parsing"
-    - name: "PIDL Analyzer"
-      description: "Specialized tools for analyzing PIDL data structures and folder paths"
-    - name: "MRU Analysis Toolkit"
-      description: "Comprehensive MRU analysis tools including LastVisited parsing"
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry browser with PIDL MRU parsing and application correlation
+  - name: LastActivityView
+    url: https://www.nirsoft.net/utils/computer_activity_view.html
+    description: Comprehensive computer activity viewer including folder access patterns
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry analysis with lastvisitedmru.pl plugin for detailed parsing
+  - name: PIDL Analyzer
+    description: Specialized tools for analyzing PIDL data structures and folder paths
+  - name: MRU Analysis Toolkit
+    description: Comprehensive MRU analysis tools including LastVisited parsing
 
 limitations:
-  - "Folder visits do NOT prove files were accessed, opened, or modified"
-  - "Application association doesn't indicate successful file operations"
-  - "PIDL entries may reflect browsing without file selection or interaction"
-  - "Folder access doesn't show duration of stay or specific files viewed"
-  - "Executable names can be spoofed or renamed to hide actual program identity"
-  - "Network folder entries don't prove successful authentication or file access"
-  - "MRU order doesn't indicate frequency or importance of folder usage"
+- Folder visits do NOT prove files were accessed, opened, or modified
+- Application association doesn't indicate successful file operations
+- PIDL entries may reflect browsing without file selection or interaction
+- Folder access doesn't show duration of stay or specific files viewed
+- Executable names can be spoofed or renamed to hide actual program identity
+- Network folder entries don't prove successful authentication or file access
+- MRU order doesn't indicate frequency or importance of folder usage
 
 correlation:
   required_for_definitive_file_access_proof:
-    - "File system access logs showing actual file operations in visited folders"
-    - "Application event logs showing successful file opening and editing"
-    - "Process execution logs confirming applications performed file operations"
-    - "File modification timestamps correlating with folder visit times"
-    
+  - File system access logs showing actual file operations in visited folders
+  - Application event logs showing successful file opening and editing
+  - Process execution logs confirming applications performed file operations
+  - File modification timestamps correlating with folder visit times
+
   strengthens_evidence:
-    - "OpenSaveMRU entries showing specific files accessed in these folders"
-    - "Recent documents showing files from folders visited by applications"
-    - "ShellBags data showing detailed folder navigation and file interaction"
-    - "Jump Lists showing application usage correlating with folder access patterns"
+  - OpenSaveMRU entries showing specific files accessed in these folders
+  - Recent documents showing files from folders visited by applications
+  - ShellBags data showing detailed folder navigation and file interaction
+  - Jump Lists showing application usage correlating with folder access patterns
 
 metadata:
   windows_versions:
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows XP"
-  criticality: "high"
+  introduced: Windows XP
+
+  criticality: high
 
   investigation_types:
-    - "data-exfiltration"
-    - "insider-threat"
-    - "behavioral-analysis"
-    - "timeline-analysis"
-    - "incident-response"
+  - data-exfiltration
+  - insider-threat
+  - behavioral-analysis
+  - timeline-analysis
+  - incident-response
 
   tags:
-    - "user-activity"
-    - "folder-access"
-    - "application-tracking"
-    - "navigation-patterns"
-    - "data-staging"
-    - "file-dialogs"
-    - "program-correlation"
-    - "reconnaissance"
-    - "folder-navigation"
+  - user-activity
+  - folder-access
+  - application-tracking
+  - navigation-patterns
+  - data-staging
+  - file-dialogs
+  - program-correlation
+  - reconnaissance
+  - folder-navigation
 
   references:
-    - title: "Common Dialog Box Library"
-      url: "https://learn.microsoft.com/en-us/windows/win32/dlgbox/common-dialog-box-library"
-      type: "official"
-    - title: "PIDL (Pointer to Item IDentifier List)"
-      url: "https://learn.microsoft.com/en-us/windows/win32/shell/objects"
-      type: "official"
-    - title: "Windows Dialog History Forensics"
-      url: "https://www.sans.org/blog/windows-dialog-history-analysis/"
-      type: "research"
-    - title: "MRU Analysis in Digital Forensics"
-      url: "https://www.forensicfocus.com/articles/mru-lists-analysis/"
-      type: "research"
+  - title: Common Dialog Box Library
+    url: https://learn.microsoft.com/en-us/windows/win32/dlgbox/common-dialog-box-library
+    type: official
+  - title: PIDL (Pointer to Item IDentifier List)
+    url: https://learn.microsoft.com/en-us/windows/win32/shell/objects
+    type: official
+  - title: Windows Dialog History Forensics
+    url: https://www.sans.org/blog/windows-dialog-history-analysis/
+    type: research
+  - title: MRU Analysis in Digital Forensics
+    url: https://www.forensicfocus.com/articles/mru-lists-analysis/
+    type: research
 
   retention:
-    default_location: "NTUSER.DAT registry hive"
-    persistence: "Survives file deletion and application uninstallation, persists per user profile"
-    volatility: "Limited cache size may cause older entries to be overwritten"
+    default_location: NTUSER.DAT registry hive
+    persistence: Survives file deletion and application uninstallation, persists per user profile
+    volatility: Limited cache size may cause older entries to be overwritten
 
   related_artifacts:
-    - "opensavemru"
-    - "shellbags"
-    - "recent_docs"
-    - "comdlg32_settings"
-    - "office_files"
+  - opensavemru
+  - shellbags
+  - recent_docs
+  - comdlg32_settings
+  - office_files
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

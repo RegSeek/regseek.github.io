@@ -1,136 +1,127 @@
-title: "Start Menu Search History (WordWheelQuery)"
-category: "user-behaviour"
-description: "Windows Start menu search queries, typed terms, and search autocomplete history"
+title: Start Menu Search History (WordWheelQuery)
+category: user-behaviour
+description: Windows Start menu search queries, typed terms, and search autocomplete history
 
 paths:
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\WordWheelQuery"
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\WordWheelQuery
 
 details:
   what: |
-    Windows records search terms typed in the Start menu search box to provide autocomplete
-    functionality and search suggestions. Maintains chronological history of user search
-    queries across system searches, application searches, settings searches, and file searches
-    initiated through the Start menu interface.
+    Windows records search terms typed in the Start menu search box to provide autocomplete functionality and search suggestions. Maintains chronological history of user search queries across system searches, application searches, settings searches, and file searches initiated through the Start menu interface.
 
   forensic_value: |
-    Extremely valuable for understanding user intent, revealing what files, applications, or
-    system utilities users were searching for. Can show evidence of attempts to find specific
-    tools for malicious purposes, searches for confidential information, administrative utilities,
-    or attempts to locate and execute suspicious programs. Provides direct insight into user
-    behavior patterns.
+    Extremely valuable for understanding user intent, revealing what files, applications, or system utilities users were searching for. Can show evidence of attempts to find specific tools for malicious purposes, searches for confidential information, administrative utilities, or attempts to locate and execute suspicious programs. Provides direct insight into user behavior patterns.
 
   structure: |
-    Sequential numbered values (0, 1, 2, etc.) containing search terms as REG_SZ data.
-    MRUListEx value shows search chronology with most recent searches listed first.
-    Search terms persist across user sessions and system reboots, maintaining complete
-    search history until manually cleared or overwritten.
+    Sequential numbered values (0, 1, 2, etc.) containing search terms as REG_SZ data. MRUListEx value shows search chronology with most recent searches listed first. Search terms persist across user sessions and system reboots, maintaining complete search history until manually cleared or overwritten.
 
   examples:
-    - "0: cmd (Command Prompt search)"
-    - "1: powershell (PowerShell search)"
-    - "2: regedit (Registry Editor search)"
-    - "3: confidential documents (File search)"
-    - "4: malware.exe (Suspicious executable search)"
-    - "5: administrative tools (System utilities search)"
-    - "6: control panel (Settings search)"
-    - "MRUListEx: 6,5,4,3,2,1,0 (chronological order, newest first)"
+  - '0: cmd (Command Prompt search)'
+  - '1: powershell (PowerShell search)'
+  - '2: regedit (Registry Editor search)'
+  - '3: confidential documents (File search)'
+  - '4: malware.exe (Suspicious executable search)'
+  - '5: administrative tools (System utilities search)'
+  - '6: control panel (Settings search)'
+  - 'MRUListEx: 6,5,4,3,2,1,0 (chronological order, newest first)'
 
   tools:
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "RegRipper"
-      url: "https://github.com/keydet89/RegRipper3.0"
-      description: "Registry data extraction and analysis framework"
-    - name: "SearchMyFiles"
-      url: "https://www.nirsoft.net/utils/search_my_files.html"
-      description: "File search utility with history tracking"
-    - name: "Windows Search History Parser"
-      description: "Specialized tools for analyzing Windows search artifacts"
-    - name: "LastActivityView"
-      url: "https://www.nirsoft.net/utils/computer_activity_view.html"
-      description: "Computer activity tracking including search history"
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry data extraction and analysis framework
+  - name: SearchMyFiles
+    url: https://www.nirsoft.net/utils/search_my_files.html
+    description: File search utility with history tracking
+  - name: Windows Search History Parser
+    description: Specialized tools for analyzing Windows search artifacts
+  - name: LastActivityView
+    url: https://www.nirsoft.net/utils/computer_activity_view.html
+    description: Computer activity tracking including search history
 
 limitations:
-  - "Search queries do NOT prove search results were accessed or executed"
-  - "Search terms don't indicate successful application launch or file access"
-  - "Administrative tool searches don't prove system configuration was modified"
-  - "File searches don't show files were found, opened, or accessed"
-  - "Malicious-looking searches don't prove malicious activity occurred"
-  - "Query chronology doesn't indicate search result selection or usage"
-  - "Search history doesn't show search success or failure"
-    
+- Search queries do NOT prove search results were accessed or executed
+- Search terms don't indicate successful application launch or file access
+- Administrative tool searches don't prove system configuration was modified
+- File searches don't show files were found, opened, or accessed
+- Malicious-looking searches don't prove malicious activity occurred
+- Query chronology doesn't indicate search result selection or usage
+- Search history doesn't show search success or failure
+
 correlation:
   required_for_definitive_execution_proof:
-    - "Process execution logs showing programs launched after searches"
-    - "UserAssist entries showing application usage correlating with search terms"
-    - "Recent documents showing files accessed after file searches"
-    - "Run dialog history showing commands executed after searches"
-    
+  - Process execution logs showing programs launched after searches
+  - UserAssist entries showing application usage correlating with search terms
+  - Recent documents showing files accessed after file searches
+  - Run dialog history showing commands executed after searches
+
   strengthens_evidence:
-    - "ShimCache entries showing program access attempts matching search queries"
-    - "Registry modifications correlating with administrative tool searches"
-    - "File system access logs showing activity after file searches"
-    - "OpenSaveMRU entries showing file operations correlating with search activity"
+  - ShimCache entries showing program access attempts matching search queries
+  - Registry modifications correlating with administrative tool searches
+  - File system access logs showing activity after file searches
+  - OpenSaveMRU entries showing file operations correlating with search activity
 
 metadata:
   windows_versions:
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Windows Vista"
-  criticality: "high"
+  introduced: Windows Vista
+
+  criticality: high
 
   investigation_types:
-    - "behavioral-analysis"
-    - "malware-analysis"
-    - "insider-threat"
-    - "timeline-analysis"
-    - "program-execution"
-    
+  - behavioral-analysis
+  - malware-analysis
+  - insider-threat
+  - timeline-analysis
+  - program-execution
+
   tags:
-    - "search-history"
-    - "start-menu"
-    - "user-intent"
-    - "behavior-analysis"
-    - "search-queries"
-    - "application-search"
-    - "system-search"
-    - "investigation-leads"
+  - search-history
+  - start-menu
+  - user-intent
+  - behavior-analysis
+  - search-queries
+  - application-search
+  - system-search
+  - investigation-leads
 
   references:
-    - title: "Microsoft Documentation: Start Menu Search"
-      url: "https://learn.microsoft.com/en-us/windows/configuration/start-menu-search/"
-      type: "official"
-    - title: "Windows Search Artifacts for Digital Forensics"
-      url: "https://www.forensicfocus.com/articles/windows-search-artifacts/"
-      type: "research"
-    - title: "User Activity Reconstruction through Windows Search History"
-      url: "https://www.dfrws.org/sites/default/files/session-files/paper-user_activity_reconstruction_through_windows_search_history.pdf"
-      type: "research"
+  - title: 'Microsoft Documentation: Start Menu Search'
+    url: https://learn.microsoft.com/en-us/windows/configuration/start-menu-search/
+    type: official
+  - title: Windows Search Artifacts for Digital Forensics
+    url: https://www.forensicfocus.com/articles/windows-search-artifacts/
+    type: research
+  - title: User Activity Reconstruction through Windows Search History
+    url: https://www.dfrws.org/sites/default/files/session-files/paper-user_activity_reconstruction_through_windows_search_history.pdf
+    type: research
 
   retention:
-    default_location: "Registry hive file (NTUSER.DAT)"
-    persistence: "Search terms persist across reboots until manually cleared or overwritten"
-    volatility: "Real-time updates with each search, provides immediate user intent evidence"
+    default_location: Registry hive file (NTUSER.DAT)
+    persistence: Search terms persist across reboots until manually cleared or overwritten
+    volatility: Real-time updates with each search, provides immediate user intent evidence
 
   related_artifacts:
-    - "search_history"
-    - "recent_docs"
-    - "userassist"
-    - "opensavemru"
-    - "run_keys"
+  - search_history
+  - recent_docs
+  - userassist
+  - opensavemru
+  - run_keys
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

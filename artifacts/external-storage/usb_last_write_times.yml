@@ -1,135 +1,130 @@
-title: "USB Device Last Write Times"
-category: "external-storage"
-description: "USB device connection timestamps from registry key last write times and device enumeration data"
+title: USB Device Last Write Times
+category: external-storage
+description: USB device connection timestamps from registry key last write times and device enumeration data
 
 paths:
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USBSTOR"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceClasses\\{53f56307-b6bf-11d0-94f2-00a0c91efb8b}"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USB"
+- HKLM\SYSTEM\CurrentControlSet\Enum\USBSTOR
+- HKLM\SYSTEM\CurrentControlSet\Control\DeviceClasses\{53f56307-b6bf-11d0-94f2-00a0c91efb8b}
+- HKLM\SYSTEM\CurrentControlSet\Enum\USB
 
 details:
   what: |
-    Registry key last write times provide precise timestamps indicating when USB storage devices 
-    were last connected, enumerated, or had their configuration updated by the Windows Plug and Play 
-    subsystem. These timestamps correlate with device connection events and driver installations.
+    Registry key last write times provide precise timestamps indicating when USB storage devices were last connected, enumerated, or had their configuration updated by the Windows Plug and Play subsystem. These timestamps correlate with device connection events and driver installations.
 
   forensic_value: |
-    Critical for establishing precise USB device connection timelines in data exfiltration investigations. 
-    Provides exact timestamps for when specific USB devices were connected, enabling correlation with 
-    file access logs, user activity, and security events for timeline reconstruction.
+    Critical for establishing precise USB device connection timelines in data exfiltration investigations. Provides exact timestamps for when specific USB devices were connected, enabling correlation with file access logs, user activity, and security events for timeline reconstruction.
 
   structure: |
-    Registry key timestamps stored as FILETIME structures (64-bit values representing 100-nanosecond 
-    intervals since January 1, 1601 UTC). Each USB device subkey's last write time indicates most 
-    recent connection or configuration change with vendor ID, product ID, and serial number correlation.
+    Registry key timestamps stored as FILETIME structures (64-bit values representing 100-nanosecond intervals since January 1, 1601 UTC). Each USB device subkey's last write time indicates most recent connection or configuration change with vendor ID, product ID, and serial number correlation.
 
   examples:
-    - "Device Key: USBSTOR\\\\Disk&Ven_Kingston&Prod_DataTraveler_3.0&Rev_PMAP"
-    - "Last Write Time: 2024-01-15 09:45:23.123 UTC (Precise connection timestamp)"
-    - "Serial Number: 50E549C6E258F571&0 (Unique device identifier)"
-    - "Device Instance: 001CC0EC336BD480&0 (Hardware instance ID)"
-    - "Parent Key: USB\\\\VID_0951&PID_1666 (Vendor/Product identification)"
-    - "Connection Event: Registry key modification indicates device enumeration"
+  - 'Device Key: USBSTOR\\Disk&Ven_Kingston&Prod_DataTraveler_3.0&Rev_PMAP'
+  - 'Last Write Time: 2024-01-15 09:45:23.123 UTC (Precise connection timestamp)'
+  - 'Serial Number: 50E549C6E258F571&0 (Unique device identifier)'
+  - 'Device Instance: 001CC0EC336BD480&0 (Hardware instance ID)'
+  - 'Parent Key: USB\\VID_0951&PID_1666 (Vendor/Product identification)'
+  - 'Connection Event: Registry key modification indicates device enumeration'
 
   tools:
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis with timestamp preservation and analysis"
-    - name: "USBLogView"
-      url: "https://www.nirsoft.net/utils/usb_log_view.html"
-      description: "USB device connection log viewer and timeline analyzer"
-    - name: "RegRipper"
-      url: "https://github.com/keydet89/RegRipper3.0"
-      description: "Registry data extraction framework with timestamp analysis"
-    - name: "USB Detective"
-      description: "Specialized USB forensics tool for device timeline reconstruction"
-    - name: "Windows Event Log Correlation Tools"
-      description: "Correlate registry timestamps with Windows Event Log entries"
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis with timestamp preservation and analysis
+  - name: USBLogView
+    url: https://www.nirsoft.net/utils/usb_log_view.html
+    description: USB device connection log viewer and timeline analyzer
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry data extraction framework with timestamp analysis
+  - name: USB Detective
+    description: Specialized USB forensics tool for device timeline reconstruction
+  - name: Windows Event Log Correlation Tools
+    description: Correlate registry timestamps with Windows Event Log entries
 
 limitations:
-  - "Last write times do NOT prove files were accessed or transferred from device"
-  - "Registry timestamps show device enumeration, not actual usage or data operations"
-  - "Connection events may be from antivirus scanning or system maintenance"
-  - "Multiple timestamps don't necessarily indicate repeated data theft"
-  - "Device enumeration can occur without user interaction or file access"
-  - "Registry modification may be from driver updates or configuration changes"
+- Last write times do NOT prove files were accessed or transferred from device
+- Registry timestamps show device enumeration, not actual usage or data operations
+- Connection events may be from antivirus scanning or system maintenance
+- Multiple timestamps don't necessarily indicate repeated data theft
+- Device enumeration can occur without user interaction or file access
+- Registry modification may be from driver updates or configuration changes
 
 correlation:
   required_for_definitive_usage_proof:
-    - "File system artifacts showing actual file access during connection times"
-    - "Event logs (Event ID 6416) showing volume mounting and file operations"
-    - "ShellBags showing user navigation to USB device during connection window"
-    - "Recent documents or LNK files with timestamps matching connection periods"
-    - "Application logs showing file operations during device connection times"
-    
+  - File system artifacts showing actual file access during connection times
+  - Event logs (Event ID 6416) showing volume mounting and file operations
+  - ShellBags showing user navigation to USB device during connection window
+  - Recent documents or LNK files with timestamps matching connection periods
+  - Application logs showing file operations during device connection times
+
   strengthens_evidence:
-    - "Drive letter assignment correlating to connection timestamps"
-    - "User activity logs showing logon/activity during device connection"
-    - "Network logs if USB contained remote access tools used during connection"
-    - "Process execution logs showing programs launched during USB connection window"
+  - Drive letter assignment correlating to connection timestamps
+  - User activity logs showing logon/activity during device connection
+  - Network logs if USB contained remote access tools used during connection
+  - Process execution logs showing programs launched during USB connection window
 
 metadata:
   windows_versions:
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows XP"
-  criticality: "high"
+  introduced: Windows XP
+
+  criticality: high
 
   investigation_types:
-    - "timeline-analysis"
-    - "data-exfiltration"
-    - "insider-threat"
-    - "incident-response"
+  - timeline-analysis
+  - data-exfiltration
+  - insider-threat
+  - incident-response
 
   tags:
-    - "usb"
-    - "timestamps"
-    - "device-connection"
-    - "timeline-analysis"
-    - "registry-timestamps"
-    - "device-enumeration"
-    - "forensic-timeline"
+  - usb
+  - timestamps
+  - device-connection
+  - timeline-analysis
+  - registry-timestamps
+  - device-enumeration
+  - forensic-timeline
 
   references:
-    - title: "Microsoft Documentation: USB Device Installation"
-      url: "https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/"
-      type: "official"
-    - title: "USB Device Timeline Reconstruction"
-      url: "https://www.sans.org/white-papers/33584/"
-      type: "research"
-    - title: "Registry Timestamp Analysis for USB Forensics"
-      url: "https://www.forensicfocus.com/articles/registry-timestamp-analysis/"
-      type: "research"
+  - title: 'Microsoft Documentation: USB Device Installation'
+    url: https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/
+    type: official
+  - title: USB Device Timeline Reconstruction
+    url: https://www.sans.org/white-papers/33584/
+    type: research
+  - title: Registry Timestamp Analysis for USB Forensics
+    url: https://www.forensicfocus.com/articles/registry-timestamp-analysis/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SYSTEM), NTFS metadata"
-    persistence: "Timestamps persist until device record removal or registry cleanup"
-    volatility: "Provides precise temporal correlation for USB device usage patterns"
+    default_location: Registry hive files (SYSTEM), NTFS metadata
+    persistence: Timestamps persist until device record removal or registry cleanup
+    volatility: Provides precise temporal correlation for USB device usage patterns
 
   related_artifacts:
-    - "device_history"
-    - "drive_letter_mapping"
-    - "device_capabilities"
-    - "hardware_devices"
+  - device_history
+  - drive_letter_mapping
+  - device_capabilities
+  - hardware_devices
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-13"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-13'
+  version: '3.0'

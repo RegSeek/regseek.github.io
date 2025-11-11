@@ -1,109 +1,103 @@
-title: "Tor Browser Privacy Configuration"
-category: "browser-activity"
-description: "Tor Browser installation and privacy configuration settings in registry"
+title: Tor Browser Privacy Configuration
+category: browser-activity
+description: Tor Browser installation and privacy configuration settings in registry
 
 paths:
-  - "HKCU\\Software\\Mozilla\\Firefox\\Profiles\\[ProfileID]\\Tor Browser"
-  - "HKLM\\SOFTWARE\\Mozilla\\Firefox\\Tor Browser"
-  - "HKCU\\Software\\Classes\\TorBrowser"
-  - "HKLM\\SOFTWARE\\Classes\\TorBrowser"
+- HKCU\Software\Mozilla\Firefox\Profiles\[ProfileID]\Tor Browser
+- HKLM\SOFTWARE\Mozilla\Firefox\Tor Browser
+- HKCU\Software\Classes\TorBrowser
+- HKLM\SOFTWARE\Classes\TorBrowser
 
 details:
   what: |
-    Tor Browser registry entries store installation paths, security configurations,
-    and file associations. Contains privacy settings, security levels, and proxy
-    configurations for anonymous browsing.
+    Tor Browser registry entries store installation paths, security configurations, and file associations. Contains privacy settings, security levels, and proxy configurations for anonymous browsing.
 
   forensic_value: |
-    Indicates privacy-conscious behavior and potential attempts to evade monitoring.
-    Shows evidence of anonymity tool usage, dark web access capabilities, and
-    security-aware browsing patterns.
+    Indicates privacy-conscious behavior and potential attempts to evade monitoring. Shows evidence of anonymity tool usage, dark web access capabilities, and security-aware browsing patterns.
 
   structure: |
-    Tor Browser configuration includes proxy settings, security level preferences,
-    bridge configurations, and anonymity options. Privacy settings track JavaScript
-    restrictions, plugin blocking, and anti-fingerprinting measures for comprehensive
-    privacy-focused browsing behavior analysis and security-conscious user profiling.
+    Tor Browser configuration includes proxy settings, security level preferences, bridge configurations, and anonymity options. Privacy settings track JavaScript restrictions, plugin blocking, and anti-fingerprinting measures for comprehensive privacy-focused browsing behavior analysis and security-conscious user profiling.
 
   examples:
-    - "InstallPath: C:\\Users\\user\\Desktop\\Tor Browser"
-    - "SecurityLevel: Safest"
-    - "BridgeSettings: obfs4"
-    - "NoScript: 1"
-    - "ProxyType: SOCKS5"
-    - "Letterboxing: 1 (Anti-fingerprinting protection)"
-    - "ExitCountry: {us} (Preferred exit node country)"
+  - 'InstallPath: C:\Users\user\Desktop\Tor Browser'
+  - 'SecurityLevel: Safest'
+  - 'BridgeSettings: obfs4'
+  - 'NoScript: 1'
+  - 'ProxyType: SOCKS5'
+  - 'Letterboxing: 1 (Anti-fingerprinting protection)'
+  - 'ExitCountry: {us} (Preferred exit node country)'
 
   tools:
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis tool"
-    - name: "Tor Project Documentation"
-      url: "https://tb-manual.torproject.org/"
-      description: "Official Tor Browser documentation"
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis tool
+  - name: Tor Project Documentation
+    url: https://tb-manual.torproject.org/
+    description: Official Tor Browser documentation
 
 limitations:
-  - "Registry entries show installation only, not actual usage or browsing activity"
-  - "Tor configuration doesn't prove illegal activity or dark web access"
-  - "Installation could be for legitimate privacy reasons"
+- Registry entries show installation only, not actual usage or browsing activity
+- Tor configuration doesn't prove illegal activity or dark web access
+- Installation could be for legitimate privacy reasons
 
 correlation:
   required_for_definitive_conclusions:
-    - "Network traffic logs showing Tor connections"
-    - "Browser history or cache files from Tor usage"
-    - "Process execution logs showing Tor Browser activity"
-  
+  - Network traffic logs showing Tor connections
+  - Browser history or cache files from Tor usage
+  - Process execution logs showing Tor Browser activity
+
   strengthens_evidence:
-    - "Timeline analysis of when Tor was installed and used"
-    - "File operations related to Tor directory access"
-    - "Other privacy tools or anonymization software"
+  - Timeline analysis of when Tor was installed and used
+  - File operations related to Tor directory access
+  - Other privacy tools or anonymization software
 
 metadata:
   windows_versions:
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Tor Browser"
-  criticality: "medium"
+  introduced: Tor Browser
+
+  criticality: medium
 
   investigation_types:
-    - "behavioral-analysis"
-    - "incident-response"
-    - "insider-threat"
-    - "anti-forensics"
+  - behavioral-analysis
+  - incident-response
+  - insider-threat
+  - anti-forensics
 
   tags:
-    - "tor"
-    - "privacy"
-    - "anonymity"
-    - "dark-web"
-    - "anti-surveillance"
+  - tor
+  - privacy
+  - anonymity
+  - dark-web
+  - anti-surveillance
 
   references:
-    - title: "Tor Project"
-      url: "https://www.torproject.org/"
-      type: "official"
+  - title: Tor Project
+    url: https://www.torproject.org/
+    type: official
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
-    persistence: "Installation registry entries persist until uninstalled"
-    volatility: "Configuration shows privacy tool presence"
+    default_location: Registry hive files (SOFTWARE, NTUSER.DAT)
+    persistence: Installation registry entries persist until uninstalled
+    volatility: Configuration shows privacy tool presence
 
   related_artifacts:
-    - "privacy_tools"
-    - "browser_configurations"
+  - privacy_tools
+  - browser_configurations
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-08"
-  last_updated: "2025-06-08"
-  version: "3.0"
+  date_added: '2025-06-08'
+  last_updated: '2025-06-08'
+  version: '3.0'

@@ -1,135 +1,127 @@
-title: "Software Restriction Policies"
-category: "system-modifications"
-description: "Legacy application whitelisting, execution control policies, and software restriction configuration"
+title: Software Restriction Policies
+category: system-modifications
+description: Legacy application whitelisting, execution control policies, and software restriction configuration
 
 paths:
-  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Safer\\CodeIdentifiers"
-  - "HKCU\\SOFTWARE\\Policies\\Microsoft\\Windows\\Safer\\CodeIdentifiers"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"
+- HKLM\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers
+- HKCU\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer
 
 details:
   what: |
-    Software Restriction Policies (SRP) provide legacy application control mechanisms that 
-    preceded AppLocker in Windows environments. Controls software execution based on path rules, 
-    hash rules, certificate rules, and network zone rules with configurable security levels. 
-    Provides basic application whitelisting capabilities and execution restrictions.
+    Software Restriction Policies (SRP) provide legacy application control mechanisms that preceded AppLocker in Windows environments. Controls software execution based on path rules, hash rules, certificate rules, and network zone rules with configurable security levels. Provides basic application whitelisting capabilities and execution restrictions.
 
   forensic_value: |
-    Critical for detecting legacy security policy bypass attempts, identifying software restrictions 
-    that may have been circumvented by attackers, and analyzing application control failures that 
-    enabled malware execution. Shows evidence of policy modifications designed to allow unauthorized 
-    software execution and reveals legitimate software lists.
+    Critical for detecting legacy security policy bypass attempts, identifying software restrictions that may have been circumvented by attackers, and analyzing application control failures that enabled malware execution. Shows evidence of policy modifications designed to allow unauthorized software execution and reveals legitimate software lists.
 
   structure: |
-    CodeIdentifiers configuration includes DefaultLevel (default security restriction level), 
-    ExecutableTypes (file extensions subject to restrictions), TransparentEnabled (policy enforcement 
-    mode), and rule collections for specific paths, hashes, certificates, and network zones. 
-    Security levels range from Disallowed (blocked) to Unrestricted (allowed).
+    CodeIdentifiers configuration includes DefaultLevel (default security restriction level), ExecutableTypes (file extensions subject to restrictions), TransparentEnabled (policy enforcement mode), and rule collections for specific paths, hashes, certificates, and network zones. Security levels range from Disallowed (blocked) to Unrestricted (allowed).
 
   examples:
-    - "DefaultLevel: 0x00040000 (Unrestricted - allow all software execution)"
-    - "DefaultLevel: 0x00000000 (Disallowed - block all software by default)"
-    - "ExecutableTypes: ADE;ADP;BAS;BAT;CHM;CMD;COM;CPL;CRT;EXE;HLP;HTA;INF;INS;ISP;LNK;MDB;MDE;MSC;MSI;MSP;MST;OCX;PCD;PIF;REG;SCR;SHS;URL;VB;WSC;WSF;WSH"
-    - "TransparentEnabled: 1 (Enforce policies for all users)"
-    - "PolicyScope: 0 (Apply to all software)"
-    - "PathRules\\0\\Description: Unrestricted access for Windows directory"
-    - "HashRules\\0\\SaferFlags: 0 (Standard hash rule enforcement)"
-    
+  - 'DefaultLevel: 0x00040000 (Unrestricted - allow all software execution)'
+  - 'DefaultLevel: 0x00000000 (Disallowed - block all software by default)'
+  - 'ExecutableTypes: ADE;ADP;BAS;BAT;CHM;CMD;COM;CPL;CRT;EXE;HLP;HTA;INF;INS;ISP;LNK;MDB;MDE;MSC;MSI;MSP;MST;OCX;PCD;PIF;REG;SCR;SHS;URL;VB;WSC;WSF;WSH'
+  - 'TransparentEnabled: 1 (Enforce policies for all users)'
+  - 'PolicyScope: 0 (Apply to all software)'
+  - 'PathRules\0\Description: Unrestricted access for Windows directory'
+  - 'HashRules\0\SaferFlags: 0 (Standard hash rule enforcement)'
+
   tools:
-    - name: "Local Security Policy (secpol.msc)"
-      description: "Built-in Windows software restriction policy management"
-    - name: "Group Policy Editor (gpedit.msc)"
-      description: "Advanced software restriction policy configuration"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "Software Restriction Policy Analyzer"
-      description: "Third-party tools for SRP configuration assessment"
-    - name: "Policy Management Tools"
-      description: "Enterprise tools for centralized policy deployment and management"
+  - name: Local Security Policy (secpol.msc)
+    description: Built-in Windows software restriction policy management
+  - name: Group Policy Editor (gpedit.msc)
+    description: Advanced software restriction policy configuration
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: Software Restriction Policy Analyzer
+    description: Third-party tools for SRP configuration assessment
+  - name: Policy Management Tools
+    description: Enterprise tools for centralized policy deployment and management
 
 limitations:
-  - "Software restriction policies do NOT prove policy bypass attempts occurred"
-  - "Policy configurations don't indicate actual software execution or blocking events"
-  - "Rule modifications may be legitimate administrative security adjustments"
-  - "Security level settings don't prove unauthorized applications were executed"
-  - "Policy enforcement may be bypassed through legitimate execution methods"
-  - "Policy presence doesn't indicate actual effectiveness or compliance"
+- Software restriction policies do NOT prove policy bypass attempts occurred
+- Policy configurations don't indicate actual software execution or blocking events
+- Rule modifications may be legitimate administrative security adjustments
+- Security level settings don't prove unauthorized applications were executed
+- Policy enforcement may be bypassed through legitimate execution methods
+- Policy presence doesn't indicate actual effectiveness or compliance
 
 correlation:
   required_for_definitive_bypass_proof:
-    - "Event logs showing software execution attempts and policy enforcement results"
-    - "Process execution logs showing unauthorized applications running despite restrictions"
-    - "File system artifacts showing restricted software executed in violation of policies"
-    - "Registry changes showing policy modifications during suspicious activity periods"
-    - "Application logs showing successful execution of restricted applications"
-    
+  - Event logs showing software execution attempts and policy enforcement results
+  - Process execution logs showing unauthorized applications running despite restrictions
+  - File system artifacts showing restricted software executed in violation of policies
+  - Registry changes showing policy modifications during suspicious activity periods
+  - Application logs showing successful execution of restricted applications
+
   strengthens_evidence:
-    - "Event logs showing software restriction policy rule triggering during execution attempts"
-    - "Policy change logs showing rule modifications correlating with attack timelines"
-    - "Process execution showing applications launched through policy bypass techniques"
-    - "File system access showing unauthorized application installation attempts"
+  - Event logs showing software restriction policy rule triggering during execution attempts
+  - Policy change logs showing rule modifications correlating with attack timelines
+  - Process execution showing applications launched through policy bypass techniques
+  - File system access showing unauthorized application installation attempts
 
 metadata:
   windows_versions:
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows XP"
-  deprecated: "Replaced by AppLocker in Windows 7+"
-  criticality: "medium"
+  introduced: Windows XP
+  deprecated: Replaced by AppLocker in Windows 7+
+
+  criticality: medium
 
   investigation_types:
-    - "timeline-analysis"
-    - "lateral-movement"
-    - "behavioral-analysis"
-    - "anti-forensics"
-    
+  - timeline-analysis
+  - lateral-movement
+  - behavioral-analysis
+  - anti-forensics
+
   tags:
-    - "software-restriction"
-    - "application-whitelisting"
-    - "execution-control"
-    - "security-policy"
-    - "malware-prevention"
-    - "legacy-security"
-    - "srp"
+  - software-restriction
+  - application-whitelisting
+  - execution-control
+  - security-policy
+  - malware-prevention
+  - legacy-security
+  - srp
 
   references:
-    - title: "Microsoft Documentation: Software Restriction Policies"
-      url: "https://learn.microsoft.com/en-us/windows-server/identity/software-restriction-policies/software-restriction-policies"
-      type: "official"
-    - title: "Software Restriction Policy Bypass Techniques"
-      url: "https://attack.mitre.org/techniques/T1218/"
-      type: "research"
+  - title: 'Microsoft Documentation: Software Restriction Policies'
+    url: https://learn.microsoft.com/en-us/windows-server/identity/software-restriction-policies/software-restriction-policies
+    type: official
+  - title: Software Restriction Policy Bypass Techniques
+    url: https://attack.mitre.org/techniques/T1218/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SOFTWARE)"
-    persistence: "Policy settings persist until administratively changed"
-    volatility: "Execution control settings affect ongoing application security"
+    default_location: Registry hive files (SOFTWARE)
+    persistence: Policy settings persist until administratively changed
+    volatility: Execution control settings affect ongoing application security
 
   related_artifacts:
-    - "applocker_policies"
-    - "security_policy"
-    - "file_associations"
-    - "execution_tracking"
+  - applocker_policies
+  - security_policy
+  - file_associations
+  - execution_tracking
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-13"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-13'
+  version: '3.0'

@@ -1,125 +1,119 @@
-title: "Internet Explorer Typed URLs"
-category: "browser-activity"
-description: "URLs manually typed in Internet Explorer address bar with chronological access tracking"
+title: Internet Explorer Typed URLs
+category: browser-activity
+description: URLs manually typed in Internet Explorer address bar with chronological access tracking
 
 paths:
-  - "HKCU\\Software\\Microsoft\\Internet Explorer\\TypedURLs"
-  - "HKCU\\Software\\Microsoft\\Internet Explorer\\TypedURLsTime"
+- HKCU\Software\Microsoft\Internet Explorer\TypedURLs
+- HKCU\Software\Microsoft\Internet Explorer\TypedURLsTime
 
 details:
   what: |
-    Internet Explorer maintains a record of URLs that users manually type in the address bar
-    for autocomplete functionality. Stores chronological order of manual URL entry with
-    corresponding timestamps for each typed address.
+    Internet Explorer maintains a record of URLs that users manually type in the address bar for autocomplete functionality. Stores chronological order of manual URL entry with corresponding timestamps for each typed address.
 
   forensic_value: |
-    Extremely valuable for investigating intentional website visits and manual navigation
-    to suspicious sites. Shows deliberate attempts to access specific websites, command
-    and control domains manually entered, and evidence of users actively seeking specific
-    content. Critical for establishing intent in cybercrime investigations.
+    Extremely valuable for investigating intentional website visits and manual navigation to suspicious sites. Shows deliberate attempts to access specific websites, command and control domains manually entered, and evidence of users actively seeking specific content. Critical for establishing intent in cybercrime investigations.
 
   structure: |
-    Sequential value names (url1, url2, url3, etc.) containing full URLs as REG_SZ data.
-    TypedURLsTime contains corresponding binary FILETIME timestamps for each URL entry.
-    Most recent entries receive higher sequential numbers, maintaining chronological order.
+    Sequential value names (url1, url2, url3, etc.) containing full URLs as REG_SZ data. TypedURLsTime contains corresponding binary FILETIME timestamps for each URL entry. Most recent entries receive higher sequential numbers, maintaining chronological order.
 
   examples:
-    - "url1: https://www.google.com (Common search engine access)"
-    - "url2: https://malicious-domain.com (Suspicious manual navigation)"
-    - "url3: http://192.168.1.100:8080 (Direct IP address with non-standard port)"
-    - "url4: ftp://internal-server.company.com (Internal FTP server access)"
-    - "url5: https://darkweb-marketplace.onion (Tor hidden service access)"
-    - "url6: https://sensitive-competitor-site.com (Potential corporate espionage)"
-    - "TypedURLsTime: Binary FILETIME timestamps corresponding to each URL"
+  - 'url1: https://www.google.com (Common search engine access)'
+  - 'url2: https://malicious-domain.com (Suspicious manual navigation)'
+  - 'url3: http://192.168.1.100:8080 (Direct IP address with non-standard port)'
+  - 'url4: ftp://internal-server.company.com (Internal FTP server access)'
+  - 'url5: https://darkweb-marketplace.onion (Tor hidden service access)'
+  - 'url6: https://sensitive-competitor-site.com (Potential corporate espionage)'
+  - 'TypedURLsTime: Binary FILETIME timestamps corresponding to each URL'
 
   tools:
-    - name: "IEHistoryView"
-      url: "https://www.nirsoft.net/utils/iehv.html"
-      description: "Comprehensive Internet Explorer history viewer"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis tool"
-    - name: "BrowsingHistoryView"
-      url: "https://www.nirsoft.net/utils/browsing_history_view.html"
-      description: "Universal browser history viewer for multiple browsers"
-    - name: "RegRipper"
-      url: "https://github.com/keydet89/RegRipper3.0"
-      description: "Registry data extraction and analysis framework"
+  - name: IEHistoryView
+    url: https://www.nirsoft.net/utils/iehv.html
+    description: Comprehensive Internet Explorer history viewer
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis tool
+  - name: BrowsingHistoryView
+    url: https://www.nirsoft.net/utils/browsing_history_view.html
+    description: Universal browser history viewer for multiple browsers
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry data extraction and analysis framework
 
 limitations:
-  - "Shows only manually typed URLs, not links clicked or redirects"
-  - "URLs may be typed for testing or research, not malicious intent"
-  - "Limited to Internet Explorer usage only"
-  - "Registry entries can be manually deleted or cleared"
-  - "Autocomplete may complete URLs from minimal typing"
+- Shows only manually typed URLs, not links clicked or redirects
+- URLs may be typed for testing or research, not malicious intent
+- Limited to Internet Explorer usage only
+- Registry entries can be manually deleted or cleared
+- Autocomplete may complete URLs from minimal typing
 
 correlation:
   required_for_definitive_conclusions:
-    - "Full browser history showing actual visits to typed URLs"
-    - "Network traffic logs confirming connections to suspicious sites"
-    - "Downloaded files or malware from manually accessed sites"
-    - "User activity logs correlating with typed URL timestamps"
-  
+  - Full browser history showing actual visits to typed URLs
+  - Network traffic logs confirming connections to suspicious sites
+  - Downloaded files or malware from manually accessed sites
+  - User activity logs correlating with typed URL timestamps
+
   strengthens_evidence:
-    - "Timeline analysis of manual URL entry patterns"
-    - "Other browser artifacts showing related activity"
-    - "File operations or downloads from manually accessed sites"
+  - Timeline analysis of manual URL entry patterns
+  - Other browser artifacts showing related activity
+  - File operations or downloads from manually accessed sites
 
 metadata:
   windows_versions:
-    - "Windows 98"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 98
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Internet Explorer 4.0"
-  criticality: "high"
+  introduced: Internet Explorer 4.0
+
+  criticality: high
 
   investigation_types:
-    - "timeline-analysis"
-    - "insider-threat"
-    - "incident-response"
-    - "behavioral-analysis"
-    - "initial-access"
+  - timeline-analysis
+  - insider-threat
+  - incident-response
+  - behavioral-analysis
+  - initial-access
 
   tags:
-    - "browser"
-    - "internet-explorer"
-    - "manual-navigation"
-    - "typed-urls"
-    - "suspicious-domains"
-    - "user-intent"
+  - browser
+  - internet-explorer
+  - manual-navigation
+  - typed-urls
+  - suspicious-domains
+  - user-intent
 
   references:
-    - title: "Microsoft Documentation: Internet Explorer Registry Settings"
-      url: "https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/"
-      type: "official"
-    - title: "Internet Explorer Forensics Guide"
-      url: "https://www.forensicfocus.com/articles/internet-explorer-forensics/"
-      type: "research"
+  - title: 'Microsoft Documentation: Internet Explorer Registry Settings'
+    url: https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/
+    type: official
+  - title: Internet Explorer Forensics Guide
+    url: https://www.forensicfocus.com/articles/internet-explorer-forensics/
+    type: research
 
   retention:
-    default_location: "Registry hive files (NTUSER.DAT)"
-    persistence: "Typed URLs persist until manually cleared or registry limit reached"
-    volatility: "Real-time updates with manual URL entry"
+    default_location: Registry hive files (NTUSER.DAT)
+    persistence: Typed URLs persist until manually cleared or registry limit reached
+    volatility: Real-time updates with manual URL entry
 
   related_artifacts:
-    - "security_zones"
-    - "downloads"
-    - "chrome_history"
-    - "firefox_history"
+  - security_zones
+  - downloads
+  - chrome_history
+  - firefox_history
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-01-15"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-01-15'
+  version: '3.0'

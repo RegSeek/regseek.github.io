@@ -1,142 +1,136 @@
-title: "Windows File Shares and SMB Configuration"
-category: "network-infrastructure"
-description: "Shared folders, SMB settings, and network file sharing configuration"
+title: Windows File Shares and SMB Configuration
+category: network-infrastructure
+description: Shared folders, SMB settings, and network file sharing configuration
 
 paths:
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\lanmanserver\\Shares"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\LanmanServer\\Parameters"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\lanmanserver\\Parameters"
+- HKLM\SYSTEM\CurrentControlSet\Services\lanmanserver\Shares
+- HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters
+- HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters
+- HKLM\SYSTEM\CurrentControlSet\Services\lanmanserver\Parameters
 
 details:
   what: |
-    Windows Server Message Block (SMB/CIFS) file sharing configuration including shared folder
-    definitions, access permissions, security descriptors, and server parameters. Manages both
-    administrative shares (C$, ADMIN$) and user-defined shares with access control settings.
+    Windows Server Message Block (SMB/CIFS) file sharing configuration including shared folder definitions, access permissions, security descriptors, and server parameters. Manages both administrative shares (C$, ADMIN$) and user-defined shares with access control settings.
 
   forensic_value: |
-    Critical for investigating lateral movement techniques and data exfiltration through network
-    shares. Shows evidence of shared folders used for data staging and reveals SMB configuration
-    vulnerabilities. Essential for analyzing advanced persistent threats that leverage legitimate
-    file sharing for stealth operations.
+    Critical for investigating lateral movement techniques and data exfiltration through network shares. Shows evidence of shared folders used for data staging and reveals SMB configuration vulnerabilities. Essential for analyzing advanced persistent threats that leverage legitimate file sharing for stealth operations.
 
   structure: |
-    Shares registry subkey contains individual share configurations with UNC paths, security
-    descriptors, and access permissions. Server parameters control SMB behavior, authentication
-    requirements, and security signing. Binary security descriptors define access control.
+    Shares registry subkey contains individual share configurations with UNC paths, security descriptors, and access permissions. Server parameters control SMB behavior, authentication requirements, and security signing. Binary security descriptors define access control.
 
   examples:
-    - "Shares\\\\ADMIN$: C:\\\\ (Hidden administrative share - full system access)"
-    - "Shares\\\\C$: C:\\\\ (Hidden drive share - root filesystem access)"
-    - "Shares\\\\SharedDocs: C:\\\\Users\\\\Public\\\\Documents (Public document share)"
-    - "Shares\\\\Confidential: C:\\\\Sensitive\\\\Data (Custom sensitive data share)"
-    - "RequireSecuritySignature: 1 (SMB signing required for security)"
-    - "EnableSecuritySignature: 1 (SMB signing enabled)"
-    - "NullSessionShares: COMCFG,DFS$ (Shares accessible without authentication)"
-    - "RestrictNullSessAccess: 0 (Allow null session access - security risk)"
+  - 'Shares\\ADMIN$: C:\\ (Hidden administrative share - full system access)'
+  - 'Shares\\C$: C:\\ (Hidden drive share - root filesystem access)'
+  - 'Shares\\SharedDocs: C:\\Users\\Public\\Documents (Public document share)'
+  - 'Shares\\Confidential: C:\\Sensitive\\Data (Custom sensitive data share)'
+  - 'RequireSecuritySignature: 1 (SMB signing required for security)'
+  - 'EnableSecuritySignature: 1 (SMB signing enabled)'
+  - 'NullSessionShares: COMCFG,DFS$ (Shares accessible without authentication)'
+  - 'RestrictNullSessAccess: 0 (Allow null session access - security risk)'
 
   tools:
-    - name: "Computer Management (compmgmt.msc)"
-      description: "Built-in Windows shared folder management interface"
-    - name: "net share"
-      description: "Command-line utility for share enumeration and management"
-    - name: "ShareEnum"
-      url: "https://learn.microsoft.com/en-us/sysinternals/downloads/shareenum"
-      description: "Microsoft Sysinternals tool for network share discovery"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "SMB Security Scanner"
-      description: "Third-party tools for SMB security assessment and vulnerability analysis"
+  - name: Computer Management (compmgmt.msc)
+    description: Built-in Windows shared folder management interface
+  - name: net share
+    description: Command-line utility for share enumeration and management
+  - name: ShareEnum
+    url: https://learn.microsoft.com/en-us/sysinternals/downloads/shareenum
+    description: Microsoft Sysinternals tool for network share discovery
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: SMB Security Scanner
+    description: Third-party tools for SMB security assessment and vulnerability analysis
 
 limitations:
-  - "Share configuration does NOT prove files were actually accessed or transferred"
-  - "Shared folder existence doesn't indicate successful network connections"
-  - "Administrative shares are enabled by default and don't prove malicious usage"
-  - "SMB settings don't reveal what data was shared or accessed"
-  - "Security descriptors don't indicate actual permission usage"
-  - "Share creation doesn't prove network clients connected"
-  - "Configuration may exist without any network file sharing activity"
+- Share configuration does NOT prove files were actually accessed or transferred
+- Shared folder existence doesn't indicate successful network connections
+- Administrative shares are enabled by default and don't prove malicious usage
+- SMB settings don't reveal what data was shared or accessed
+- Security descriptors don't indicate actual permission usage
+- Share creation doesn't prove network clients connected
+- Configuration may exist without any network file sharing activity
 
 correlation:
   required_for_definitive_usage_proof:
-    - "SMB server access logs showing successful client connections and file operations"
-    - "Network traffic analysis showing SMB protocol communications"
-    - "Windows Event Logs showing file share access (Event ID 5140, 5145)"
-    - "File system audit logs showing shared file modifications"
-    
+  - SMB server access logs showing successful client connections and file operations
+  - Network traffic analysis showing SMB protocol communications
+  - Windows Event Logs showing file share access (Event ID 5140, 5145)
+  - File system audit logs showing shared file modifications
+
   strengthens_evidence:
-    - "Process execution logs showing SMB server service activity"
-    - "Network authentication logs showing SMB logon attempts"
-    - "File timestamps correlating with suspected share access times"
-    - "Registry keys modified by shared file applications"
+  - Process execution logs showing SMB server service activity
+  - Network authentication logs showing SMB logon attempts
+  - File timestamps correlating with suspected share access times
+  - Registry keys modified by shared file applications
 
 metadata:
   windows_versions:
-    - "Windows NT"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2000"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows NT
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2000
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows NT 3.1"
-  criticality: "high"
+  introduced: Windows NT 3.1
+
+  criticality: high
 
   investigation_types:
-    - "lateral-movement"
-    - "data-exfiltration"
-    - "incident-response"
-    - "behavioral-analysis"
-    - "malware-analysis"
-    
+  - lateral-movement
+  - data-exfiltration
+  - incident-response
+  - behavioral-analysis
+  - malware-analysis
+
   tags:
-    - "network"
-    - "file-shares"
-    - "smb"
-    - "lateral-movement"
-    - "data-exfiltration"
-    - "network-exposure"
-    - "cifs"
+  - network
+  - file-shares
+  - smb
+  - lateral-movement
+  - data-exfiltration
+  - network-exposure
+  - cifs
 
   references:
-    - title: "Microsoft Documentation: SMB File Sharing"
-      url: "https://learn.microsoft.com/en-us/windows-server/storage/file-server/"
-      type: "official"
-    - title: "SMB Security and Lateral Movement"
-      url: "https://attack.mitre.org/techniques/T1021/002/"
-      type: "research"
-    - title: "Windows File Share Security Analysis"
-      url: "https://www.sans.org/white-papers/33492/"
-      type: "research"
+  - title: 'Microsoft Documentation: SMB File Sharing'
+    url: https://learn.microsoft.com/en-us/windows-server/storage/file-server/
+    type: official
+  - title: SMB Security and Lateral Movement
+    url: https://attack.mitre.org/techniques/T1021/002/
+    type: research
+  - title: Windows File Share Security Analysis
+    url: https://www.sans.org/white-papers/33492/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SYSTEM)"
-    persistence: "Share configuration persists until manually removed or server reconfiguration"
-    volatility: "Network share settings affect ongoing file access capabilities"
+    default_location: Registry hive files (SYSTEM)
+    persistence: Share configuration persists until manually removed or server reconfiguration
+    volatility: Network share settings affect ongoing file access capabilities
 
   related_artifacts:
-    - "mapped_drives"
-    - "netbios_settings"
-    - "network_interfaces"
-    - "security_policy"
+  - mapped_drives
+  - netbios_settings
+  - network_interfaces
+  - security_policy
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

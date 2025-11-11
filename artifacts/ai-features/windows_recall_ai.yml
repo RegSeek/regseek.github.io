@@ -1,0 +1,113 @@
+title: Microsoft Recall and Windows AI Configuration
+category: ai-features
+description: Windows 11 24H2 AI screenshot capture feature configuration that determines if system captures and analyzes screen content every few seconds
+
+paths:
+- HKCU\Software\Microsoft\Windows\CurrentVersion\WindowsAI
+- HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsAI
+- HKCU\Software\Policies\Microsoft\Windows\WindowsAI
+
+details:
+  what: |
+    Windows Recall is a controversial AI-powered feature introduced in Windows 11 24H2 (May 2024) that captures screenshots of user activity every few seconds and uses Neural Processing Unit (NPU) chips for AI analysis. Registry keys control enabling/disabling of the feature and store configuration settings on a per-user and per-machine basis. The feature was disabled by default in corporate builds due to significant privacy concerns.
+
+  forensic_value: |
+    Critical for privacy investigations and incident response. Determines whether the controversial AI screenshot capture feature was active during the timeframe of interest. Can reveal if attacker activity was potentially captured by Windows Recall, if the feature was disabled by organizational policy versus user choice, and whether sensitive data may have been captured and stored. Essential for understanding scope of data exposure in breach investigations and for establishing timeline of privacy control changes.
+
+  structure: |
+    Registry values stored as DWORD and String values controlling feature enablement, policy settings, and configuration parameters. Key values include DisableAIDataAnalysis (DWORD), TurnOffSavingSnapshots (DWORD), and related AI feature toggles. Machine-level policies override user-level settings when present.
+  
+  examples:
+  - DisableAIDataAnalysis = 1 (DWORD) - AI analysis disabled
+  - TurnOffSavingSnapshots = 1 (DWORD) - Screenshot saving disabled
+  - EnableRecall = 0 (DWORD) - Recall feature disabled by policy
+  - RecallConfigurationState = 2 (DWORD) - Configured state indicator
+  
+  tools:
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry browser for analyzing Windows AI settings
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry analysis framework with policy parsing capabilities
+  - name: KAPE
+    url: https://www.kroll.com/en/services/cyber-risk/investigate-and-respond/kroll-artifact-parser-extractor-kape
+    description: Artifact collection framework for registry extraction
+
+limitations:
+- Registry configuration DOES NOT prove screenshots were actually captured or stored
+- Cannot determine if Recall database exists or contains data from registry alone
+- Feature may be enabled in registry but inactive due to missing NPU hardware requirements
+- Does not show what specific content was captured or analyzed by AI
+- Cannot prove data was exfiltrated even if feature was active
+- Temporal information limited - shows current/last state, not historical changes without transaction logs
+
+correlation:
+  required_for_definitive_conclusions:
+  - Check for CoreAIPlatform.00 directory existence at %AppData%\Local\CoreAIPlatform.00\
+  - 'Validate presence of Recall database files: ukg.db, SemanticTextStore.sidb, SemanticImageStore.sidb'
+  - Verify screenshot images in %AppData%\Local\CoreAIPlatform.00\UKP\{GUID}\ImageStore\
+  - Cross-reference Event Logs for AI service activity (Event IDs related to CoreAIPlatform service)
+  - Check system specifications for NPU (Neural Processing Unit) presence and capabilities
+  - Analyze NTUSER.DAT transaction logs for historical policy changes
+  
+  strengthens_evidence:
+  - Windows Update history showing 24H2 installation date
+  - Group Policy Object (GPO) configurations from domain controller
+  - PowerShell command history showing Recall configuration commands
+  - Windows Defender logs for AI service activity patterns
+  - User login/logout times from Security Event Logs to correlate capture windows
+
+metadata:
+  windows_versions:
+  - Windows 11
+  
+  introduced: Windows 11 24H2 (May 2024)
+  
+  criticality: high
+  
+  investigation_types:
+  - incident-response
+  - insider-threat
+  - data-exfiltration
+  - behavioral-analysis
+  - anti-forensics
+  
+  tags:
+  - windows-11
+  - ai-features
+  - privacy
+  - screenshots
+  - recall
+  - npu
+  - machine-learning
+  - 24h2
+  
+  references:
+  - title: Forensic Artifacts in Windows 11 - Securelist
+    url: https://securelist.com/forensic-artifacts-in-windows-11/117680/
+    type: research
+  - title: Microsoft Recall Privacy and Security Documentation
+    url: https://learn.microsoft.com/en-us/windows/client-management/manage-recall
+    type: official
+  
+  retention:
+    default_location: NTUSER.DAT and SYSTEM registry hives
+    persistence: Survives reboots until explicitly modified
+    volatility: Persistent registry data; historical changes require transaction log analysis
+  
+  related_artifacts:
+  - windows_defender_security
+  - windows_update
+  - device_permissions
+  - local_security_policy
+
+author:
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
+
+contribution:
+  date_added: '2025-01-11'
+  last_updated: '2025-01-11'
+  version: '1.0'

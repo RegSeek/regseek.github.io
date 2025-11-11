@@ -1,0 +1,117 @@
+title: Windows Copilot AI Assistant Configuration
+category: ai-features
+description: Windows 11 integrated AI assistant settings tracking user interaction with Microsoft's Copilot feature and privacy preferences
+
+paths:
+- HKCU\Software\Microsoft\Windows\Shell\Copilot
+- HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot
+- HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\ShowCopilotButton
+
+details:
+  what: |
+    Windows Copilot is Microsoft's integrated AI assistant introduced in Windows 11 23H2 (September 2023). Registry keys store configuration settings including feature enablement, taskbar button visibility, user preferences, policy restrictions, and interaction history metadata. The assistant provides AI-powered help, content generation, and system control through natural language interface. Organizations can disable Copilot through Group Policy registry entries.
+
+  forensic_value: |
+    Reveals user engagement with AI assistant features and organizational AI usage policies. Critical for data exfiltration investigations where sensitive information may have been shared with cloud AI. Shows whether users had access to AI content generation capabilities that could be used for information gathering or social engineering preparation. Policy settings indicate organizational security posture regarding AI tool usage. Essential for insider threat cases involving unauthorized AI assistance in malicious activities.
+
+  structure: |
+    Registry values stored as DWORD for feature toggles and policy enforcement, with String values for configuration parameters. Key values include TurnOffWindowsCopilot (DWORD) for policy-based disablement, ShowCopilotButton (DWORD) for taskbar visibility, and user preference settings. HKLM policies override HKCU user settings when corporate restrictions are applied.
+  
+  examples:
+  - TurnOffWindowsCopilot = 1 (DWORD) - Copilot disabled by organizational policy
+  - ShowCopilotButton = 0 (DWORD) - Taskbar button hidden by user preference
+  - CopilotAvailable = 1 (DWORD) - Feature available on system
+  - DisableCopilotConsumerFeatures = 1 (DWORD) - Consumer AI features restricted
+  - CopilotOnboardingComplete = 1 (DWORD) - User completed initial setup
+  
+  tools:
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry browser for Copilot configuration analysis
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry analysis with policy parsing capabilities
+  - name: PowerShell Registry Module
+    description: Native Windows registry access for automated policy auditing
+
+limitations:
+- Registry settings DO NOT show actual queries or prompts sent to Copilot AI
+- Cannot prove sensitive data was shared with AI from registry configuration alone
+- Feature availability does not prove actual usage occurred
+- Does not contain conversation history or AI interaction logs
+- Cannot determine if responses were copied, saved, or exfiltrated
+- Taskbar button visibility does not indicate usage frequency or patterns
+- Policy settings show restriction state but not enforcement effectiveness
+
+correlation:
+  required_for_definitive_conclusions:
+  - Analyze Edge browser history for copilot.microsoft.com and bing.com/chat domains
+  - Check network traffic logs for Copilot API endpoints and data transmission
+  - Review Windows Event Logs for Copilot service activity and authentication
+  - Examine %LOCALAPPDATA%\Packages\Microsoft.Windows.Copilot* for cache and state files
+  - Verify clipboard history for potential AI-generated content copying
+  - Cross-reference with Microsoft 365 audit logs if organizational account used
+  
+  strengthens_evidence:
+  - Browser cookies and session tokens for Copilot authentication
+  - PowerShell command history showing Copilot configuration changes
+  - Group Policy application logs showing policy enforcement
+  - Network proxy logs showing Copilot service connections
+  - Windows Timeline data showing Copilot window activity (if enabled)
+  - Recent documents containing AI-generated content markers
+
+metadata:
+  windows_versions:
+  - Windows 11
+  
+  introduced: Windows 11 23H2 (September 2023)
+  
+  criticality: high
+  
+  investigation_types:
+  - insider-threat
+  - data-exfiltration
+  - behavioral-analysis
+  - incident-response
+  - anti-forensics
+  
+  tags:
+  - windows-11
+  - ai-assistant
+  - copilot
+  - privacy
+  - data-exfiltration-risk
+  - cloud-ai
+  - 23h2
+  - 24h2
+  
+  references:
+  - title: Microsoft Copilot in Windows Documentation
+    url: https://learn.microsoft.com/en-us/copilot/copilot-windows-overview
+    type: official
+  - title: Manage Windows Copilot with Group Policy
+    url: https://learn.microsoft.com/en-us/windows/client-management/manage-windows-copilot
+    type: official
+  
+  retention:
+    default_location: NTUSER.DAT and SOFTWARE registry hives
+    persistence: Survives reboots; policy settings persistent until GPO changes
+    volatility: Persistent configuration data; usage logs stored separately in Edge browser
+  
+  related_artifacts:
+  - windows_recall_ai
+  - chrome_browser
+  - search_history
+  - network_mapped_drives
+  - windows_explorer_policies
+
+author:
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
+
+contribution:
+  date_added: '2025-01-11'
+  last_updated: '2025-01-11'
+  version: '1.0'

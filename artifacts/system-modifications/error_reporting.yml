@@ -1,138 +1,132 @@
-title: "Windows Error Reporting Configuration"
-category: "system-modifications"
-description: "Error reporting settings, crash dump configuration, debugging options, and failure analysis"
+title: Windows Error Reporting Configuration
+category: system-modifications
+description: Error reporting settings, crash dump configuration, debugging options, and failure analysis
 
 paths:
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\Windows Error Reporting"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\CrashControl"
-  - "HKLM\\SOFTWARE\\Microsoft\\PCHealth\\ErrorReporting"
-  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Error Reporting"
+- HKLM\SOFTWARE\Microsoft\Windows\Windows Error Reporting
+- HKLM\SYSTEM\CurrentControlSet\Control\CrashControl
+- HKLM\SOFTWARE\Microsoft\PCHealth\ErrorReporting
+- HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting
 
 details:
   what: |
-    Windows Error Reporting (WER) service collects and manages crash data, system errors, application 
-    failures, and debugging information for analysis and troubleshooting. Configuration includes 
-    crash dump settings, report destinations, disabled applications, automatic restart behavior, 
-    and debugging options.
+    Windows Error Reporting (WER) service collects and manages crash data, system errors, application failures, and debugging information for analysis and troubleshooting. Configuration includes crash dump settings, report destinations, disabled applications, automatic restart behavior, and debugging options.
 
   forensic_value: |
-    Critical for forensic investigations as attackers often disable error reporting to hide evidence 
-    of crashes caused by malicious software exploitation attempts. Shows if crash dumps were disabled 
-    to prevent memory analysis and reveals crash dump locations containing potential forensic evidence.
+    Critical for forensic investigations as attackers often disable error reporting to hide evidence of crashes caused by malicious software exploitation attempts. Shows if crash dumps were disabled to prevent memory analysis and reveals crash dump locations containing potential forensic evidence.
 
   structure: |
-    WER configuration includes Disabled (global enable/disable), LocalDumps registry containing 
-    application-specific dump settings, CrashDumpEnabled controlling kernel dump creation, and 
-    DumpFolder specifying crash dump storage locations. Policy settings override user configurations.
+    WER configuration includes Disabled (global enable/disable), LocalDumps registry containing application-specific dump settings, CrashDumpEnabled controlling kernel dump creation, and DumpFolder specifying crash dump storage locations. Policy settings override user configurations.
 
   examples:
-    - "Disabled: 1 (Windows Error Reporting completely disabled)"
-    - "CrashDumpEnabled: 1 (Small memory dump - 256KB)"
-    - "CrashDumpEnabled: 2 (Kernel memory dump)"
-    - "CrashDumpEnabled: 7 (Automatic memory dump)"
-    - "DumpFolder: %SystemRoot%\\\\Minidump (Default crash dump location)"
-    - "LocalDumps\\\\malware.exe\\\\DumpFolder: C:\\\\CrashDumps (Application-specific dumps)"
-    - "AutoReboot: 0 (Don't automatically restart after crash)"
-    - "LogEvent: 1 (Log crash events in System Event Log)"
+  - 'Disabled: 1 (Windows Error Reporting completely disabled)'
+  - 'CrashDumpEnabled: 1 (Small memory dump - 256KB)'
+  - 'CrashDumpEnabled: 2 (Kernel memory dump)'
+  - 'CrashDumpEnabled: 7 (Automatic memory dump)'
+  - 'DumpFolder: %SystemRoot%\\Minidump (Default crash dump location)'
+  - 'LocalDumps\\malware.exe\\DumpFolder: C:\\CrashDumps (Application-specific dumps)'
+  - 'AutoReboot: 0 (Don''t automatically restart after crash)'
+  - 'LogEvent: 1 (Log crash events in System Event Log)'
 
   tools:
-    - name: "System Properties - Advanced"
-      description: "Built-in Windows crash dump and error reporting configuration"
-    - name: "Event Viewer"
-      description: "Windows event log viewer for crash and error analysis"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "WinDbg"
-      url: "https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/"
-      description: "Windows debugging toolkit for crash dump analysis"
-    - name: "BlueScreenView"
-      url: "https://www.nirsoft.net/utils/blue_screen_view.html"
-      description: "Blue screen crash dump analyzer and viewer"
+  - name: System Properties - Advanced
+    description: Built-in Windows crash dump and error reporting configuration
+  - name: Event Viewer
+    description: Windows event log viewer for crash and error analysis
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: WinDbg
+    url: https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/
+    description: Windows debugging toolkit for crash dump analysis
+  - name: BlueScreenView
+    url: https://www.nirsoft.net/utils/blue_screen_view.html
+    description: Blue screen crash dump analyzer and viewer
 
 limitations:
-  - "Error reporting configuration does NOT prove system crashes or exploitation occurred"
-  - "Disabled error reporting doesn't indicate malicious activity caused the changes"
-  - "Crash dump settings don't prove crash dumps were actually created"
-  - "Configuration changes may be legitimate administrative system optimization"
-  - "Memory dump settings don't indicate forensic evidence exists in dump files"
-  - "Debugging configuration may be for legitimate development or troubleshooting purposes"
+- Error reporting configuration does NOT prove system crashes or exploitation occurred
+- Disabled error reporting doesn't indicate malicious activity caused the changes
+- Crash dump settings don't prove crash dumps were actually created
+- Configuration changes may be legitimate administrative system optimization
+- Memory dump settings don't indicate forensic evidence exists in dump files
+- Debugging configuration may be for legitimate development or troubleshooting purposes
 
 correlation:
   required_for_definitive_crash_evidence:
-    - "Actual crash dump files created during system or application failures"
-    - "Event logs showing crash events and error reporting service activity"
-    - "File system artifacts showing crash dump creation and modification times"
-    - "Memory analysis of crash dumps revealing exploitation or malicious activity"
-    - "Application logs showing errors and failures during suspicious periods"
-    
+  - Actual crash dump files created during system or application failures
+  - Event logs showing crash events and error reporting service activity
+  - File system artifacts showing crash dump creation and modification times
+  - Memory analysis of crash dumps revealing exploitation or malicious activity
+  - Application logs showing errors and failures during suspicious periods
+
   strengthens_evidence:
-    - "Registry changes showing error reporting modifications during attack timeframes"
-    - "Event logs showing system instability correlating with malicious activity"
-    - "File modifications in crash dump directories during investigation periods"
-    - "Process execution logs showing applications crashing during exploitation attempts"
+  - Registry changes showing error reporting modifications during attack timeframes
+  - Event logs showing system instability correlating with malicious activity
+  - File modifications in crash dump directories during investigation periods
+  - Process execution logs showing applications crashing during exploitation attempts
 
 metadata:
   windows_versions:
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows XP"
-  criticality: "medium"
+  introduced: Windows XP
+
+  criticality: medium
 
   investigation_types:
-    - "incident-response"
-    - "malware-analysis"
-    - "anti-forensics"
+  - incident-response
+  - malware-analysis
+  - anti-forensics
 
   tags:
-    - "error-reporting"
-    - "crash-dumps"
-    - "debugging"
-    - "system-stability"
-    - "forensic-data"
-    - "memory-analysis"
-    - "failure-analysis"
+  - error-reporting
+  - crash-dumps
+  - debugging
+  - system-stability
+  - forensic-data
+  - memory-analysis
+  - failure-analysis
 
   references:
-    - title: "Microsoft Documentation: Windows Error Reporting"
-      url: "https://learn.microsoft.com/en-us/windows/win32/wer/windows-error-reporting"
-      type: "official"
-    - title: "Crash Dump Analysis for Digital Forensics"
-      url: "https://www.sans.org/white-papers/33927/"
-      type: "research"
-    - title: "Windows Memory Forensics and Crash Analysis"
-      url: "https://www.volatilityfoundation.org/"
-      type: "tool"
+  - title: 'Microsoft Documentation: Windows Error Reporting'
+    url: https://learn.microsoft.com/en-us/windows/win32/wer/windows-error-reporting
+    type: official
+  - title: Crash Dump Analysis for Digital Forensics
+    url: https://www.sans.org/white-papers/33927/
+    type: research
+  - title: Windows Memory Forensics and Crash Analysis
+    url: https://www.volatilityfoundation.org/
+    type: tool
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, SYSTEM), crash dump files"
-    persistence: "Error reporting configuration persists until manually changed"
-    volatility: "Crash dumps may contain sensitive memory contents and exploitation evidence"
+    default_location: Registry hive files (SOFTWARE, SYSTEM), crash dump files
+    persistence: Error reporting configuration persists until manually changed
+    volatility: Crash dumps may contain sensitive memory contents and exploitation evidence
 
   related_artifacts:
-    - "page_file"
-    - "performance_monitoring"
-    - "volume_shadow_copy"
-    - "event_log_config"
+  - page_file
+  - performance_monitoring
+  - volume_shadow_copy
+  - event_log_config
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-13"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-13'
+  version: '3.0'

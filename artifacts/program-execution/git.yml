@@ -1,120 +1,115 @@
-title: "Git Source Code Management Configuration"
-category: "program-execution"
-description: "Git version control system configuration, repository history, and development activity tracking"
+title: Git Source Code Management Configuration
+category: program-execution
+description: Git version control system configuration, repository history, and development activity tracking
 
 paths:
-  - "HKCU\\Software\\Git"
-  - "HKLM\\SOFTWARE\\Git"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Git_is1"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Git_is1"
+- HKCU\Software\Git
+- HKLM\SOFTWARE\Git
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Git_is1
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Git_is1
 
 details:
   what: |
-    Git version control configuration including user credentials, repository settings, 
-    remote URLs, and development workflow preferences. Registry tracks installation paths, 
-    global configuration, credential helpers, and integration settings.
+    Git version control configuration including user credentials, repository settings, remote URLs, and development workflow preferences. Registry tracks installation paths, global configuration, credential helpers, and integration settings.
 
   forensic_value: |
-    Critical for investigating software development activities, source code access, and 
-    intellectual property theft. Shows evidence of repository cloning, commit activity, 
-    and can reveal unauthorized code access, stolen source code, or insider development activities.
+    Critical for investigating software development activities, source code access, and intellectual property theft. Shows evidence of repository cloning, commit activity, and can reveal unauthorized code access, stolen source code, or insider development activities.
 
   structure: |
-    Git configuration includes installation directories, user identity settings, credential 
-    storage methods, repository paths, and integration preferences. Global configuration 
-    shows default behavior and authentication methods.
+    Git configuration includes installation directories, user identity settings, credential storage methods, repository paths, and integration preferences. Global configuration shows default behavior and authentication methods.
 
   examples:
-    - "InstallPath: C:\\Program Files\\Git"
-    - "GitConfig: user.name=John Developer"
-    - "GitConfig: user.email=john@company.com"
-    - "GitConfig: credential.helper=manager-core"
-    - "RecentRepo: https://github.com/company/sensitive-project.git"
-    - "RecentRepo: git@internal-server:proprietary-code.git"
-    - "GitBash: C:\\Program Files\\Git\\bin\\bash.exe"
+  - 'InstallPath: C:\Program Files\Git'
+  - 'GitConfig: user.name=John Developer'
+  - 'GitConfig: user.email=john@company.com'
+  - 'GitConfig: credential.helper=manager-core'
+  - 'RecentRepo: https://github.com/company/sensitive-project.git'
+  - 'RecentRepo: git@internal-server:proprietary-code.git'
+  - 'GitBash: C:\Program Files\Git\bin\bash.exe'
 
   tools:
-    - name: "Git Bash / Git GUI"
-      description: "Git command-line and graphical user interfaces"
-    - name: "git config --list"
-      description: "Command to display all Git configuration settings"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "Git Credential Manager"
-      description: "Secure credential storage for Git operations"
+  - name: Git Bash / Git GUI
+    description: Git command-line and graphical user interfaces
+  - name: git config --list
+    description: Command to display all Git configuration settings
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: Git Credential Manager
+    description: Secure credential storage for Git operations
 
 limitations:
-  - "Git registry configuration does NOT prove actual repository usage or code commits"
-  - "Installation presence doesn't indicate active development work"
-  - "User credentials may be configured without accessing any repositories"
-  - "Repository URLs in configuration don't prove successful cloning or access"
-  - "Credential helpers may store authentication without actual Git operations"
-  - "Configuration may be set by automated tools or installers"
-  - "Recent repository lists may be populated without successful operations"
+- Git registry configuration does NOT prove actual repository usage or code commits
+- Installation presence doesn't indicate active development work
+- User credentials may be configured without accessing any repositories
+- Repository URLs in configuration don't prove successful cloning or access
+- Credential helpers may store authentication without actual Git operations
+- Configuration may be set by automated tools or installers
+- Recent repository lists may be populated without successful operations
 
 correlation:
   required_for_definitive_execution_proof:
-    - "Process execution logs showing git.exe or related Git tool launches"
-    - "File system artifacts showing Git repositories and commit history"
-    - "Network logs showing connections to Git servers and repositories"
-    - "Git log files showing actual commit, push, and pull operations"
-    
+  - Process execution logs showing git.exe or related Git tool launches
+  - File system artifacts showing Git repositories and commit history
+  - Network logs showing connections to Git servers and repositories
+  - Git log files showing actual commit, push, and pull operations
+
   strengthens_evidence:
-    - "Recent documents showing code files accessed for development"
-    - "SSH key files and authentication artifacts for Git operations"
-    - "Command-line history showing Git commands executed"
+  - Recent documents showing code files accessed for development
+  - SSH key files and authentication artifacts for Git operations
+  - Command-line history showing Git commands executed
 
 metadata:
   windows_versions:
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Git for Windows"
-  criticality: "medium"
+  introduced: Git for Windows
+
+  criticality: medium
 
   investigation_types:
-    - "data-exfiltration"
-    - "behavioral-analysis"
-    - "insider-threat"
-    - "program-execution"
+  - data-exfiltration
+  - behavioral-analysis
+  - insider-threat
+  - program-execution
 
   tags:
-    - "git"
-    - "version-control"
-    - "source-code"
-    - "development"
-    - "repositories"
-    - "programming"
-    - "intellectual-property"
+  - git
+  - version-control
+  - source-code
+  - development
+  - repositories
+  - programming
+  - intellectual-property
 
   references:
-    - title: "Git Documentation"
-      url: "https://git-scm.com/doc"
-      type: "official"
-    - title: "Git for Windows"
-      url: "https://gitforwindows.org/"
-      type: "official"
+  - title: Git Documentation
+    url: https://git-scm.com/doc
+    type: official
+  - title: Git for Windows
+    url: https://gitforwindows.org/
+    type: official
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
-    persistence: "Git configuration persists until manual reconfiguration or uninstallation"
-    volatility: "Repository access patterns provide ongoing development activity evidence"
+    default_location: Registry hive files (SOFTWARE, NTUSER.DAT)
+    persistence: Git configuration persists until manual reconfiguration or uninstallation
+    volatility: Repository access patterns provide ongoing development activity evidence
 
   related_artifacts:
-    - "development_tools"
-    - "source_code_access"
-    - "programming_activity"
+  - development_tools
+  - source_code_access
+  - programming_activity
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-08"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-06-08'
+  last_updated: '2025-06-12'
+  version: '3.0'

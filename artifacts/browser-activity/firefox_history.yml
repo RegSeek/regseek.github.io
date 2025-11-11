@@ -1,126 +1,120 @@
-title: "Firefox Browser Registry Data"
-category: "browser-activity"
-description: "Firefox installation information, profile locations, browser preferences, and configuration data"
+title: Firefox Browser Registry Data
+category: browser-activity
+description: Firefox installation information, profile locations, browser preferences, and configuration data
 
 paths:
-  - "HKCU\\Software\\Mozilla\\Firefox"
-  - "HKLM\\SOFTWARE\\Mozilla\\Firefox"
-  - "HKCU\\Software\\Classes\\FirefoxHTML"
-  - "HKLM\\SOFTWARE\\Classes\\FirefoxURL"
+- HKCU\Software\Mozilla\Firefox
+- HKLM\SOFTWARE\Mozilla\Firefox
+- HKCU\Software\Classes\FirefoxHTML
+- HKLM\SOFTWARE\Classes\FirefoxURL
 
 details:
   what: |
-    Firefox browser registration and configuration data including installation information,
-    version details, profile directory locations, default browser settings, and file
-    association handlers. Manages Firefox integration with Windows shell and protocol handlers.
+    Firefox browser registration and configuration data including installation information, version details, profile directory locations, default browser settings, and file association handlers. Manages Firefox integration with Windows shell and protocol handlers.
 
   forensic_value: |
-    Useful for identifying Firefox installation and determining profile locations for
-    further browser analysis. Shows Firefox integration with Windows file associations
-    and protocol handlers. Note: Registry data contains installation/configuration
-    information only, NOT actual browsing behavior or usage patterns.
+    Useful for identifying Firefox installation and determining profile locations for further browser analysis. Shows Firefox integration with Windows file associations and protocol handlers. Note: Registry data contains installation/configuration information only, NOT actual browsing behavior or usage patterns.
 
   structure: |
-    Installation information organized under Mozilla\\Firefox including CurrentVersion,
-    install directory paths, and profile management settings. File associations stored
-    in Classes registry showing protocol handlers for HTTP, HTTPS, FTP, and custom protocols.
+    Installation information organized under Mozilla\\Firefox including CurrentVersion, install directory paths, and profile management settings. File associations stored in Classes registry showing protocol handlers for HTTP, HTTPS, FTP, and custom protocols.
 
   examples:
-    - "CurrentVersion: 121.0 (Firefox version information)"
-    - "Install Directory: C:\\Program Files\\Mozilla Firefox (Installation path)"
-    - "Profile Path: %APPDATA%\\Mozilla\\Firefox\\Profiles (Profile directory location)"
-    - "FirefoxHTML\\shell\\open\\command: \"C:\\Program Files\\Mozilla Firefox\\firefox.exe\" -osint -url \"%1\""
-    - "FirefoxURL\\DefaultIcon: C:\\Program Files\\Mozilla Firefox\\firefox.exe,1"
-    - "DefaultClientState: 1 (Default browser status)"
-    - "ProfileManager\\StartWithLastProfile: 1 (Automatic profile loading)"
+  - 'CurrentVersion: 121.0 (Firefox version information)'
+  - 'Install Directory: C:\Program Files\Mozilla Firefox (Installation path)'
+  - 'Profile Path: %APPDATA%\Mozilla\Firefox\Profiles (Profile directory location)'
+  - 'FirefoxHTML\shell\open\command: "C:\Program Files\Mozilla Firefox\firefox.exe" -osint -url "%1"'
+  - 'FirefoxURL\DefaultIcon: C:\Program Files\Mozilla Firefox\firefox.exe,1'
+  - 'DefaultClientState: 1 (Default browser status)'
+  - 'ProfileManager\StartWithLastProfile: 1 (Automatic profile loading)'
 
   tools:
-    - name: "Firefox Profile Manager"
-      description: "Firefox built-in profile management utility"
-    - name: "MozillaHistoryView"
-      url: "https://www.nirsoft.net/utils/mozilla_history_view.html"
-      description: "Firefox browsing history viewer"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis tool"
+  - name: Firefox Profile Manager
+    description: Firefox built-in profile management utility
+  - name: MozillaHistoryView
+    url: https://www.nirsoft.net/utils/mozilla_history_view.html
+    description: Firefox browsing history viewer
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis tool
 
 limitations:
-  - "Registry shows installation and configuration only, NOT actual browsing history or usage"
-  - "Profile path does NOT indicate actual browser activity or user behavior"
-  - "Installation presence does NOT prove Firefox was actively used"
-  - "Version information does NOT show browsing patterns or usage frequency"
-  - "File associations do NOT prove actual browsing behavior or user intent"
-  - "Protocol handlers do NOT show what websites were visited or downloaded"
-  - "Registry data does NOT contain browser preferences or actual browser usage evidence"
+- Registry shows installation and configuration only, NOT actual browsing history or usage
+- Profile path does NOT indicate actual browser activity or user behavior
+- Installation presence does NOT prove Firefox was actively used
+- Version information does NOT show browsing patterns or usage frequency
+- File associations do NOT prove actual browsing behavior or user intent
+- Protocol handlers do NOT show what websites were visited or downloaded
+- Registry data does NOT contain browser preferences or actual browser usage evidence
 
 correlation:
   required_for_definitive_conclusions:
-    - "Firefox SQLite databases (places.sqlite, cookies.sqlite, formhistory.sqlite)"
-    - "Browser cache files and temporary internet files"
-    - "Downloaded files correlation with browser activity"
-    - "Process execution logs showing firefox.exe activity"
-    - "Network traffic logs showing actual web requests"
-    - "Memory dumps showing active Firefox sessions"
-  
+  - Firefox SQLite databases (places.sqlite, cookies.sqlite, formhistory.sqlite)
+  - Browser cache files and temporary internet files
+  - Downloaded files correlation with browser activity
+  - Process execution logs showing firefox.exe activity
+  - Network traffic logs showing actual web requests
+  - Memory dumps showing active Firefox sessions
+
   strengthens_evidence:
-    - "Prefetch files showing Firefox execution patterns"
-    - "Recent documents showing files opened from downloads"
-    - "ShellBags showing Downloads folder navigation"
-    - "Event logs showing browser-related security warnings"
-    - "Timeline analysis correlating installation with actual usage"
-    - "File system artifacts showing profile directory modifications"
+  - Prefetch files showing Firefox execution patterns
+  - Recent documents showing files opened from downloads
+  - ShellBags showing Downloads folder navigation
+  - Event logs showing browser-related security warnings
+  - Timeline analysis correlating installation with actual usage
+  - File system artifacts showing profile directory modifications
 
 metadata:
   windows_versions:
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Firefox 1.0 (2004)"
-  criticality: "medium"
+  introduced: Firefox 1.0 (2004)
+
+  criticality: medium
 
   investigation_types:
-    - "behavioral-analysis"
-    - "insider-threat"
-    - "incident-response"
-    - "timeline-analysis"
+  - behavioral-analysis
+  - insider-threat
+  - incident-response
+  - timeline-analysis
 
   tags:
-    - "browser"
-    - "firefox"
-    - "web-browsing"
-    - "profiles"
-    - "file-associations"
-    - "protocol-handlers"
+  - browser
+  - firefox
+  - web-browsing
+  - profiles
+  - file-associations
+  - protocol-handlers
 
   references:
-    - title: "Mozilla Documentation: Firefox Profiles"
-      url: "https://support.mozilla.org/en-US/kb/profiles-where-firefox-stores-user-data"
-      type: "official"
-    - title: "Firefox Browser Forensics Guide"
-      url: "https://www.forensicfocus.com/articles/firefox-browser-forensics/"
-      type: "research"
+  - title: 'Mozilla Documentation: Firefox Profiles'
+    url: https://support.mozilla.org/en-US/kb/profiles-where-firefox-stores-user-data
+    type: official
+  - title: Firefox Browser Forensics Guide
+    url: https://www.forensicfocus.com/articles/firefox-browser-forensics/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
-    persistence: "Firefox configuration persists until uninstallation"
-    volatility: "Browser settings reflect current installation state"
+    default_location: Registry hive files (SOFTWARE, NTUSER.DAT)
+    persistence: Firefox configuration persists until uninstallation
+    volatility: Browser settings reflect current installation state
 
   related_artifacts:
-    - "chrome_history"
-    - "default_applications"
-    - "file_associations"
+  - chrome_history
+  - default_applications
+  - file_associations
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-07-06"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-07-06'
+  version: '3.0'

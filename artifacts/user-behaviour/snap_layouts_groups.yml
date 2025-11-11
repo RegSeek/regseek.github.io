@@ -1,0 +1,117 @@
+title: Snap Layouts and Snap Groups Window Management
+category: user-behaviour
+description: Windows 11 advanced window management configuration revealing workspace organization patterns and multitasking behavior
+
+paths:
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Snap
+- HKCU\Software\Microsoft\Windows\Shell\SnapAssist
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\EnableSnapAssistFlyout
+- HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer\EnableSnapAssist
+
+details:
+  what: |
+    Snap Layouts and Snap Groups are enhanced window management features introduced in Windows 11 that allow users to organize multiple application windows into pre-defined layout patterns. Registry keys store user preferences for snap behavior, layout selections, Snap Assist flyout enablement, snap group configurations, and policy restrictions. The feature tracks which layout patterns users prefer (2-4 windows in various arrangements) and whether snap groups are preserved across sessions for quick workspace restoration.
+
+  forensic_value: |
+    Reveals user workflow patterns and multitasking behavior through window management preferences. Snap group usage patterns may reveal concurrent application usage that supports or contradicts user claims about activities. Disabled features may indicate organizational policies restricting user productivity tools or user preference for simplified interface.
+
+  structure: |
+    Registry values stored as DWORD for boolean feature toggles and configuration options. Key values include EnableSnapAssistFlyout (DWORD 0/1) for hover-to-snap interface, SnapFill (DWORD) for automatic window filling behavior, and preference settings for layout patterns. HKLM policy keys override HKCU user preferences when organizational restrictions are applied.
+
+  examples:
+  - EnableSnapAssistFlyout = 1 (DWORD) - Snap layouts menu enabled when hovering over maximize button
+  - SnapFill = 1 (DWORD) - Automatically fill empty spaces in snap layouts
+  - SnapSizing = 1 (DWORD) - Remember window sizes in snap positions
+  - EnableSnapGroups = 1 (DWORD) - Allow snap groups to be saved and restored
+  - DockMoving = 1 (DWORD) - Snap windows when dragging to screen edges
+  - JointResize = 0 (DWORD) - Disable adjacent window resizing when snapping
+
+  tools:
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry browser for snap configuration analysis
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry analysis with Explorer settings parsing
+  - name: Windows Registry Recovery
+    description: Recover deleted or modified snap preferences from registry transaction logs
+
+limitations:
+- Registry settings DO NOT show which specific applications were snapped together
+- Cannot prove specific workspace configurations were actively used
+- Feature enablement does not indicate usage frequency or patterns
+- Does not contain historical record of snap group compositions
+- Cannot determine when specific windows were arranged in layouts
+- Preference settings show configuration state, not actual multitasking behavior
+- Disabled features may indicate policy restriction OR user choice - requires correlation
+
+correlation:
+  required_for_definitive_conclusions:
+  - Analyze Windows Timeline data (ActivitiesCache.db) for concurrent application activity
+  - Check UserAssist for application launch patterns suggesting multitasking
+  - Review ShellBags for window size and position history of frequently snapped applications
+  - Cross-reference with Recent Documents showing simultaneous document access
+  - Examine prefetch data for overlapping application execution timeframes
+  - Verify Group Policy applied from domain controller if policy restrictions present
+
+  strengthens_evidence:
+  - Screenshots or display configuration showing multi-monitor setup supporting snap usage
+  - Jump Lists showing frequently accessed files across multiple applications
+  - Application-specific window state files showing consistent sizing patterns
+  - Power management logs showing active usage periods correlating with multitasking
+  - Event logs showing concurrent application launches and window manager activity
+  - Desktop.ini files showing custom folder view configurations for workflow optimization
+
+metadata:
+  windows_versions:
+  - Windows 11
+
+  introduced: Windows 11 21H2 (October 2021)
+
+  criticality: medium
+
+  investigation_types:
+  - behavioral-analysis
+  - timeline-analysis
+  - insider-threat
+  - incident-response
+
+  tags:
+  - windows-11
+  - window-management
+  - snap-layouts
+  - snap-groups
+  - workspace
+  - multitasking
+  - user-interface
+  - productivity
+
+  references:
+  - title: Snap Windows Using Mouse, Keyboard, and Touch
+    url: https://support.microsoft.com/en-us/windows/snap-your-windows-885a9b1e-a983-a3b1-16cd-c531795e6241
+    type: official
+  - title: Manage Snap Layouts with Group Policy
+    url: https://learn.microsoft.com/en-us/windows/configuration/group-policies-for-enterprise-and-education-editions
+    type: official
+
+  retention:
+    default_location: NTUSER.DAT registry hive
+    persistence: Survives reboots; user preferences persist until modified
+    volatility: Persistent configuration data; historical changes require transaction logs
+
+  related_artifacts:
+  - shellbags
+  - userassist
+  - windows_spotlight
+  - taskbar_customizations
+  - windows_explorer_policies
+
+author:
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
+
+contribution:
+  date_added: '2025-01-11'
+  last_updated: '2025-01-11'
+  version: '1.0'

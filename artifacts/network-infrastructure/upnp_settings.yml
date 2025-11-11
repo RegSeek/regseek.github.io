@@ -1,128 +1,122 @@
-title: "UPnP and Network Discovery Settings"
-category: "network-infrastructure"
-description: "Universal Plug and Play configuration, network discovery settings, and device enumeration"
+title: UPnP and Network Discovery Settings
+category: network-infrastructure
+description: Universal Plug and Play configuration, network discovery settings, and device enumeration
 
 paths:
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FolderDescriptions\\{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\upnphost\\Parameters"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Network"
-  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\NetworkConnections"
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}
+- HKLM\SYSTEM\CurrentControlSet\Services\upnphost\Parameters
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Network
+- HKLM\SOFTWARE\Policies\Microsoft\Windows\NetworkConnections
 
 details:
   what: |
-    Universal Plug and Play (UPnP) and network discovery configuration controlling automatic device
-    discovery, network browsing capabilities, and network location awareness. Manages device
-    enumeration services, network neighborhood visibility, and automatic port mapping.
+    Universal Plug and Play (UPnP) and network discovery configuration controlling automatic device discovery, network browsing capabilities, and network location awareness. Manages device enumeration services, network neighborhood visibility, and automatic port mapping.
 
   forensic_value: |
-    Critical for investigating network-based attacks that exploit UPnP vulnerabilities for
-    unauthorized access and lateral movement. UPnP can be abused for network reconnaissance,
-    automatic firewall rule creation, and device compromise. Configuration changes may indicate
-    attackers enabling network discovery for infrastructure mapping.
+    Critical for investigating network-based attacks that exploit UPnP vulnerabilities for unauthorized access and lateral movement. UPnP can be abused for network reconnaissance, automatic firewall rule creation, and device compromise. Configuration changes may indicate attackers enabling network discovery for infrastructure mapping.
 
   structure: |
-    UPnP service configuration includes device discovery settings, network location awareness
-    parameters, and browsing capabilities. Network discovery controls visibility of network
-    devices and shared resources with settings for public, private, and domain networks.
+    UPnP service configuration includes device discovery settings, network location awareness parameters, and browsing capabilities. Network discovery controls visibility of network devices and shared resources with settings for public, private, and domain networks.
 
   examples:
-    - "UPnPHost\\Start: 3 (Manual startup - typical configuration)"
-    - "NetworkDiscovery: 1 (Network discovery enabled)"
-    - "ShowNetworkComputers: 1 (Show network computers in Explorer)"
-    - "EnableDeviceAssociation: 1 (Allow automatic device pairing)"
-    - "NetworkLocationAwareness: 1 (NLA service active)"
-    - "PublicNetworkDiscovery: 0 (Discovery disabled on public networks)"
-    - "NC_AllowNetBridge_NLA: 0 (Network bridging restricted)"
-    - "UPnP_Enabled: 1 (UPnP framework enabled for applications)"
+  - 'UPnPHost\Start: 3 (Manual startup - typical configuration)'
+  - 'NetworkDiscovery: 1 (Network discovery enabled)'
+  - 'ShowNetworkComputers: 1 (Show network computers in Explorer)'
+  - 'EnableDeviceAssociation: 1 (Allow automatic device pairing)'
+  - 'NetworkLocationAwareness: 1 (NLA service active)'
+  - 'PublicNetworkDiscovery: 0 (Discovery disabled on public networks)'
+  - 'NC_AllowNetBridge_NLA: 0 (Network bridging restricted)'
+  - 'UPnP_Enabled: 1 (UPnP framework enabled for applications)'
 
   tools:
-    - name: "Network and Sharing Center"
-      description: "Built-in Windows network discovery and sharing management"
-    - name: "UPnP Test Tools"
-      description: "Network utilities for testing UPnP device discovery and functionality"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "Network Discovery Settings"
-      description: "Windows Control Panel network discovery configuration interface"
-    - name: "UPnP Security Scanner"
-      description: "Third-party tools for assessing UPnP security vulnerabilities"
+  - name: Network and Sharing Center
+    description: Built-in Windows network discovery and sharing management
+  - name: UPnP Test Tools
+    description: Network utilities for testing UPnP device discovery and functionality
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: Network Discovery Settings
+    description: Windows Control Panel network discovery configuration interface
+  - name: UPnP Security Scanner
+    description: Third-party tools for assessing UPnP security vulnerabilities
 
 limitations:
-  - "UPnP configuration does NOT prove devices were discovered or exploited"
-  - "Network discovery settings don't indicate actual device enumeration occurred"
-  - "Service enablement doesn't show UPnP protocols were used"
-  - "Device association settings don't prove automatic pairing happened"
-  - "Network location awareness doesn't indicate location detection accuracy"
-  - "Settings can be overridden by group policy or application requests"
-  - "UPnP enablement doesn't show which applications used UPnP services"
+- UPnP configuration does NOT prove devices were discovered or exploited
+- Network discovery settings don't indicate actual device enumeration occurred
+- Service enablement doesn't show UPnP protocols were used
+- Device association settings don't prove automatic pairing happened
+- Network location awareness doesn't indicate location detection accuracy
+- Settings can be overridden by group policy or application requests
+- UPnP enablement doesn't show which applications used UPnP services
 
 correlation:
   required_for_definitive_usage_proof:
-    - "Network traffic analysis showing UPnP protocol communications (SSDP, SOAP)"
-    - "UPnP device discovery logs showing actual device enumeration"
-    - "Windows Event Logs showing UPnP service activity and device associations"
-    - "Application logs showing UPnP-enabled software activity"
-    
+  - Network traffic analysis showing UPnP protocol communications (SSDP, SOAP)
+  - UPnP device discovery logs showing actual device enumeration
+  - Windows Event Logs showing UPnP service activity and device associations
+  - Application logs showing UPnP-enabled software activity
+
   strengthens_evidence:
-    - "Network interface statistics showing multicast UPnP traffic"
-    - "Process execution logs showing UPnP service and host activity"
-    - "Firewall logs showing UPnP port mapping requests"
-    - "Registry keys modified by UPnP device discovery"
+  - Network interface statistics showing multicast UPnP traffic
+  - Process execution logs showing UPnP service and host activity
+  - Firewall logs showing UPnP port mapping requests
+  - Registry keys modified by UPnP device discovery
 
 metadata:
   windows_versions:
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Windows XP"
-  criticality: "medium"
+  introduced: Windows XP
+
+  criticality: medium
 
   investigation_types:
-    - "lateral-movement"
-    - "behavioral-analysis"
-    - "incident-response"
-    - "timeline-analysis"
+  - lateral-movement
+  - behavioral-analysis
+  - incident-response
+  - timeline-analysis
 
   tags:
-    - "upnp"
-    - "network-discovery"
-    - "device-discovery"
-    - "network-browsing"
-    - "lateral-movement"
-    - "network-enumeration"
-    - "automatic-configuration"
+  - upnp
+  - network-discovery
+  - device-discovery
+  - network-browsing
+  - lateral-movement
+  - network-enumeration
+  - automatic-configuration
 
   references:
-    - title: "Microsoft Documentation: UPnP APIs"
-      url: "https://learn.microsoft.com/en-us/windows/win32/upnp/universal-plug-and-play-start-page"
-      type: "official"
-    - title: "UPnP Security Vulnerabilities and Exploitation"
-      url: "https://www.sans.org/white-papers/33832/"
-      type: "research"
+  - title: 'Microsoft Documentation: UPnP APIs'
+    url: https://learn.microsoft.com/en-us/windows/win32/upnp/universal-plug-and-play-start-page
+    type: official
+  - title: UPnP Security Vulnerabilities and Exploitation
+    url: https://www.sans.org/white-papers/33832/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, SYSTEM)"
-    persistence: "Network configuration persists until manually changed"
-    volatility: "Network settings affect ongoing device discovery and network security"
+    default_location: Registry hive files (SOFTWARE, SYSTEM)
+    persistence: Network configuration persists until manually changed
+    volatility: Network settings affect ongoing device discovery and network security
 
   related_artifacts:
-    - "network_interfaces"
-    - "firewall_rules"
-    - "shared_folders"
-    - "netbios_settings"
+  - network_interfaces
+  - firewall_rules
+  - shared_folders
+  - netbios_settings
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

@@ -1,130 +1,124 @@
-title: "Email Client Registry Configuration"
-category: "communication-apps"
-description: "Email client settings, MAPI configuration, and default mail applications"
+title: Email Client Registry Configuration
+category: communication-apps
+description: Email client settings, MAPI configuration, and default mail applications
 
 paths:
-  - "HKCU\\Software\\Microsoft\\Office\\Outlook"
-  - "HKCU\\Software\\Microsoft\\Windows Mail"
-  - "HKCU\\Software\\Clients\\Mail"
-  - "HKLM\\SOFTWARE\\Clients\\Mail"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows Messaging Subsystem"
+- HKCU\Software\Microsoft\Office\Outlook
+- HKCU\Software\Microsoft\Windows Mail
+- HKCU\Software\Clients\Mail
+- HKLM\SOFTWARE\Clients\Mail
+- HKLM\SOFTWARE\Microsoft\Windows Messaging Subsystem
 
 details:
   what: |
-    Email client configuration including default mail client registration, MAPI (Messaging
-    Application Programming Interface) settings, account configuration remnants, and protocol
-    associations. Controls email handling behavior and system-wide messaging functionality.
+    Email client configuration including default mail client registration, MAPI (Messaging Application Programming Interface) settings, account configuration remnants, and protocol associations. Controls email handling behavior and system-wide messaging functionality.
 
   forensic_value: |
-    Critical for investigating email-based attacks and data exfiltration through email channels.
-    Shows email client usage indicating potential corporate espionage, reveals mail client
-    modifications that facilitate email interception, and provides evidence of email-based
-    command and control communication.
+    Critical for investigating email-based attacks and data exfiltration through email channels. Shows email client usage indicating potential corporate espionage, reveals mail client modifications that facilitate email interception, and provides evidence of email-based command and control communication.
 
   structure: |
-    Mail client registration includes default client specification, protocol associations for
-    mailto: links, MAPI provider configuration, and client-specific settings. MAPI configuration
-    controls messaging API behavior and service provider integration.
+    Mail client registration includes default client specification, protocol associations for mailto: links, MAPI provider configuration, and client-specific settings. MAPI configuration controls messaging API behavior and service provider integration.
 
   examples:
-    - "Default Mail Client: Microsoft Outlook (Configured default email application)"
-    - "mailto\\shell\\open\\command: \"C:\\Program Files\\Microsoft Office\\OUTLOOK.EXE\" -c IPM.Note /m \"%1\""
-    - "MAPI\\CMC: 1 (Common Messaging Calls interface enabled)"
-    - "MAPI\\CMCDLLNAME32: mapi32.dll (32-bit MAPI library)"
-    - "Outlook\\Profiles\\Outlook: Default mail profile configuration"
-    - "AutoConfigURL: https://autodiscover.company.com/autodiscover/autodiscover.xml"
-    - "SuspiciousClient: C:\\malware\\email-stealer.exe (Unauthorized mail client)"
+  - 'Default Mail Client: Microsoft Outlook (Configured default email application)'
+  - 'mailto\shell\open\command: "C:\Program Files\Microsoft Office\OUTLOOK.EXE" -c IPM.Note /m "%1"'
+  - 'MAPI\CMC: 1 (Common Messaging Calls interface enabled)'
+  - 'MAPI\CMCDLLNAME32: mapi32.dll (32-bit MAPI library)'
+  - 'Outlook\Profiles\Outlook: Default mail profile configuration'
+  - 'AutoConfigURL: https://autodiscover.company.com/autodiscover/autodiscover.xml'
+  - 'SuspiciousClient: C:\malware\email-stealer.exe (Unauthorized mail client)'
 
   tools:
-    - name: "Default Programs Control Panel"
-      description: "Windows built-in default application configuration interface"
-    - name: "Mail Control Panel (32-bit)"
-      description: "MAPI profile and email account management utility"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "MAPI Configuration Analyzer"
-      description: "Third-party tools for analyzing MAPI and email client settings"
-    - name: "Email Client Forensics Tools"
-      description: "Specialized utilities for email client configuration analysis"
+  - name: Default Programs Control Panel
+    description: Windows built-in default application configuration interface
+  - name: Mail Control Panel (32-bit)
+    description: MAPI profile and email account management utility
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: MAPI Configuration Analyzer
+    description: Third-party tools for analyzing MAPI and email client settings
+  - name: Email Client Forensics Tools
+    description: Specialized utilities for email client configuration analysis
 
 limitations:
-  - "Email client configuration does NOT prove emails were sent, received, or accessed"
-  - "MAPI settings don't indicate actual messaging API usage or email operations"
-  - "Default client registration doesn't show email application was actively used"
-  - "Profile settings don't prove successful email account configuration or connectivity"
-  - "AutoConfig URLs don't indicate successful email server autodiscovery"
-  - "Mail client paths don't show application execution or email handling"
-  - "Protocol associations don't prove mailto: links were actually used"
+- Email client configuration does NOT prove emails were sent, received, or accessed
+- MAPI settings don't indicate actual messaging API usage or email operations
+- Default client registration doesn't show email application was actively used
+- Profile settings don't prove successful email account configuration or connectivity
+- AutoConfig URLs don't indicate successful email server autodiscovery
+- Mail client paths don't show application execution or email handling
+- 'Protocol associations don''t prove mailto: links were actually used'
 
 correlation:
   required_for_definitive_usage_proof:
-    - "Email client data files showing actual sent/received messages"
-    - "Process execution logs showing email client application activity"
-    - "Network traffic logs showing SMTP/IMAP/POP3 email protocol communications"
-    - "Windows Event Logs showing email client startup and messaging activity"
-    
+  - Email client data files showing actual sent/received messages
+  - Process execution logs showing email client application activity
+  - Network traffic logs showing SMTP/IMAP/POP3 email protocol communications
+  - Windows Event Logs showing email client startup and messaging activity
+
   strengthens_evidence:
-    - "Recent documents showing email-related files (PST, EML, MSG files)"
-    - "Registry keys modified by email applications during message processing"
-    - "File system artifacts showing email attachment downloads or saves"
-    - "Browser history showing webmail access or email configuration pages"
+  - Recent documents showing email-related files (PST, EML, MSG files)
+  - Registry keys modified by email applications during message processing
+  - File system artifacts showing email attachment downloads or saves
+  - Browser history showing webmail access or email configuration pages
 
 metadata:
   windows_versions:
-    - "Windows 95"
-    - "Windows NT"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 95
+  - Windows NT
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Windows 95"
-  criticality: "medium"
+  introduced: Windows 95
+
+  criticality: medium
 
   investigation_types:
-    - "data-exfiltration"
-    - "insider-threat"
-    - "malware-analysis"
-    - "incident-response"
+  - data-exfiltration
+  - insider-threat
+  - malware-analysis
+  - incident-response
 
   tags:
-    - "email"
-    - "mail-client"
-    - "mapi"
-    - "default-applications"
-    - "communication"
-    - "messaging"
-    - "protocols"
+  - email
+  - mail-client
+  - mapi
+  - default-applications
+  - communication
+  - messaging
+  - protocols
 
   references:
-    - title: "Microsoft Documentation: MAPI"
-      url: "https://learn.microsoft.com/en-us/office/client-developer/outlook/mapi/mapi-reference"
-      type: "official"
-    - title: "Email Client Forensics and Investigation"
-      url: "https://www.forensicfocus.com/articles/email-client-forensics/"
-      type: "research"
+  - title: 'Microsoft Documentation: MAPI'
+    url: https://learn.microsoft.com/en-us/office/client-developer/outlook/mapi/mapi-reference
+    type: official
+  - title: Email Client Forensics and Investigation
+    url: https://www.forensicfocus.com/articles/email-client-forensics/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
-    persistence: "Email configuration persists until manually changed"
-    volatility: "Client settings affect ongoing email communication capabilities"
+    default_location: Registry hive files (SOFTWARE, NTUSER.DAT)
+    persistence: Email configuration persists until manually changed
+    volatility: Client settings affect ongoing email communication capabilities
 
   related_artifacts:
-    - "default_applications"
-    - "user_profiles"
-    - "network_connections"
-    - "certificate_stores"
+  - default_applications
+  - user_profiles
+  - network_connections
+  - certificate_stores
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

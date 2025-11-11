@@ -1,117 +1,112 @@
-title: "Windows Firewall Advanced Rules and Exceptions"
-category: "security-monitoring"
-description: "Detailed firewall rules, port exceptions, application permissions, and network security policies"
+title: Windows Firewall Advanced Rules and Exceptions
+category: security-monitoring
+description: Detailed firewall rules, port exceptions, application permissions, and network security policies
 
 paths:
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\SharedAccess\\Parameters\\FirewallPolicy\\FirewallRules"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\SharedAccess\\Parameters\\FirewallPolicy\\StandardProfile"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\SharedAccess\\Parameters\\FirewallPolicy\\DomainProfile"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\SharedAccess\\Parameters\\FirewallPolicy\\PublicProfile"
+- HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules
+- HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile
+- HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile
+- HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile
 
 details:
   what: |
-    Windows Firewall Advanced Rules manage granular network traffic control including application-specific 
-    permissions, port exceptions, protocol filtering, and profile-based security policies. Registry 
-    stores detailed rule configurations and inbound/outbound traffic permissions.
+    Windows Firewall Advanced Rules manage granular network traffic control including application-specific permissions, port exceptions, protocol filtering, and profile-based security policies. Registry stores detailed rule configurations and inbound/outbound traffic permissions.
 
   forensic_value: |
-    Critical for investigating network-based attacks, unauthorized network access, and malware 
-    communication attempts. Shows evidence of firewall rule modifications that could enable data 
-    exfiltration, reveals custom exceptions that bypass security, and indicates sophisticated attacks.
+    Critical for investigating network-based attacks, unauthorized network access, and malware communication attempts. Shows evidence of firewall rule modifications that could enable data exfiltration, reveals custom exceptions that bypass security, and indicates sophisticated attacks.
 
   structure: |
-    FirewallRules contain pipe-delimited rule definitions including direction (In/Out), action 
-    (Allow/Block), protocol, local/remote ports, application paths, and profiles. Profile-specific 
-    configurations control firewall behavior for domain, private, and public networks.
+    FirewallRules contain pipe-delimited rule definitions including direction (In/Out), action (Allow/Block), protocol, local/remote ports, application paths, and profiles. Profile-specific configurations control firewall behavior for domain, private, and public networks.
 
   examples:
-    - "Rule: v2.25|Action=Allow|Active=TRUE|Dir=In|Protocol=6|LPort=80|App=C:\\Program Files\\App\\app.exe"
-    - "Rule: v2.25|Action=Block|Active=TRUE|Dir=Out|Protocol=17|RPort=53|RA=8.8.8.8"
-    - "DomainProfile\\EnableFirewall: 1 (Domain firewall enabled)"
-    - "PublicProfile\\EnableFirewall: 0 (Public firewall disabled - risk)"
-    - "StandardProfile\\DefaultInboundAction: 1 (Block inbound by default)"
-    - "FirewallRules\\{GUID}: Malware exception rule (Suspicious custom rule)"
+  - 'Rule: v2.25|Action=Allow|Active=TRUE|Dir=In|Protocol=6|LPort=80|App=C:\Program Files\App\app.exe'
+  - 'Rule: v2.25|Action=Block|Active=TRUE|Dir=Out|Protocol=17|RPort=53|RA=8.8.8.8'
+  - 'DomainProfile\EnableFirewall: 1 (Domain firewall enabled)'
+  - 'PublicProfile\EnableFirewall: 0 (Public firewall disabled - risk)'
+  - 'StandardProfile\DefaultInboundAction: 1 (Block inbound by default)'
+  - 'FirewallRules\{GUID}: Malware exception rule (Suspicious custom rule)'
 
   tools:
-    - name: "Windows Defender Firewall (wf.msc)"
-      description: "Built-in Windows firewall configuration and rule management"
-    - name: "netsh advfirewall"
-      description: "Command-line firewall configuration and rule export/import"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "Windows Firewall Analysis Tools"
-      description: "Third-party tools for firewall rule analysis and audit"
+  - name: Windows Defender Firewall (wf.msc)
+    description: Built-in Windows firewall configuration and rule management
+  - name: netsh advfirewall
+    description: Command-line firewall configuration and rule export/import
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: Windows Firewall Analysis Tools
+    description: Third-party tools for firewall rule analysis and audit
 
 limitations:
-  - "Firewall rules do NOT prove network communication actually occurred"
-  - "Exception rules don't indicate successful data transmission or exfiltration"
-  - "Rule modifications may be legitimate network configuration changes"
-  - "Application permissions don't prove malicious network activity happened"
-  - "Disabled firewall settings don't prove unauthorized network access occurred"
-  - "Port exceptions may be required for legitimate business applications"
+- Firewall rules do NOT prove network communication actually occurred
+- Exception rules don't indicate successful data transmission or exfiltration
+- Rule modifications may be legitimate network configuration changes
+- Application permissions don't prove malicious network activity happened
+- Disabled firewall settings don't prove unauthorized network access occurred
+- Port exceptions may be required for legitimate business applications
 
 correlation:
   required_for_definitive_communication_proof:
-    - "Network traffic logs showing actual data transmission through firewall exceptions"
-    - "Event logs showing successful network connections using allowed rules"
-    - "Process execution logs showing applications utilizing firewall permissions"
-    - "File system artifacts showing data received or transmitted through firewall rules"
-    - "Application logs showing successful network operations through configured exceptions"
-    
+  - Network traffic logs showing actual data transmission through firewall exceptions
+  - Event logs showing successful network connections using allowed rules
+  - Process execution logs showing applications utilizing firewall permissions
+  - File system artifacts showing data received or transmitted through firewall rules
+  - Application logs showing successful network operations through configured exceptions
+
   strengthens_evidence:
-    - "Registry changes showing firewall rule modifications during suspicious timeframes"
-    - "Network interface logs showing traffic matching configured firewall rules"
-    - "Event logs showing firewall rule triggering during network activity"
-    - "Process execution with network access correlating to firewall exception usage"
+  - Registry changes showing firewall rule modifications during suspicious timeframes
+  - Network interface logs showing traffic matching configured firewall rules
+  - Event logs showing firewall rule triggering during network activity
+  - Process execution with network access correlating to firewall exception usage
 
 metadata:
   windows_versions:
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Windows Vista"
-  criticality: "high"
+  introduced: Windows Vista
+
+  criticality: high
 
   investigation_types:
-    - "malware-analysis"
-    - "incident-response"
-    - "behavioral-analysis"
-    - "data-exfiltration"
+  - malware-analysis
+  - incident-response
+  - behavioral-analysis
+  - data-exfiltration
 
   tags:
-    - "firewall"
-    - "network-security"
-    - "port-exceptions"
-    - "network-rules"
-    - "malware-communication"
-    - "security-bypass"
+  - firewall
+  - network-security
+  - port-exceptions
+  - network-rules
+  - malware-communication
+  - security-bypass
 
   references:
-    - title: "Windows Firewall with Advanced Security"
-      url: "https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-firewall/"
-      type: "official"
+  - title: Windows Firewall with Advanced Security
+    url: https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-firewall/
+    type: official
 
   retention:
-    default_location: "Registry hive files (SYSTEM)"
-    persistence: "Firewall rules persist until manually removed or policy changes"
-    volatility: "Network security configuration affecting ongoing threat protection"
+    default_location: Registry hive files (SYSTEM)
+    persistence: Firewall rules persist until manually removed or policy changes
+    volatility: Network security configuration affecting ongoing threat protection
 
   related_artifacts:
-    - "network_connections"
-    - "security_policies"
-    - "malware_communication"
+  - network_connections
+  - security_policies
+  - malware_communication
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-08"
-  last_updated: "2025-06-13"
-  version: "3.0"
+  date_added: '2025-06-08'
+  last_updated: '2025-06-13'
+  version: '3.0'

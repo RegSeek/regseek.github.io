@@ -1,138 +1,130 @@
-title: "Run Dialog Command History"
-category: "program-execution"
-description: "Windows Run dialog (Win+R) command history with executed commands and administrative tool access"
+title: Run Dialog Command History
+category: program-execution
+description: Windows Run dialog (Win+R) command history with executed commands and administrative tool access
 
 paths:
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RunMRU"
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU
 
 details:
   what: |
-    Windows Run dialog maintains a Most Recently Used (MRU) list of commands executed through
-    the Run interface (Win+R keyboard shortcut). Tracks command execution history including
-    system utilities, administrative tools, file paths, network locations, and custom commands
-    entered by users for quick access to Windows functionality.
+    Windows Run dialog maintains a Most Recently Used (MRU) list of commands executed through the Run interface (Win+R keyboard shortcut). Tracks command execution history including system utilities, administrative tools, file paths, network locations, and custom commands entered by users for quick access to Windows functionality.
 
   forensic_value: |
-    Extremely valuable for detecting administrative tool usage, malicious command execution,
-    system reconnaissance activities, and attempts to access restricted utilities. Shows evidence
-    of command-line tool usage, administrative access attempts, and potential privilege escalation
-    activities. Critical for understanding user intent and technical knowledge level.
+    Extremely valuable for detecting administrative tool usage, malicious command execution, system reconnaissance activities, and attempts to access restricted utilities. Shows evidence of command-line tool usage, administrative access attempts, and potential privilege escalation activities. Critical for understanding user intent and technical knowledge level.
 
   structure: |
-    Sequential lettered values (a, b, c, etc.) containing executed commands as REG_SZ data.
-    MRUList value shows execution chronology with most recent commands listed first using
-    letter indicators. Commands include full paths, parameters, network locations, and
-    built-in Windows utilities.
+    Sequential lettered values (a, b, c, etc.) containing executed commands as REG_SZ data. MRUList value shows execution chronology with most recent commands listed first using letter indicators. Commands include full paths, parameters, network locations, and built-in Windows utilities.
 
   examples:
-    - "a: cmd (Command Prompt execution)"
-    - "b: regedit (Registry Editor access)"
-    - "c: gpedit.msc (Group Policy Editor)"
-    - "d: services.msc (Services management console)"
-    - "e: \\\\192.168.1.100\\admin$ (Network administrative share)"
-    - "f: powershell -enc [base64] (PowerShell encoded command)"
-    - "g: C:\\temp\\malware.exe (Suspicious executable execution)"
-    - "MRUList: gfedcba (chronological order, newest first)"
+  - 'a: cmd (Command Prompt execution)'
+  - 'b: regedit (Registry Editor access)'
+  - 'c: gpedit.msc (Group Policy Editor)'
+  - 'd: services.msc (Services management console)'
+  - 'e: \\192.168.1.100\admin$ (Network administrative share)'
+  - 'f: powershell -enc [base64] (PowerShell encoded command)'
+  - 'g: C:\temp\malware.exe (Suspicious executable execution)'
+  - 'MRUList: gfedcba (chronological order, newest first)'
 
   tools:
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "RunMRU Parser"
-      description: "Specialized tools for Run dialog history analysis"
-    - name: "RegRipper"
-      url: "https://github.com/keydet89/RegRipper3.0"
-      description: "Registry data extraction and analysis framework"
-    - name: "LastActivityView"
-      url: "https://www.nirsoft.net/utils/computer_activity_view.html"
-      description: "Comprehensive computer activity viewer including Run commands"
-    - name: "Windows Run Dialog History Cleaner"
-      description: "Tools for clearing Run dialog history and privacy management"
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: RunMRU Parser
+    description: Specialized tools for Run dialog history analysis
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry data extraction and analysis framework
+  - name: LastActivityView
+    url: https://www.nirsoft.net/utils/computer_activity_view.html
+    description: Comprehensive computer activity viewer including Run commands
+  - name: Windows Run Dialog History Cleaner
+    description: Tools for clearing Run dialog history and privacy management
 
 limitations:
-  - "Run dialog history does NOT prove commands were successfully executed"
-  - "Command entries don't indicate successful program launch or completion"
-  - "Network paths don't prove successful authentication or resource access"
-  - "Administrative tool entries don't show actual system configuration changes"
-  - "Command parameters don't indicate successful operation or output"
-  - "MRU order doesn't show command execution frequency or duration"
-  - "Suspicious executables don't prove malicious activity occurred"
+- Run dialog history does NOT prove commands were successfully executed
+- Command entries don't indicate successful program launch or completion
+- Network paths don't prove successful authentication or resource access
+- Administrative tool entries don't show actual system configuration changes
+- Command parameters don't indicate successful operation or output
+- MRU order doesn't show command execution frequency or duration
+- Suspicious executables don't prove malicious activity occurred
 
 correlation:
   required_for_definitive_execution_proof:
-    - "Process execution logs showing actual program startup and activity"
-    - "Windows Event Logs showing command execution (Event ID 4688)"
-    - "Application event logs showing successful program launch"
-    - "Command-line audit logs showing actual command execution"
-    
+  - Process execution logs showing actual program startup and activity
+  - Windows Event Logs showing command execution (Event ID 4688)
+  - Application event logs showing successful program launch
+  - Command-line audit logs showing actual command execution
+
   strengthens_evidence:
-    - "UserAssist entries showing program execution statistics"
-    - "ShimCache entries showing program access attempts"
-    - "Registry keys modified by executed administrative tools"
-    - "File system artifacts showing program activity and output"
+  - UserAssist entries showing program execution statistics
+  - ShimCache entries showing program access attempts
+  - Registry keys modified by executed administrative tools
+  - File system artifacts showing program activity and output
 
 metadata:
   windows_versions:
-    - "Windows 95"
-    - "Windows NT"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 95
+  - Windows NT
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Windows 95"
-  criticality: "high"
+  introduced: Windows 95
+
+  criticality: high
 
   investigation_types:
-    - "program-execution"
-    - "malware-analysis"
-    - "privilege-escalation"
-    - "behavioral-analysis"
-    - "incident-response"
-    - "insider-threat"
+  - program-execution
+  - malware-analysis
+  - privilege-escalation
+  - behavioral-analysis
+  - incident-response
+  - insider-threat
 
   tags:
-    - "user-activity"
-    - "command-execution"
-    - "administrative-tools"
-    - "run-dialog"
-    - "system-utilities"
-    - "privilege-escalation"
-    - "reconnaissance"
-    - "malware-execution"
+  - user-activity
+  - command-execution
+  - administrative-tools
+  - run-dialog
+  - system-utilities
+  - privilege-escalation
+  - reconnaissance
+  - malware-execution
 
   references:
-    - title: "Microsoft Documentation: Run Dialog"
-      url: "https://learn.microsoft.com/en-us/windows/win32/shell/launch"
-      type: "official"
-    - title: "Windows Run Dialog Forensics"
-      url: "https://www.forensicfocus.com/articles/windows-run-dialog-analysis/"
-      type: "research"
-    - title: "Command Execution Artifacts in Windows"
-      url: "https://www.sans.org/blog/command-execution-artifacts/"
-      type: "research"
+  - title: 'Microsoft Documentation: Run Dialog'
+    url: https://learn.microsoft.com/en-us/windows/win32/shell/launch
+    type: official
+  - title: Windows Run Dialog Forensics
+    url: https://www.forensicfocus.com/articles/windows-run-dialog-analysis/
+    type: research
+  - title: Command Execution Artifacts in Windows
+    url: https://www.sans.org/blog/command-execution-artifacts/
+    type: research
 
   retention:
-    default_location: "Registry hive file (NTUSER.DAT)"
-    persistence: "Command history persists across reboots until manually cleared"
-    volatility: "Real-time updates with Run dialog usage, immediate evidence of user actions"
+    default_location: Registry hive file (NTUSER.DAT)
+    persistence: Command history persists across reboots until manually cleared
+    volatility: Real-time updates with Run dialog usage, immediate evidence of user actions
 
   related_artifacts:
-    - "wordwheel_query"
-    - "userassist"
-    - "powershell_policy"
-    - "registry_run_keys"
+  - wordwheel_query
+  - userassist
+  - powershell_policy
+  - registry_run_keys
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-07"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-06-07'
+  last_updated: '2025-06-12'
+  version: '3.0'

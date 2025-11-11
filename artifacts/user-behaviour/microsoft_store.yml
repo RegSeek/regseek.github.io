@@ -1,124 +1,117 @@
-title: "Microsoft Store and UWP Applications"
-category: "user-behaviour"
-description: "Universal Windows Platform app packages, Store configuration, and modern application management"
+title: Microsoft Store and UWP Applications
+category: user-behaviour
+description: Universal Windows Platform app packages, Store configuration, and modern application management
 
 paths:
-  - "HKCU\\Software\\Classes\\ActivatableClasses\\Package"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Appx"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Store"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Appx\\AppxAllUserStore"
+- HKCU\Software\Classes\ActivatableClasses\Package
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Appx
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Store
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore
 
 details:
   what: |
-    Microsoft Store and Universal Windows Platform (UWP) application ecosystem including installed
-    app packages, package registrations, Store configuration settings, and app container security
-    configurations. Manages modern Windows application deployment, updates, and licensing.
+    Microsoft Store and Universal Windows Platform (UWP) application ecosystem including installed app packages, package registrations, Store configuration settings, and app container security configurations. Manages modern Windows application deployment, updates, and licensing.
 
   forensic_value: |
-    Critical for analyzing modern app usage patterns, identifying sideloaded applications that
-    bypass Store security mechanisms, and detecting unauthorized app installations. Shows evidence
-    of enterprise app deployments, developer mode enabling, and potential security bypasses through
-    sideloading or app container escape techniques.
+    Critical for analyzing modern app usage patterns, identifying sideloaded applications that bypass Store security mechanisms, and detecting unauthorized app installations. Shows evidence of enterprise app deployments, developer mode enabling, and potential security bypasses through sideloading or app container escape techniques.
 
   structure: |
-    Package registration data organized by package full names including publisher information,
-    installation paths, and security descriptors. Store configuration includes installation
-    policies and update settings. AppX deployment information contains package metadata and
-    app container security configurations.
+    Package registration data organized by package full names including publisher information, installation paths, and security descriptors. Store configuration includes installation policies and update settings. AppX deployment information contains package metadata and app container security configurations.
 
   examples:
-    - "Package\\Microsoft.WindowsCalculator_10.2103.8.0_x64__8wekyb3d8bbwe: Calculator app package"
-    - "Package\\Microsoft.Photos_2023.11090.26005.0_x64__8wekyb3d8bbwe: Photos application"
-    - "PackageRepositoryRoot: C:\\Program Files\\WindowsApps (Store app installation directory)"
-    - "Store\\InstallPromptPolicy: 1 (Prompt for app installations)"
-    - "AppxAllUserStore: C:\\Program Files\\WindowsApps (System-wide app store)"
-    - "PackageMoniker: CompanyName.SuspiciousApp_1.0.0.0_x64__1234567890abc (Sideloaded app)"
-    - "DeveloperModeEnabled: 1 (Developer mode active - allows sideloading)"
+  - 'Package\Microsoft.WindowsCalculator_10.2103.8.0_x64__8wekyb3d8bbwe: Calculator app package'
+  - 'Package\Microsoft.Photos_2023.11090.26005.0_x64__8wekyb3d8bbwe: Photos application'
+  - 'PackageRepositoryRoot: C:\Program Files\WindowsApps (Store app installation directory)'
+  - 'Store\InstallPromptPolicy: 1 (Prompt for app installations)'
+  - 'AppxAllUserStore: C:\Program Files\WindowsApps (System-wide app store)'
+  - 'PackageMoniker: CompanyName.SuspiciousApp_1.0.0.0_x64__1234567890abc (Sideloaded app)'
+  - 'DeveloperModeEnabled: 1 (Developer mode active - allows sideloading)'
 
   tools:
-    - name: "Get-AppxPackage PowerShell"
-      description: "PowerShell cmdlets for UWP package management and analysis"
-    - name: "Microsoft Store (ms-windows-store:)"
-      description: "Built-in Store application for app management"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "App Package Manager"
-      description: "Third-party tools for analyzing UWP app packages"
-    - name: "Windows Package Manager (winget)"
-      description: "Command-line package management tool"
+  - name: Get-AppxPackage PowerShell
+    description: PowerShell cmdlets for UWP package management and analysis
+  - name: Microsoft Store (ms-windows-store:)
+    description: Built-in Store application for app management
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: App Package Manager
+    description: Third-party tools for analyzing UWP app packages
+  - name: Windows Package Manager (winget)
+    description: Command-line package management tool
 
 limitations:
-  - "App package registration does NOT prove applications were actually used or executed"
-  - "Store configuration doesn't indicate successful app installations or updates"
-  - "Package metadata doesn't show application launch frequency or usage patterns"
-  - "Developer mode settings don't prove sideloading actually occurred"
-  - "App container configurations don't indicate security bypass attempts"
-  - "Installation paths don't show application execution or user interaction"
-  - "Package versions don't indicate when apps were last used or accessed"
+- App package registration does NOT prove applications were actually used or executed
+- Store configuration doesn't indicate successful app installations or updates
+- Package metadata doesn't show application launch frequency or usage patterns
+- Developer mode settings don't prove sideloading actually occurred
+- App container configurations don't indicate security bypass attempts
+- Installation paths don't show application execution or user interaction
+- Package versions don't indicate when apps were last used or accessed
 
 correlation:
   required_for_definitive_usage_proof:
-    - "Process execution logs showing UWP applications actually running"
-    - "Windows Event Logs showing app launch and usage activity"
-    - "File system artifacts showing app data creation and user interaction"
-    - "UserAssist entries showing UWP application execution statistics"
-    
+  - Process execution logs showing UWP applications actually running
+  - Windows Event Logs showing app launch and usage activity
+  - File system artifacts showing app data creation and user interaction
+  - UserAssist entries showing UWP application execution statistics
+
   strengthens_evidence:
-    - "Recent documents showing files created or accessed by UWP applications"
-    - "Registry keys modified by UWP apps during execution"
-    - "Jump Lists showing UWP application usage patterns"
-    - "Network connections initiated by UWP applications"
+  - Recent documents showing files created or accessed by UWP applications
+  - Registry keys modified by UWP apps during execution
+  - Jump Lists showing UWP application usage patterns
+  - Network connections initiated by UWP applications
 
 metadata:
   windows_versions:
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Windows 8"
-  criticality: "medium"
+  introduced: Windows 8
+
+  criticality: medium
 
   investigation_types:
-    - "behavioral-analysis"
-    - "data-exfiltration"
-    - "malware-analysis"
+  - behavioral-analysis
+  - data-exfiltration
+  - malware-analysis
 
   tags:
-    - "microsoft-store"
-    - "uwp"
-    - "modern-apps"
-    - "app-packages"
-    - "sideloading"
-    - "app-containers"
-    - "developer-mode"
+  - microsoft-store
+  - uwp
+  - modern-apps
+  - app-packages
+  - sideloading
+  - app-containers
+  - developer-mode
 
   references:
-    - title: "Microsoft Documentation: UWP App Packages"
-      url: "https://learn.microsoft.com/en-us/windows/uwp/packaging/"
-      type: "official"
-    - title: "Windows Store App Forensics"
-      url: "https://www.forensicfocus.com/articles/windows-store-app-forensics/"
-      type: "research"
+  - title: 'Microsoft Documentation: UWP App Packages'
+    url: https://learn.microsoft.com/en-us/windows/uwp/packaging/
+    type: official
+  - title: Windows Store App Forensics
+    url: https://www.forensicfocus.com/articles/windows-store-app-forensics/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
-    persistence: "App registrations persist until uninstallation"
-    volatility: "Package data reflects current app installation state"
+    default_location: Registry hive files (SOFTWARE, NTUSER.DAT)
+    persistence: App registrations persist until uninstallation
+    volatility: Package data reflects current app installation state
 
   related_artifacts:
-    - "installed_programs"
-    - "user_profiles"
-    - "app_execution"
-    - "security_policies"
+  - installed_programs
+  - user_profiles
+  - app_execution
+  - security_policies
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

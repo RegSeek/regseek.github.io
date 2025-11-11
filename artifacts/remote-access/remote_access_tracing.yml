@@ -1,84 +1,85 @@
-title: "Remote Access Service"
-category: "remote-access"
-
-description: "Two registry keys named <executable_name>_RASAPI32 and <executable_name>_RASMANCS are created the first time an application interacts with the Remote Access Service by loading rasapi32.dll and rasman.dll. This behavior allows analysts to confirm that a specific application has made an internet connection and to identify the timestamp of the first connection."
+title: Remote Access Service
+category: remote-access
+description: Two registry keys named <executable_name>_RASAPI32 and <executable_name>_RASMANCS are created the first time an application interacts with the Remote Access Service by loading rasapi32.dll and rasman.dll. This behavior allows analysts to confirm that a specific application has made an internet connection and to identify the timestamp of the first connection.
 
 paths:
-  - "HKLM\\Software\\Microsoft\\Tracing\\<executable_name>_RASAPI32"
-  - "HKLM\\Software\\Microsoft\\Tracing\\<executable_name>_RASMANCS"
+- HKLM\Software\Microsoft\Tracing\<executable_name>_RASAPI32
+- HKLM\Software\Microsoft\Tracing\<executable_name>_RASMANCS
 
 details:
   what: |
     Two registry keys named <executable_name>_RASAPI32 and <executable_name>_RASMANCS are created the first time an application interacts with the Remote Access Service by loading rasapi32.dll and rasman.dll.
+
   forensic_value: |
     Provides the ability to confirm that a specific application has made an internet connection and to identify the timestamp of the first connection by inspecting the registry keys timestamp.
+
   structure: |
     The registry key that will be created upon loading rasapi32.dll and rasman.dll will have a name of "ExecutableName_ServiceName", e.g., "svchost_RASAPI32", "svchost_RASMANCS". The value names inside the two registry keys are identical. "FileDirectory" is the path where Windows Tracing will output trace logs if enabled, "EnableFileTracing" and "EnableConsoleTracing" will have a value of 0 if disabled, and 1 if enabled. If they were enabled, a trace logs will be found in C:\Windows, but this file have no clear forensic value.
+
   examples:
-    - "HKLM\\Software\\Microsoft\\Tracing\\powershell_RASAPI32"
-    - "HKLM\\Software\\Microsoft\\Tracing\\powershell_RASMANCS"
+  - HKLM\Software\Microsoft\Tracing\powershell_RASAPI32
+  - HKLM\Software\Microsoft\Tracing\powershell_RASMANCS
 
   tools:
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry browser"
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry browser
 
 limitations:
-  - "Provide the timestamp of the first connection only, as the keys will be created once."
-  - "If the application has already made network connections before the malicious one, the registry keys will already be created and the timestamp of the malicious connection will not be captured"
-  - "This artifact only prove that a network connection has been made, it does not provide any information on the connection itself, e.g., IP Address"
+- Provide the timestamp of the first connection only, as the keys will be created once.
+- If the application has already made network connections before the malicious one, the registry keys will already be created and the timestamp of the malicious connection will not be captured
+- This artifact only prove that a network connection has been made, it does not provide any information on the connection itself, e.g., IP Address
 
 correlation:
   required_for_definitive_conclusions:
-    - "Network traffic logs showing actual communication"
-    - "The System Resource Usage Monitor (SRUM) showing the duration of the connection, the bandwidth usage, and the user who ran the application"
-  
+  - Network traffic logs showing actual communication
+  - The System Resource Usage Monitor (SRUM) showing the duration of the connection, the bandwidth usage, and the user who ran the application
+
   strengthens_evidence:
-    - "Process execution logs (Event ID 4688 or Sysmon Event ID 1) showing the actual execution of the application"
+  - Process execution logs (Event ID 4688 or Sysmon Event ID 1) showing the actual execution of the application
 
 metadata:
   windows_versions:
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows 10
+  - Windows 11
+  - Windows Server 2019
+  - Windows Server 2022
 
-  criticality: "low"
+  criticality: low
 
   investigation_types:
-    - "incident-response"
-    - "malware-analysis"
-    - "timeline-analysis"
-    - "behavioral-analysis"
-    - "initial-access"
-    - "program-execution"
-    - "remote-access"
-    - "data-exfiltration"
-
+  - incident-response
+  - malware-analysis
+  - timeline-analysis
+  - behavioral-analysis
+  - initial-access
+  - program-execution
+  - remote-access
+  - data-exfiltration
 
   tags:
-    - "remote-access"
-    - "windows-tracing"
+  - remote-access
+  - windows-tracing
 
   references:
-    - title: "Tracing Malicious Downloads"
-      url: "https://www.allthingsdfir.com/tracing-malicious-downloads/"
-      type: "blog"
+  - title: Tracing Malicious Downloads
+    url: https://www.allthingsdfir.com/tracing-malicious-downloads/
+    type: blog
 
   retention:
-    default_location: "SOFTWARE Registry hive file"
-    persistence: "Survives reboots and application uninstallation"
-    volatility: "Persistent until explicitly deleted"
+    default_location: SOFTWARE Registry hive file
+    persistence: Survives reboots and application uninstallation
+    volatility: Persistent until explicitly deleted
 
   related_artifacts:
-    - "SRUM"
+  - SRUM
 
 author:
-  name: "Abdullah Almutairi"
-  github: "psexecsvc"
+  name: Abdullah Almutairi
+  github: psexecsvc
 
 contribution:
-  date_added: "2025-08-13"
-  last_updated: "2025-08-13"
-  version: "1.0"
-  reviewed_by: "Tonmoy Jitu"
+  date_added: '2025-08-13'
+  last_updated: '2025-08-13'
+  version: '1.0'
+  reviewed_by: Tonmoy Jitu

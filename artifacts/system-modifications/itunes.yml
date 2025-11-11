@@ -1,120 +1,115 @@
-title: "iTunes for Windows Mobile Device Sync"
-category: "system-modifications"
-description: "iTunes configuration, device synchronization settings, and Apple device management"
+title: iTunes for Windows Mobile Device Sync
+category: system-modifications
+description: iTunes configuration, device synchronization settings, and Apple device management
 
 paths:
-  - "HKCU\\Software\\Apple Computer, Inc.\\iTunes"
-  - "HKLM\\SOFTWARE\\Apple Inc.\\Apple Mobile Device Support"
-  - "HKCU\\Software\\Apple Inc.\\iTunes"
-  - "HKLM\\SOFTWARE\\Apple Computer, Inc.\\iTunes"
+- HKCU\Software\Apple Computer, Inc.\iTunes
+- HKLM\SOFTWARE\Apple Inc.\Apple Mobile Device Support
+- HKCU\Software\Apple Inc.\iTunes
+- HKLM\SOFTWARE\Apple Computer, Inc.\iTunes
 
 details:
   what: |
-    iTunes for Windows manages Apple device synchronization including iPhone, iPad, and iPod connections, 
-    backup locations, media library sync, and device management. Registry stores device identifiers, 
-    backup paths, and sync preferences for Apple ecosystem integration.
+    iTunes for Windows manages Apple device synchronization including iPhone, iPad, and iPod connections, backup locations, media library sync, and device management. Registry stores device identifiers, backup paths, and sync preferences for Apple ecosystem integration.
 
   forensic_value: |
-    Shows evidence of mobile device connections, data synchronization between Windows and Apple devices, 
-    and backup locations containing mobile device data. Can reveal access to mobile device data through 
-    iTunes backups and synchronization activities.
+    Shows evidence of mobile device connections, data synchronization between Windows and Apple devices, and backup locations containing mobile device data. Can reveal access to mobile device data through iTunes backups and synchronization activities.
 
   structure: |
-    iTunes configuration includes device registration data, backup storage paths, sync preferences, 
-    media library locations, and Apple ID authentication. Mobile Device Support entries track connected 
-    devices and synchronization history.
+    iTunes configuration includes device registration data, backup storage paths, sync preferences, media library locations, and Apple ID authentication. Mobile Device Support entries track connected devices and synchronization history.
 
   examples:
-    - "StoreAccountName: user@icloud.com (Associated Apple ID)"
-    - "LastBackupPath: C:\\Users\\user\\AppData\\Roaming\\Apple Computer\\MobileSync\\Backup"
-    - "DeviceID: 1234567890abcdef (Connected device identifier)"
-    - "DeviceName: John's iPhone (User device name)"
-    - "BackupDirectory: {device-guid} (Device-specific backup folder)"
-    - "SyncLibrary: 1 (Music library synchronization enabled)"
-    - "AutoSync: 0 (Automatic sync disabled)"
+  - 'StoreAccountName: user@icloud.com (Associated Apple ID)'
+  - 'LastBackupPath: C:\Users\user\AppData\Roaming\Apple Computer\MobileSync\Backup'
+  - 'DeviceID: 1234567890abcdef (Connected device identifier)'
+  - 'DeviceName: John''s iPhone (User device name)'
+  - 'BackupDirectory: {device-guid} (Device-specific backup folder)'
+  - 'SyncLibrary: 1 (Music library synchronization enabled)'
+  - 'AutoSync: 0 (Automatic sync disabled)'
 
   tools:
-    - name: "iTunes Application"
-      description: "Apple iTunes media management and device sync application"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "iTunes Backup Analysis Tools"
-      description: "Specialized tools for iTunes backup examination and mobile forensics"
-    - name: "Apple Mobile Device Support Tools"
-      description: "Apple's device management and synchronization utilities"
+  - name: iTunes Application
+    description: Apple iTunes media management and device sync application
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: iTunes Backup Analysis Tools
+    description: Specialized tools for iTunes backup examination and mobile forensics
+  - name: Apple Mobile Device Support Tools
+    description: Apple's device management and synchronization utilities
 
 limitations:
-  - "iTunes configuration does NOT prove device synchronization actually occurred"
-  - "Backup path settings don't indicate successful backup completion"
-  - "Device registration may be from failed connection attempts"
-  - "Sync preferences show configuration, not actual data transfer activity"
-  - "Apple ID association doesn't prove device ownership or authorized access"
-  - "Media library settings don't indicate what content was synchronized"
+- iTunes configuration does NOT prove device synchronization actually occurred
+- Backup path settings don't indicate successful backup completion
+- Device registration may be from failed connection attempts
+- Sync preferences show configuration, not actual data transfer activity
+- Apple ID association doesn't prove device ownership or authorized access
+- Media library settings don't indicate what content was synchronized
 
 correlation:
   required_for_definitive_sync_proof:
-    - "File system artifacts showing actual iTunes backup files created"
-    - "Application logs showing successful synchronization operations"
-    - "Network traffic logs showing data transfer to/from Apple devices"
-    - "File modification times on backup directories during device connection"
-    - "Event logs showing successful device authentication and access"
-    
+  - File system artifacts showing actual iTunes backup files created
+  - Application logs showing successful synchronization operations
+  - Network traffic logs showing data transfer to/from Apple devices
+  - File modification times on backup directories during device connection
+  - Event logs showing successful device authentication and access
+
   strengthens_evidence:
-    - "USB device connection logs correlating to iTunes sync times"
-    - "Media files with metadata indicating Apple device origin"
-    - "Network connections to Apple services during sync periods"
-    - "Registry changes in device tracking keys during connection times"
+  - USB device connection logs correlating to iTunes sync times
+  - Media files with metadata indicating Apple device origin
+  - Network connections to Apple services during sync periods
+  - Registry changes in device tracking keys during connection times
 
 metadata:
   windows_versions:
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "iTunes for Windows"
-  criticality: "low"
+  introduced: iTunes for Windows
+
+  criticality: low
 
   investigation_types:
-    - "behavioral-analysis"
-    - "timeline-analysis"
-    - "incident-response"
-    - "data-exfiltration"
+  - behavioral-analysis
+  - timeline-analysis
+  - incident-response
+  - data-exfiltration
 
   tags:
-    - "itunes"
-    - "apple-devices"
-    - "mobile-sync"
-    - "device-backups"
-    - "iphone"
-    - "ipad"
-    - "cross-platform"
+  - itunes
+  - apple-devices
+  - mobile-sync
+  - device-backups
+  - iphone
+  - ipad
+  - cross-platform
 
   references:
-    - title: "iTunes Support"
-      url: "https://support.apple.com/itunes/"
-      type: "official"
+  - title: iTunes Support
+    url: https://support.apple.com/itunes/
+    type: official
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
-    persistence: "Device sync and backup settings persist until application removal"
-    volatility: "Device connection history provides mobile device usage patterns"
+    default_location: Registry hive files (SOFTWARE, NTUSER.DAT)
+    persistence: Device sync and backup settings persist until application removal
+    volatility: Device connection history provides mobile device usage patterns
 
   related_artifacts:
-    - "device_sync"
-    - "apple_ecosystem"
-    - "device_backups"
+  - device_sync
+  - apple_ecosystem
+  - device_backups
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-08"
-  last_updated: "2025-06-13"
-  version: "3.0"
+  date_added: '2025-06-08'
+  last_updated: '2025-06-13'
+  version: '3.0'

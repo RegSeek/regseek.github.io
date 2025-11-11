@@ -1,91 +1,87 @@
-title: "Discord Desktop Client"
-category: "communication-apps"
-description: "Discord application configuration, server memberships, and communication settings"
+title: Discord Desktop Client
+category: communication-apps
+description: Discord application configuration, server memberships, and communication settings
 
 paths:
-  - "HKCU\\Software\\Discord"
-  - "HKLM\\SOFTWARE\\Discord Inc\\Discord"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Discord"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\Discord"
+- HKCU\Software\Discord
+- HKLM\SOFTWARE\Discord Inc\Discord
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Discord
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Run\Discord
 
 details:
   what: |
-    Discord client settings for gaming and community communication. Stores user authentication,
-    server configurations, notification settings, and privacy preferences.
+    Discord client settings for gaming and community communication. Stores user authentication, server configurations, notification settings, and privacy preferences.
 
   forensic_value: |
-    Reveals unauthorized external communications, gaming-related activities, and informal
-    communication channels that bypass corporate monitoring. Shows membership in suspicious
-    servers and potential data exfiltration through gaming platforms.
+    Reveals unauthorized external communications, gaming-related activities, and informal communication channels that bypass corporate monitoring. Shows membership in suspicious servers and potential data exfiltration through gaming platforms.
 
   structure: |
-    Configuration includes user identifiers, server memberships, privacy settings,
-    notification preferences, and voice/video configurations.
+    Configuration includes user identifiers, server memberships, privacy settings, notification preferences, and voice/video configurations.
 
   examples:
-    - "UserID: 123456789012345678 (Discord user identifier)"
-    - "Username: employee_username (Discord display name)"
-    - "AutoStart: 1 (Discord starts with Windows)"
-    - "MinimizeToTray: 1 (Minimize to system tray)"
-    - "EnableGameOverlay: 0 (Game overlay disabled)"
-    - "VoiceMode: PushToTalk (Voice activation method)"
+  - 'UserID: 123456789012345678 (Discord user identifier)'
+  - 'Username: employee_username (Discord display name)'
+  - 'AutoStart: 1 (Discord starts with Windows)'
+  - 'MinimizeToTray: 1 (Minimize to system tray)'
+  - 'EnableGameOverlay: 0 (Game overlay disabled)'
+  - 'VoiceMode: PushToTalk (Voice activation method)'
 
   tools:
-    - name: "Discord Desktop Settings"
-      description: "Built-in configuration and privacy controls"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Registry analysis tool"
+  - name: Discord Desktop Settings
+    description: Built-in configuration and privacy controls
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Registry analysis tool
 
 limitations:
-  - "Shows configuration only, not actual chat content or communication history"
-  - "Server membership doesn't prove active participation or message sending"
-  - "Settings don't indicate what was actually shared or downloaded"
+- Shows configuration only, not actual chat content or communication history
+- Server membership doesn't prove active participation or message sending
+- Settings don't indicate what was actually shared or downloaded
 
 correlation:
   required_for_definitive_conclusions:
-    - "Network traffic logs showing actual Discord communication sessions"
-    - "File system artifacts showing downloaded files from Discord"
-    - "Process execution logs confirming Discord client activity"
-  
+  - Network traffic logs showing actual Discord communication sessions
+  - File system artifacts showing downloaded files from Discord
+  - Process execution logs confirming Discord client activity
+
   strengthens_evidence:
-    - "Browser artifacts showing Discord web client usage"
-    - "Mobile device analysis for Discord mobile app activity"
+  - Browser artifacts showing Discord web client usage
+  - Mobile device analysis for Discord mobile app activity
 
 metadata:
   windows_versions:
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  criticality: "medium"
+  criticality: medium
 
   investigation_types:
-    - "insider-threat"
-    - "behavioral-analysis"
-    - "timeline-analysis"
-    - "data-exfiltration"
+  - insider-threat
+  - behavioral-analysis
+  - timeline-analysis
+  - data-exfiltration
 
   tags:
-    - "discord"
-    - "gaming-communication"
-    - "informal-channels"
-    - "voice-chat"
-    - "screen-sharing"
+  - discord
+  - gaming-communication
+  - informal-channels
+  - voice-chat
+  - screen-sharing
 
   references:
-    - title: "Discord Support Documentation"
-      url: "https://support.discord.com/"
-      type: "official"
+  - title: Discord Support Documentation
+    url: https://support.discord.com/
+    type: official
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-08"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-06-08'
+  last_updated: '2025-06-12'
+  version: '3.0'

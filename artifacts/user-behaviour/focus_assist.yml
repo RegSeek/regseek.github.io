@@ -1,0 +1,121 @@
+title: Focus Assist and Notification Management
+category: user-behaviour
+description: Windows notification suppression and Do Not Disturb configuration revealing focused work patterns and availability preferences
+
+paths:
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings
+- HKCU\Software\Microsoft\Windows\CurrentVersion\QuietHours
+- HKCU\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\DefaultAccount\Current\default$windows.data.notifications.quiethourssettings
+- HKLM\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\QuietHours
+
+details:
+  what: |
+    Focus Assist (previously Quiet Hours) is Windows notification management system that suppresses alerts during specified times or activities. Enhanced in Windows 11 with Focus Sessions integration, registry keys store notification filtering levels (Off, Priority Only, Alarms Only), automatic rules for gaming/full-screen apps/work hours, priority contact lists, and scheduled quiet periods. CloudStore location maintains synchronized settings across devices when Microsoft account is used.
+
+  forensic_value: |
+    Reveals user work patterns and focused activity timeframes through Do Not Disturb schedules. Nice to have for timeline analysis showing when user intended to work without interruption, supporting or contradicting claims about activity periods.
+
+  structure: |
+    Registry values stored as DWORD for feature toggles and mode selections, binary data in CloudStore for synchronized settings, String values for scheduled times and rules. QuietHours keys use DWORD for enabled state and time values. Settings key contains per-application notification permissions and priority app identifiers. CloudStore uses complex binary blob format requiring specialized parsing.
+
+  examples:
+  - Enabled = 1 (DWORD) - Focus Assist currently enabled
+  - Profile = 1 (DWORD) - Priority only mode (0=Off, 1=Priority, 2=Alarms only)
+  - AutoRule_Gaming = 1 (DWORD) - Auto-enable during gaming detected
+  - AutoRule_FullScreen = 1 (DWORD) - Enable when using full-screen apps
+  - Start = 1320 (DWORD) - Quiet hours begin at 22:00 (minutes from midnight)
+  - End = 420 (DWORD) - Quiet hours end at 07:00
+  - AutoRule_DuplicateDetection = 1 (DWORD) - Suppress duplicate notifications
+
+  tools:
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry browser for notification settings analysis
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry analysis with notification configuration parsing
+  - name: CloudStore Parser
+    description: Specialized tool for parsing binary CloudStore settings blobs
+
+limitations:
+- Registry settings DO NOT prove user was actually working during Focus Assist periods
+- Cannot determine which specific notifications were suppressed or viewed
+- Scheduled quiet hours do not prove system was in use during those times
+- Automatic rules show configuration, not actual triggering events
+- Priority contact list does not show communication history or content
+- Feature enablement does not indicate if user manually overrode settings
+- CloudStore sync state may reflect settings from other devices, not local usage
+
+correlation:
+  required_for_definitive_conclusions:
+  - Analyze Windows Timeline (ActivitiesCache.db) for actual application usage during Focus periods
+  - Check Event Logs for Focus Assist state changes and notification service activity
+  - Review Action Center notification history database (if available)
+  - Cross-reference with UserAssist for application launches during scheduled quiet hours
+  - Examine power management logs for system active/sleep states during Focus periods
+  - Verify network activity during scheduled Focus times to confirm actual usage
+
+  strengthens_evidence:
+  - Application usage logs showing sustained work in Office apps during Focus periods
+  - Gaming telemetry confirming automatic Focus Assist triggering during gameplay
+  - Communication app logs (Teams, Slack) showing 'Do Not Disturb' status changes
+  - Calendar application data showing scheduled focus time blocks
+  - Recent Documents showing file modifications during Focus Assist timeframes
+  - Process creation logs showing productivity apps launched at scheduled quiet hours start
+
+metadata:
+  windows_versions:
+  - Windows 10
+  - Windows 10
+  - Windows 10
+  - Windows 11
+
+  introduced: Windows 10 1803 (April 2018) as Focus Assist; enhanced in Windows 11
+
+  criticality: medium
+
+  investigation_types:
+  - timeline-analysis
+  - behavioral-analysis
+  - insider-threat
+  - incident-response
+
+  tags:
+  - windows-10
+  - windows-11
+  - focus-assist
+  - quiet-hours
+  - notifications
+  - do-not-disturb
+  - work-patterns
+  - user-availability
+
+  references:
+  - title: Turn Focus Assist On or Off in Windows
+    url: https://support.microsoft.com/en-us/windows/turn-focus-assist-on-or-off-in-windows-5492a638-b5a3-1ee0-0c4f-5ae044450e09
+    type: official
+  - title: Focus Sessions and Clock App Integration
+    url: https://support.microsoft.com/en-us/windows/focus-sessions-and-do-not-disturb-in-windows-11-fad8b9b8-a9de-43ac-8067-3a57deea9da5
+    type: official
+
+  retention:
+    default_location: NTUSER.DAT registry hive and CloudStore database
+    persistence: Survives reboots; CloudStore syncs across devices when Microsoft account used
+    volatility: Persistent configuration; notification history may be cleared by system maintenance
+
+  related_artifacts:
+  - gaming_entertainment
+  - windows_spotlight
+  - userassist
+  - communication-apps
+  - microsoft_teams
+
+author:
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
+
+contribution:
+  date_added: '2025-01-11'
+  last_updated: '2025-01-11'
+  version: '1.0'

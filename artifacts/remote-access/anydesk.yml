@@ -1,117 +1,112 @@
-title: "AnyDesk Remote Desktop Configuration"
-category: "remote-access"
-description: "AnyDesk remote access settings, connection management, and security configuration"
+title: AnyDesk Remote Desktop Configuration
+category: remote-access
+description: AnyDesk remote access settings, connection management, and security configuration
 
 paths:
-  - "HKCU\\Software\\AnyDesk"
-  - "HKLM\\SOFTWARE\\AnyDesk"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\AnyDesk"
-  - "HKCU\\Software\\Classes\\anydesk"
+- HKCU\Software\AnyDesk
+- HKLM\SOFTWARE\AnyDesk
+- HKLM\SYSTEM\CurrentControlSet\Services\AnyDesk
+- HKCU\Software\Classes\anydesk
 
 details:
   what: |
-    AnyDesk remote desktop configuration including connection settings, security configurations, 
-    address book management, and session preferences. Registry stores installation data, 
-    access permissions, and authentication settings.
+    AnyDesk remote desktop configuration including connection settings, security configurations, address book management, and session preferences. Registry stores installation data, access permissions, and authentication settings.
 
   forensic_value: |
-    Important for investigating remote access activities, potential unauthorized system control, 
-    and technical support sessions. Shows evidence of remote desktop usage, connection patterns, 
-    and can indicate legitimate remote work, unauthorized access attempts, or potential command and control communications.
+    Important for investigating remote access activities, potential unauthorized system control, and technical support sessions. Shows evidence of remote desktop usage, connection patterns, and can indicate legitimate remote work, unauthorized access attempts, or potential command and control communications.
 
   structure: |
-    AnyDesk configuration includes connection preferences, security settings, address book entries, 
-    access permissions, and session management options. Connection data tracks partner devices 
-    and access control configurations.
+    AnyDesk configuration includes connection preferences, security settings, address book entries, access permissions, and session management options. Connection data tracks partner devices and access control configurations.
 
   examples:
-    - "InstallPath: C:\\Program Files (x86)\\AnyDesk"
-    - "AnyDeskID: 123456789 (Unique device identifier)"
-    - "AddressBook: Work-Computer-987654321"
-    - "UnattendedAccess: 1 (Permanent access enabled)"
-    - "Password: (Encrypted connection password)"
-    - "FileTransfer: 1 (File transfer capability enabled)"
-    - "AudioTransmission: 1 (Audio streaming enabled)"
-    - "ClipboardSync: 1 (Clipboard synchronization active)"
+  - 'InstallPath: C:\Program Files (x86)\AnyDesk'
+  - 'AnyDeskID: 123456789 (Unique device identifier)'
+  - 'AddressBook: Work-Computer-987654321'
+  - 'UnattendedAccess: 1 (Permanent access enabled)'
+  - 'Password: (Encrypted connection password)'
+  - 'FileTransfer: 1 (File transfer capability enabled)'
+  - 'AudioTransmission: 1 (Audio streaming enabled)'
+  - 'ClipboardSync: 1 (Clipboard synchronization active)'
 
   tools:
-    - name: "AnyDesk Application"
-      description: "AnyDesk remote desktop software"
-    - name: "AnyDesk Address Book"
-      description: "Contact management for remote connections"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
+  - name: AnyDesk Application
+    description: AnyDesk remote desktop software
+  - name: AnyDesk Address Book
+    description: Contact management for remote connections
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
 
 limitations:
-  - "AnyDesk configuration does NOT prove remote sessions actually occurred"
-  - "Address book entries don't indicate successful connections were made"
-  - "Unattended access settings don't prove remote control was used"
-  - "File transfer capabilities don't show what files were transferred"
-  - "Password configuration doesn't indicate authentication success"
-  - "Installation presence doesn't prove active remote desktop usage"
-  - "Security settings may be configured without actual remote sessions"
+- AnyDesk configuration does NOT prove remote sessions actually occurred
+- Address book entries don't indicate successful connections were made
+- Unattended access settings don't prove remote control was used
+- File transfer capabilities don't show what files were transferred
+- Password configuration doesn't indicate authentication success
+- Installation presence doesn't prove active remote desktop usage
+- Security settings may be configured without actual remote sessions
 
 correlation:
   required_for_definitive_execution_proof:
-    - "Process execution logs showing AnyDesk.exe launches and remote session processes"
-    - "Network logs showing AnyDesk protocol connections to remote systems"
-    - "AnyDesk connection logs showing actual remote session establishment"
-    - "File system artifacts showing files accessed during remote sessions"
-    
+  - Process execution logs showing AnyDesk.exe launches and remote session processes
+  - Network logs showing AnyDesk protocol connections to remote systems
+  - AnyDesk connection logs showing actual remote session establishment
+  - File system artifacts showing files accessed during remote sessions
+
   strengthens_evidence:
-    - "Event logs showing user logon/logoff during remote sessions"
-    - "Recent documents accessed during suspected remote control timeframes"
-    - "Clipboard artifacts showing data transfer between systems"
+  - Event logs showing user logon/logoff during remote sessions
+  - Recent documents accessed during suspected remote control timeframes
+  - Clipboard artifacts showing data transfer between systems
 
 metadata:
   windows_versions:
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "AnyDesk"
-  criticality: "high"
+  introduced: AnyDesk
+
+  criticality: high
 
   investigation_types:
-    - "incident-response"
-    - "behavioral-analysis"
-    - "insider-threat"
-    - "remote-access"
-    - "lateral-movement"
+  - incident-response
+  - behavioral-analysis
+  - insider-threat
+  - remote-access
+  - lateral-movement
 
   tags:
-    - "anydesk"
-    - "remote-access"
-    - "remote-desktop"
-    - "technical-support"
-    - "remote-work"
-    - "unauthorized-access"
-    - "lightweight-rdp"
+  - anydesk
+  - remote-access
+  - remote-desktop
+  - technical-support
+  - remote-work
+  - unauthorized-access
+  - lightweight-rdp
 
   references:
-    - title: "AnyDesk Documentation"
-      url: "https://support.anydesk.com/"
-      type: "official"
+  - title: AnyDesk Documentation
+    url: https://support.anydesk.com/
+    type: official
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT, SYSTEM)"
-    persistence: "Remote access configuration persists until software removal"
-    volatility: "Connection activity provides evidence of remote desktop usage patterns"
+    default_location: Registry hive files (SOFTWARE, NTUSER.DAT, SYSTEM)
+    persistence: Remote access configuration persists until software removal
+    volatility: Connection activity provides evidence of remote desktop usage patterns
 
   related_artifacts:
-    - "teamviewer"
-    - "remote_desktop_connections"
-    - "network_connections"
+  - teamviewer
+  - remote_desktop_connections
+  - network_connections
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-08"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-06-08'
+  last_updated: '2025-06-12'
+  version: '3.0'

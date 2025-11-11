@@ -1,126 +1,120 @@
-title: "Gaming and Entertainment System Configuration"
-category: "user-behaviour"
-description: "Xbox services, Game Bar settings, and entertainment application usage"
+title: Gaming and Entertainment System Configuration
+category: user-behaviour
+description: Xbox services, Game Bar settings, and entertainment application usage
 
 paths:
-  - "HKCU\\Software\\Microsoft\\GameBar"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR"
-  - "HKLM\\SOFTWARE\\Microsoft\\Xbox"
-  - "HKCU\\Software\\Microsoft\\Games"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers"
+- HKCU\Software\Microsoft\GameBar
+- HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR
+- HKLM\SOFTWARE\Microsoft\Xbox
+- HKCU\Software\Microsoft\Games
+- HKLM\SYSTEM\CurrentControlSet\Control\GraphicsDrivers
 
 details:
   what: |
-    Windows gaming and entertainment infrastructure including Xbox Live integration, Game Bar
-    functionality, game recording capabilities, and gaming performance optimization. Controls
-    game mode behavior, screen recording, and social gaming features.
+    Windows gaming and entertainment infrastructure including Xbox Live integration, Game Bar functionality, game recording capabilities, and gaming performance optimization. Controls game mode behavior, screen recording, and social gaming features.
 
   forensic_value: |
-    Important for behavioral analysis and user profiling. Gaming activity patterns can establish
-    user presence and reveal social connections through gaming platforms. Game recordings and
-    screenshots may contain inadvertent evidence, while gaming-related network activity can
-    reveal communication patterns.
+    Important for behavioral analysis and user profiling. Gaming activity patterns can establish user presence and reveal social connections through gaming platforms. Game recordings and screenshots may contain inadvertent evidence, while gaming-related network activity can reveal communication patterns.
 
   structure: |
-    Game Bar configuration includes recording settings, hotkey assignments, and overlay preferences.
-    GameDVR manages game capture functionality and storage locations. Xbox integration contains
-    account information and social features. Graphics drivers control hardware acceleration.
+    Game Bar configuration includes recording settings, hotkey assignments, and overlay preferences. GameDVR manages game capture functionality and storage locations. Xbox integration contains account information and social features. Graphics drivers control hardware acceleration.
 
   examples:
-    - "GameBar\\AppCaptureEnabled: 1 (Game recording enabled)"
-    - "GameBar\\AudioCaptureEnabled: 1 (Audio recording in game clips)"
-    - "GameDVR\\AudioEncodingBitrate: 128000 (Audio quality setting)"
-    - "GameDVR\\VideoEncodingBitrateMode: 2 (High quality video recording)"
-    - "Xbox\\SignedInUser: user@outlook.com (Xbox Live account)"
-    - "GameMode: 1 (Windows Game Mode enabled)"
-    - "RecordingFolder: C:\\Users\\user\\Videos\\Captures (Game clip storage)"
-    - "HistoricalCaptureEnabled: 1 (Background recording active)"
+  - 'GameBar\AppCaptureEnabled: 1 (Game recording enabled)'
+  - 'GameBar\AudioCaptureEnabled: 1 (Audio recording in game clips)'
+  - 'GameDVR\AudioEncodingBitrate: 128000 (Audio quality setting)'
+  - 'GameDVR\VideoEncodingBitrateMode: 2 (High quality video recording)'
+  - 'Xbox\SignedInUser: user@outlook.com (Xbox Live account)'
+  - 'GameMode: 1 (Windows Game Mode enabled)'
+  - 'RecordingFolder: C:\Users\user\Videos\Captures (Game clip storage)'
+  - 'HistoricalCaptureEnabled: 1 (Background recording active)'
 
   tools:
-    - name: "Xbox Game Bar (Win+G)"
-      description: "Built-in Windows gaming overlay and recording interface"
-    - name: "Gaming Settings (ms-settings:gaming)"
-      description: "Windows gaming configuration and performance settings"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "Graphics Settings"
-      description: "Windows graphics preferences and hardware acceleration settings"
-    - name: "Xbox Console Companion"
-      description: "Xbox Live integration and social gaming features"
+  - name: Xbox Game Bar (Win+G)
+    description: Built-in Windows gaming overlay and recording interface
+  - name: Gaming Settings (ms-settings:gaming)
+    description: Windows gaming configuration and performance settings
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: Graphics Settings
+    description: Windows graphics preferences and hardware acceleration settings
+  - name: Xbox Console Companion
+    description: Xbox Live integration and social gaming features
 
 limitations:
-  - "Gaming configuration does NOT prove games were actually played"
-  - "Recording settings don't indicate actual game capture or recording activity"
-  - "Xbox account presence doesn't show active gaming or social interaction"
-  - "Game mode enablement doesn't prove gaming performance optimization was used"
-  - "Capture folder settings don't indicate recordings were created or saved"
-  - "Audio/video settings don't show actual multimedia capture occurred"
-  - "Graphics optimization settings don't prove enhanced gaming performance"
+- Gaming configuration does NOT prove games were actually played
+- Recording settings don't indicate actual game capture or recording activity
+- Xbox account presence doesn't show active gaming or social interaction
+- Game mode enablement doesn't prove gaming performance optimization was used
+- Capture folder settings don't indicate recordings were created or saved
+- Audio/video settings don't show actual multimedia capture occurred
+- Graphics optimization settings don't prove enhanced gaming performance
 
 correlation:
   required_for_definitive_gaming_proof:
-    - "Game capture files showing actual recorded gameplay sessions"
-    - "Process execution logs showing gaming applications running"
-    - "Network traffic logs showing gaming service connections"
-    - "Xbox Live service logs showing account activity and social interactions"
-    
+  - Game capture files showing actual recorded gameplay sessions
+  - Process execution logs showing gaming applications running
+  - Network traffic logs showing gaming service connections
+  - Xbox Live service logs showing account activity and social interactions
+
   strengthens_evidence:
-    - "File system artifacts showing game installations and saved game files"
-    - "Registry keys modified by gaming applications during gameplay"
-    - "Browser history showing gaming website visits or account management"
-    - "Recent documents showing gaming-related files or screenshots"
+  - File system artifacts showing game installations and saved game files
+  - Registry keys modified by gaming applications during gameplay
+  - Browser history showing gaming website visits or account management
+  - Recent documents showing gaming-related files or screenshots
 
 metadata:
   windows_versions:
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 10
+  - Windows 11
 
-  introduced: "Windows 10"
-  criticality: "low"
+  introduced: Windows 10
+
+  criticality: low
 
   investigation_types:
-    - "behavioral-analysis"
-    - "timeline-analysis"
+  - behavioral-analysis
+  - timeline-analysis
 
   tags:
-    - "user-activity"
-    - "gaming"
-    - "entertainment"
-    - "xbox"
-    - "game-recording"
-    - "social-gaming"
-    - "behavioral-analysis"
-    - "screen-capture"
+  - user-activity
+  - gaming
+  - entertainment
+  - xbox
+  - game-recording
+  - social-gaming
+  - behavioral-analysis
+  - screen-capture
 
   references:
-    - title: "Microsoft Documentation: Xbox Game Bar"
-      url: "https://support.microsoft.com/en-us/windows/xbox-game-bar-and-game-mode-for-gaming-on-your-windows-device"
-      type: "official"
-    - title: "Windows Gaming Features"
-      url: "https://learn.microsoft.com/en-us/gaming/game-bar/"
-      type: "official"
-    - title: "Digital Evidence in Gaming Environments"
-      url: "https://www.forensicfocus.com/articles/gaming-forensics/"
-      type: "research"
+  - title: 'Microsoft Documentation: Xbox Game Bar'
+    url: https://support.microsoft.com/en-us/windows/xbox-game-bar-and-game-mode-for-gaming-on-your-windows-device
+    type: official
+  - title: Windows Gaming Features
+    url: https://learn.microsoft.com/en-us/gaming/game-bar/
+    type: official
+  - title: Digital Evidence in Gaming Environments
+    url: https://www.forensicfocus.com/articles/gaming-forensics/
+    type: research
 
   retention:
-    default_location: "Registry hive files (NTUSER.DAT, SOFTWARE), game capture files"
-    persistence: "Gaming settings persist until manually changed, recordings until deletion"
-    volatility: "Gaming activity and recordings may contain timeline and behavioral evidence"
+    default_location: Registry hive files (NTUSER.DAT, SOFTWARE), game capture files
+    persistence: Gaming settings persist until manually changed, recordings until deletion
+    volatility: Gaming activity and recordings may contain timeline and behavioral evidence
 
   related_artifacts:
-    - "user_profiles"
-    - "opensavemru"
-    - "recent_docs"
-    - "microsoft_store"
+  - user_profiles
+  - opensavemru
+  - recent_docs
+  - microsoft_store
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-07"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-06-07'
+  last_updated: '2025-06-12'
+  version: '3.0'

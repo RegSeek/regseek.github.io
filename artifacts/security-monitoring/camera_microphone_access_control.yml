@@ -1,119 +1,114 @@
-title: "Camera and Microphone Access Control"
-category: "security-monitoring"
-description: "Privacy consent settings for camera and microphone access by applications and system components"
+title: Camera and Microphone Access Control
+category: security-monitoring
+description: Privacy consent settings for camera and microphone access by applications and system components
 
 paths:
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\microphone"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\webcam"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\microphone"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\webcam"
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\microphone
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\webcam
+- HKCU\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\microphone
+- HKCU\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\webcam
 
 details:
   what: |
-    Windows manages application permissions for camera and microphone access through the Capability 
-    Access Manager. Registry stores consent decisions, application-specific permissions, system-wide 
-    privacy settings, and usage tracking for audio/video recording capabilities.
+    Windows manages application permissions for camera and microphone access through the Capability Access Manager. Registry stores consent decisions, application-specific permissions, system-wide privacy settings, and usage tracking for audio/video recording capabilities.
 
   forensic_value: |
-    Critical for investigating privacy violations, unauthorized surveillance, and potential malware 
-    with recording capabilities. Shows applications attempting camera/microphone access, privacy 
-    setting modifications, and provides timeline of when sensitive permissions were granted or denied.
+    Critical for investigating privacy violations, unauthorized surveillance, and potential malware with recording capabilities. Shows applications attempting camera/microphone access, privacy setting modifications, and provides timeline of when sensitive permissions were granted or denied.
 
   structure: |
-    ConsentStore entries include Value (Allow/Deny), LastUsedTimeStart/LastUsedTimeStop timestamps 
-    as FILETIME, and application-specific permission entries with package family names for UWP apps 
-    and executable paths for desktop applications.
+    ConsentStore entries include Value (Allow/Deny), LastUsedTimeStart/LastUsedTimeStop timestamps as FILETIME, and application-specific permission entries with package family names for UWP apps and executable paths for desktop applications.
 
   examples:
-    - "microphone\\Value: Allow (System-wide microphone access enabled)"
-    - "webcam\\Value: Deny (System-wide camera access disabled)"
-    - "microphone\\Microsoft.SkypeApp_kzf8qxf38zg5c\\Value: Allow (Skype microphone permission)"
-    - "webcam\\C:\\Program Files\\Zoom\\bin\\Zoom.exe\\Value: Allow (Zoom camera permission)"
-    - "LastUsedTimeStart: 0x01DA2E8F5C6A0000 (FILETIME: Last camera access)"
-    - "LastUsedTimeStop: 0x01DA2E8F5C6A0000 (FILETIME: Camera access ended)"
+  - 'microphone\Value: Allow (System-wide microphone access enabled)'
+  - 'webcam\Value: Deny (System-wide camera access disabled)'
+  - 'microphone\Microsoft.SkypeApp_kzf8qxf38zg5c\Value: Allow (Skype microphone permission)'
+  - 'webcam\C:\Program Files\Zoom\bin\Zoom.exe\Value: Allow (Zoom camera permission)'
+  - 'LastUsedTimeStart: 0x01DA2E8F5C6A0000 (FILETIME: Last camera access)'
+  - 'LastUsedTimeStop: 0x01DA2E8F5C6A0000 (FILETIME: Camera access ended)'
 
   tools:
-    - name: "Windows Settings (Privacy & Security)"
-      description: "Built-in Windows privacy control for camera and microphone permissions"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "PrivacyView"
-      description: "Third-party tools for Windows privacy setting analysis"
-    - name: "Process Monitor"
-      url: "https://learn.microsoft.com/en-us/sysinternals/downloads/procmon"
-      description: "Monitor real-time camera/microphone access attempts"
+  - name: Windows Settings (Privacy & Security)
+    description: Built-in Windows privacy control for camera and microphone permissions
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: PrivacyView
+    description: Third-party tools for Windows privacy setting analysis
+  - name: Process Monitor
+    url: https://learn.microsoft.com/en-us/sysinternals/downloads/procmon
+    description: Monitor real-time camera/microphone access attempts
 
 limitations:
-  - "Permission grants do NOT prove actual camera or microphone usage occurred"
-  - "Access consent doesn't indicate what was recorded or captured"
-  - "Usage timestamps may reflect permission checks, not actual recording"
-  - "Application permissions don't prove unauthorized surveillance happened"
-  - "System-wide settings may be overridden by specific application permissions"
-  - "Permission modifications could be from legitimate privacy adjustments"
+- Permission grants do NOT prove actual camera or microphone usage occurred
+- Access consent doesn't indicate what was recorded or captured
+- Usage timestamps may reflect permission checks, not actual recording
+- Application permissions don't prove unauthorized surveillance happened
+- System-wide settings may be overridden by specific application permissions
+- Permission modifications could be from legitimate privacy adjustments
 
 correlation:
   required_for_definitive_surveillance_proof:
-    - "Audio/video files created during permission usage timeframes"
-    - "Application logs showing successful camera/microphone operations"
-    - "Process execution logs for applications with permissions during usage times"
-    - "Network traffic logs if recorded content was transmitted"
-    - "File system artifacts showing media files created by permitted applications"
-    
+  - Audio/video files created during permission usage timeframes
+  - Application logs showing successful camera/microphone operations
+  - Process execution logs for applications with permissions during usage times
+  - Network traffic logs if recorded content was transmitted
+  - File system artifacts showing media files created by permitted applications
+
   strengthens_evidence:
-    - "Event logs showing application launches during permission usage windows"
-    - "Registry changes in application-specific settings during permission grants"
-    - "File modifications in application data folders during usage periods"
-    - "Network connections by applications with recording permissions"
+  - Event logs showing application launches during permission usage windows
+  - Registry changes in application-specific settings during permission grants
+  - File modifications in application data folders during usage periods
+  - Network connections by applications with recording permissions
 
 metadata:
   windows_versions:
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 10
+  - Windows 11
 
-  introduced: "Windows 10"
-  criticality: "medium"
+  introduced: Windows 10
+
+  criticality: medium
 
   investigation_types:
-    - "malware-analysis"
-    - "incident-response"
-    - "data-exfiltration"
-    - "behavioral-analysis"
+  - malware-analysis
+  - incident-response
+  - data-exfiltration
+  - behavioral-analysis
 
   tags:
-    - "privacy"
-    - "camera"
-    - "microphone"
-    - "surveillance"
-    - "spyware"
-    - "recording"
-    - "consent"
-    - "permissions"
+  - privacy
+  - camera
+  - microphone
+  - surveillance
+  - spyware
+  - recording
+  - consent
+  - permissions
 
   references:
-    - title: "Windows Privacy Controls"
-      url: "https://learn.microsoft.com/en-us/windows/privacy/"
-      type: "official"
-    - title: "CapabilityAccessManager Documentation"
-      url: "https://learn.microsoft.com/en-us/uwp/api/windows.security.authorization.appcapabilityaccess"
-      type: "official"
+  - title: Windows Privacy Controls
+    url: https://learn.microsoft.com/en-us/windows/privacy/
+    type: official
+  - title: CapabilityAccessManager Documentation
+    url: https://learn.microsoft.com/en-us/uwp/api/windows.security.authorization.appcapabilityaccess
+    type: official
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
-    persistence: "Permission settings persist until manually changed"
-    volatility: "Usage timestamps provide ongoing surveillance detection capability"
+    default_location: Registry hive files (SOFTWARE, NTUSER.DAT)
+    persistence: Permission settings persist until manually changed
+    volatility: Usage timestamps provide ongoing surveillance detection capability
 
   related_artifacts:
-    - "device_permissions"
-    - "privacy_settings"
-    - "application_permissions"
+  - device_permissions
+  - privacy_settings
+  - application_permissions
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-08"
-  last_updated: "2025-06-13"
-  version: "3.0"
+  date_added: '2025-06-08'
+  last_updated: '2025-06-13'
+  version: '3.0'

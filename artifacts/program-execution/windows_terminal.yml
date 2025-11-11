@@ -1,113 +1,107 @@
-title: "Windows Terminal Configuration"
-category: "program-execution"
-description: "Windows Terminal settings, profiles, and modern command-line interface configuration"
+title: Windows Terminal Configuration
+category: program-execution
+description: Windows Terminal settings, profiles, and modern command-line interface configuration
 
 paths:
-  - "HKCU\\Software\\Microsoft\\Windows Terminal"
-  - "HKLM\\SOFTWARE\\Microsoft\\WindowsTerminal"
-  - "HKCU\\Software\\Classes\\Directory\\Background\\shell\\wt"
-  - "HKLM\\SOFTWARE\\Classes\\Directory\\Background\\shell\\wt"
+- HKCU\Software\Microsoft\Windows Terminal
+- HKLM\SOFTWARE\Microsoft\WindowsTerminal
+- HKCU\Software\Classes\Directory\Background\shell\wt
+- HKLM\SOFTWARE\Classes\Directory\Background\shell\wt
 
 details:
   what: |
-    Windows Terminal modern command-line interface configuration including shell profiles, 
-    appearance settings, key bindings, and terminal emulation preferences. Registry stores 
-    configuration profiles, color schemes, and integration settings.
+    Windows Terminal modern command-line interface configuration including shell profiles, appearance settings, key bindings, and terminal emulation preferences. Registry stores configuration profiles, color schemes, and integration settings.
 
   forensic_value: |
-    Important for investigating command-line activities, system administration tasks, and 
-    advanced user interactions. Shows evidence of terminal usage patterns, shell preferences, 
-    and can reveal system administration activities, scripting development, or command-line based attacks.
+    Important for investigating command-line activities, system administration tasks, and advanced user interactions. Shows evidence of terminal usage patterns, shell preferences, and can reveal system administration activities, scripting development, or command-line based attacks.
 
   structure: |
-    Windows Terminal configuration includes profile definitions, appearance settings, key binding 
-    mappings, and startup preferences. Shell integration data tracks context menu additions 
-    and command-line interface customizations.
+    Windows Terminal configuration includes profile definitions, appearance settings, key binding mappings, and startup preferences. Shell integration data tracks context menu additions and command-line interface customizations.
 
   examples:
-    - "DefaultProfile: {PowerShell GUID}"
-    - "DefaultProfile: {Command Prompt GUID}"
-    - "Profile: PowerShell 7 (Custom PowerShell Core profile)"
-    - "Profile: WSL Ubuntu (Windows Subsystem for Linux)"
-    - "StartupActions: new-tab --profile PowerShell"
-    - "ColorScheme: Campbell (Terminal color theme)"
-    - "ContextMenuIntegration: 1 (Right-click context menu enabled)"
+  - 'DefaultProfile: {PowerShell GUID}'
+  - 'DefaultProfile: {Command Prompt GUID}'
+  - 'Profile: PowerShell 7 (Custom PowerShell Core profile)'
+  - 'Profile: WSL Ubuntu (Windows Subsystem for Linux)'
+  - 'StartupActions: new-tab --profile PowerShell'
+  - 'ColorScheme: Campbell (Terminal color theme)'
+  - 'ContextMenuIntegration: 1 (Right-click context menu enabled)'
 
   tools:
-    - name: "Windows Terminal"
-      description: "Microsoft's modern terminal application"
-    - name: "wt.exe"
-      description: "Windows Terminal command-line launcher"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
+  - name: Windows Terminal
+    description: Microsoft's modern terminal application
+  - name: wt.exe
+    description: Windows Terminal command-line launcher
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
 
 limitations:
-  - "Windows Terminal configuration does NOT prove command-line programs were executed"
-  - "Profile definitions don't indicate shells or commands were actually run"
-  - "Context menu integration doesn't show terminal was launched from context menu"
-  - "Color scheme and appearance settings don't indicate active terminal usage"
-  - "Startup actions configuration doesn't prove terminal was started"
-  - "WSL profile existence doesn't prove Linux subsystem was used"
-  - "PowerShell profile settings don't indicate PowerShell scripts were executed"
+- Windows Terminal configuration does NOT prove command-line programs were executed
+- Profile definitions don't indicate shells or commands were actually run
+- Context menu integration doesn't show terminal was launched from context menu
+- Color scheme and appearance settings don't indicate active terminal usage
+- Startup actions configuration doesn't prove terminal was started
+- WSL profile existence doesn't prove Linux subsystem was used
+- PowerShell profile settings don't indicate PowerShell scripts were executed
 
 correlation:
   required_for_definitive_execution_proof:
-    - "Process execution logs showing WindowsTerminal.exe or wt.exe launches"
-    - "Command-line history files showing executed commands"
-    - "PowerShell or WSL execution logs showing shell activity"
-    - "File system artifacts showing command-line tools were run"
-    
+  - Process execution logs showing WindowsTerminal.exe or wt.exe launches
+  - Command-line history files showing executed commands
+  - PowerShell or WSL execution logs showing shell activity
+  - File system artifacts showing command-line tools were run
+
   strengthens_evidence:
-    - "Recent documents showing files accessed via command-line tools"
-    - "Network connections initiated by command-line programs"
-    - "File modifications correlating with terminal session times"
+  - Recent documents showing files accessed via command-line tools
+  - Network connections initiated by command-line programs
+  - File modifications correlating with terminal session times
 
 metadata:
   windows_versions:
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 10
+  - Windows 11
 
-  introduced: "Windows Terminal (2019)"
-  
-  criticality: "medium"
+  introduced: Windows Terminal (2019)
+
+  criticality: medium
 
   investigation_types:
-    - "behavioral-analysis"
-    - "incident-response"
-    - "lateral-movement"
-    - "program-execution"
+  - behavioral-analysis
+  - incident-response
+  - lateral-movement
+  - program-execution
 
   tags:
-    - "windows-terminal"
-    - "command-line"
-    - "terminal"
-    - "powershell"
-    - "wsl"
-    - "system-administration"
-    - "scripting"
+  - windows-terminal
+  - command-line
+  - terminal
+  - powershell
+  - wsl
+  - system-administration
+  - scripting
 
   references:
-    - title: "Windows Terminal Documentation"
-      url: "https://learn.microsoft.com/en-us/windows/terminal/"
-      type: "official"
+  - title: Windows Terminal Documentation
+    url: https://learn.microsoft.com/en-us/windows/terminal/
+    type: official
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
-    persistence: "Terminal configuration and profiles persist across sessions"
-    volatility: "Command-line usage patterns provide ongoing administrative activity evidence"
+    default_location: Registry hive files (SOFTWARE, NTUSER.DAT)
+    persistence: Terminal configuration and profiles persist across sessions
+    volatility: Command-line usage patterns provide ongoing administrative activity evidence
 
   related_artifacts:
-    - "powershell_configuration"
-    - "command_line_history"
-    - "wsl_configuration"
+  - powershell_configuration
+  - command_line_history
+  - wsl_configuration
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-08"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-06-08'
+  last_updated: '2025-06-12'
+  version: '3.0'

@@ -1,140 +1,135 @@
-title: "User Accounts and Profile Information"
-category: "authentication"
-description: "User account registry data including SIDs, profile paths, account creation timestamps, and user metadata"
+title: User Accounts and Profile Information
+category: authentication
+description: User account registry data including SIDs, profile paths, account creation timestamps, and user metadata
 
 paths:
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\ProfileList"
-  - "HKLM\\SAM\\SAM\\Domains\\Account\\Users"
-  - "HKLM\\SAM\\SAM\\Domains\\Account\\Users\\Names"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\ProfileGuid"
+- HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList
+- HKLM\SAM\SAM\Domains\Account\Users
+- HKLM\SAM\SAM\Domains\Account\Users\Names
+- HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileGuid
 
 details:
   what: |
-    Windows stores user account information including Security Identifiers (SIDs), profile 
-    directory paths, account creation timestamps, last logon times, and account properties. 
-    Maintains both active and historical account data for local and domain users.
+    Windows stores user account information including Security Identifiers (SIDs), profile directory paths, account creation timestamps, last logon times, and account properties. Maintains both active and historical account data for local and domain users.
 
   forensic_value: |
-    Essential for multi-user system analysis and identifying all accounts that accessed 
-    the system. Critical for insider threat investigations, privilege escalation analysis, 
-    and linking forensic artifacts to specific user accounts.
+    Essential for multi-user system analysis and identifying all accounts that accessed the system. Critical for insider threat investigations, privilege escalation analysis, and linking forensic artifacts to specific user accounts.
 
   structure: |
-    ProfileList contains user SIDs as subkeys with ProfileImagePath, State, RefCount, and 
-    Flags. SAM database stores account creation times, last logon times, login counts, and 
-    account flags. Names subkey provides SID-to-username mappings.
-
+    ProfileList contains user SIDs as subkeys with ProfileImagePath, State, RefCount, and Flags. SAM database stores account creation times, last logon times, login counts, and account flags. Names subkey provides SID-to-username mappings.
+  
   examples:
-    - "S-1-5-21-1234567890-1234567890-1234567890-1001\\ProfileImagePath: C:\\Users\\Administrator"
-    - "S-1-5-21-1234567890-1234567890-1234567890-1002\\ProfileImagePath: C:\\Users\\jdoe"
-    - "State: 0 (Active profile loaded successfully)"
-    - "RefCount: 1 (Profile currently in use)"
-    - "Flags: 0 (Standard user profile)"
-    - "Account Created: 2024-01-15 08:00:00 UTC"
-    - "Last Logon: 2024-01-20 14:30:25 UTC"
-    - "Login Count: 157 (total successful logons)"
-    - "Names\\Administrator: S-1-5-21-xxx-500"
-
+  - 'S-1-5-21-1234567890-1234567890-1234567890-1001\ProfileImagePath: C:\Users\Administrator'
+  - 'S-1-5-21-1234567890-1234567890-1234567890-1002\ProfileImagePath: C:\Users\jdoe'
+  - 'State: 0 (Active profile loaded successfully)'
+  - 'RefCount: 1 (Profile currently in use)'
+  - 'Flags: 0 (Standard user profile)'
+  - 'Account Created: 2024-01-15 08:00:00 UTC'
+  - 'Last Logon: 2024-01-20 14:30:25 UTC'
+  - 'Login Count: 157 (total successful logons)'
+  - 'Names\Administrator: S-1-5-21-xxx-500'
+  
   tools:
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "PsGetSid"
-      url: "https://learn.microsoft.com/en-us/sysinternals/downloads/psgetsid"
-      description: "Utility for translating between account names and SIDs"
-    - name: "SAM Parser"
-      description: "Specialized tools for analyzing Security Account Manager database"
-    - name: "whoami /all"
-      description: "Built-in command for current user account information"
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: PsGetSid
+    url: https://learn.microsoft.com/en-us/sysinternals/downloads/psgetsid
+    description: Utility for translating between account names and SIDs
+  - name: SAM Parser
+    description: Specialized tools for analyzing Security Account Manager database
+  - name: whoami /all
+    description: Built-in command for current user account information
 
 limitations:
-  - "Account creation timestamp does NOT prove when account was first used"
-  - "Last logon time may not reflect actual user activity"
-  - "Profile path existence doesn't prove user logged in successfully"
-  - "Login count shows authentication attempts, not successful sessions"
-  - "Domain accounts may have limited local registry presence"
-  - "Account metadata doesn't prove user performed specific actions"
-  - "Profile loading doesn't indicate actual user interaction"
+- Account creation timestamp does NOT prove when account was first used
+- Last logon time may not reflect actual user activity
+- Profile path existence doesn't prove user logged in successfully
+- Login count shows authentication attempts, not successful sessions
+- Domain accounts may have limited local registry presence
+- Account metadata doesn't prove user performed specific actions
+- Profile loading doesn't indicate actual user interaction
 
 correlation:
   required_for_definitive_user_activity_proof:
-    - "Security event logs showing actual user logon/logoff events"
-    - "User-specific registry hive (NTUSER.DAT) with user activity artifacts"
-    - "Process execution logs showing programs run under specific user context"
-    - "File system artifacts showing user-created or modified files"
-    
+  - Security event logs showing actual user logon/logoff events
+  - User-specific registry hive (NTUSER.DAT) with user activity artifacts
+  - Process execution logs showing programs run under specific user context
+  - File system artifacts showing user-created or modified files
+  
   strengthens_evidence:
-    - "UserAssist entries showing user-initiated program execution"
-    - "Recent documents and MRU lists under user profiles"
-    - "Application usage artifacts specific to user accounts"
-    - "Network authentication logs confirming user access patterns"
+  - UserAssist entries showing user-initiated program execution
+  - Recent documents and MRU lists under user profiles
+  - Application usage artifacts specific to user accounts
+  - Network authentication logs confirming user access patterns
 
 metadata:
   windows_versions:
-    - "Windows NT 3.1"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2000"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
-
-  introduced: "Windows NT 3.1"
-  criticality: "high"
-
+  - Windows NT 3.1
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2000
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
+  
+  introduced: Windows NT 3.1
+  
+  criticality: high
+  
   investigation_types:
-    - "insider-threat"
-    - "privilege-escalation"
-    - "timeline-analysis"
-    - "lateral-movement"
-    - "behavioral-analysis"
-    
+  - insider-threat
+  - privilege-escalation
+  - timeline-analysis
+  - lateral-movement
+  - behavioral-analysis
+  
   tags:
-    - "user-accounts"
-    - "profiles"
-    - "sids"
-    - "account-creation"
-    - "unauthorized-access"
-    - "user-correlation"
-    - "sam-database"
-    - "profile-paths"
-
+  - user-accounts
+  - profiles
+  - sids
+  - account-creation
+  - unauthorized-access
+  - user-correlation
+  - sam-database
+  - profile-paths
+  
   references:
-    - title: "User Profiles"
-      url: "https://learn.microsoft.com/en-us/windows/win32/shell/user-profiles"
-      type: "official"
-    - title: "Windows User Account Forensics"
-      url: "https://www.forensicfocus.com/articles/windows-user-account-forensics/"
-      type: "research"
-    - title: "SAM Database Analysis for Digital Forensics"
-      url: "https://www.sans.org/white-papers/36427/"
-      type: "research"
-
+  - title: User Profiles
+    url: https://learn.microsoft.com/en-us/windows/win32/shell/user-profiles
+    type: official
+  - title: Windows User Account Forensics
+    url: https://www.forensicfocus.com/articles/windows-user-account-forensics/
+    type: research
+  - title: SAM Database Analysis for Digital Forensics
+    url: https://www.sans.org/white-papers/36427/
+    type: research
+  
   retention:
-    default_location: "Registry hive files (SOFTWARE, SAM)"
-    persistence: "Account data persists until account deletion or system reinstallation"
-    volatility: "Profile states update with user sessions, account data generally stable"
-
+    default_location: Registry hive files (SOFTWARE, SAM)
+    persistence: Account data persists until account deletion or system reinstallation
+    volatility: Profile states update with user sessions, account data generally stable
+  
   related_artifacts:
-    - "security_policy"
-    - "logon_events"
-    - "userassist"
-    - "recent_docs"
+  - security_policy
+  - logon_events
+  - userassist
+  - recent_docs
 
 author:
-  name: "RegSeek Migration"
-  github: "regseek"
+  name: RegSeek Migration
+  github: regseek
 
 contribution:
-  date_added: "2025-06-13"
-  last_updated: "2025-06-13"
-  version: "3.0"
+  date_added: '2025-06-13'
+  last_updated: '2025-06-13'
+  version: '3.0'

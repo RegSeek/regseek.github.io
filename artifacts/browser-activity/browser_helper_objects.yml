@@ -1,123 +1,118 @@
-title: "Browser Helper Objects and Internet Explorer Extensions"
-category: "browser-activity"
-description: "Internet Explorer Browser Helper Objects, toolbar extensions, and browser plugin registrations"
+title: Browser Helper Objects and Internet Explorer Extensions
+category: browser-activity
+description: Internet Explorer Browser Helper Objects, toolbar extensions, and browser plugin registrations
 
 paths:
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Browser Helper Objects"
-  - "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Browser Helper Objects"
-  - "HKLM\\SOFTWARE\\Microsoft\\Internet Explorer\\Toolbar"
-  - "HKLM\\SOFTWARE\\Microsoft\\Internet Explorer\\Extensions"
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects
+- HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects
+- HKLM\SOFTWARE\Microsoft\Internet Explorer\Toolbar
+- HKLM\SOFTWARE\Microsoft\Internet Explorer\Extensions
 
 details:
   what: |
-    Browser Helper Objects (BHOs) are DLLs that automatically load with Internet Explorer
-    to extend functionality. Registry manages BHO registration, toolbar installations,
-    and browser extension permissions.
+    Browser Helper Objects (BHOs) are DLLs that automatically load with Internet Explorer to extend functionality. Registry manages BHO registration, toolbar installations, and browser extension permissions.
 
   forensic_value: |
-    Critical for detecting malicious browser extensions and adware. BHOs can intercept
-    web traffic, steal credentials, inject content, and monitor browsing. Shows evidence
-    of browser hijacking, malicious toolbars, and unauthorized modifications.
+    Important for detecting malicious browser extensions and adware. BHOs can intercept web traffic, steal credentials, inject content, and monitor browsing. Shows evidence of browser hijacking, malicious toolbars, and unauthorized modifications.
 
   structure: |
-    BHO registration uses CLSID identifiers referencing COM objects. Each entry contains
-    class registration and security settings. Toolbar entries define button configurations
-    and execution commands.
+    BHO registration uses CLSID identifiers referencing COM objects. Each entry contains class registration and security settings. Toolbar entries define button configurations and execution commands.
 
   examples:
-    - "BHO\\{CLSID}: Adobe PDF Reader (Legitimate PDF viewer integration)"
-    - "BHO\\{2670000A-7350-4f3c-8081-5663EE0C6C49}: Windows Live Toolbar"
-    - "BHO\\{12345678-1234-5678-9abc-123456789abc}: Suspicious Adware BHO"
-    - "Toolbar\\{GUID}: Search Hijacker Toolbar"
-    - "Extensions\\{MenuExt-GUID}: Download Manager"
-    - "NoExplorer: 1 (BHO disabled in Windows Explorer)"
-    - "CLSID Reference: HKLM\\SOFTWARE\\Classes\\CLSID\\{GUID}\\InprocServer32: malware.dll"
+  - 'BHO\{CLSID}: Adobe PDF Reader (Legitimate PDF viewer integration)'
+  - 'BHO\{2670000A-7350-4f3c-8081-5663EE0C6C49}: Windows Live Toolbar'
+  - 'BHO\{12345678-1234-5678-9abc-123456789abc}: Suspicious Adware BHO'
+  - 'Toolbar\{GUID}: Search Hijacker Toolbar'
+  - 'Extensions\{MenuExt-GUID}: Download Manager'
+  - 'NoExplorer: 1 (BHO disabled in Windows Explorer)'
+  - 'CLSID Reference: HKLM\SOFTWARE\Classes\CLSID\{GUID}\InprocServer32: malware.dll'
 
   tools:
-    - name: "Internet Options (inetcpl.cpl)"
-      description: "Built-in IE add-on management"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis tool"
-    - name: "Autoruns"
-      url: "https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns"
-      description: "Microsoft Sysinternals tool with BHO enumeration"
-    - name: "BrowserAddonsView"
-      url: "https://www.nirsoft.net/utils/browser_addons_view.html"
-      description: "NirSoft browser add-ons viewer"
+  - name: Internet Options (inetcpl.cpl)
+    description: Built-in IE add-on management
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis tool
+  - name: Autoruns
+    url: https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns
+    description: Microsoft Sysinternals tool with BHO enumeration
+  - name: BrowserAddonsView
+    url: https://www.nirsoft.net/utils/browser_addons_view.html
+    description: NirSoft browser add-ons viewer
 
 limitations:
-  - "Registry shows installed BHOs only, not actual usage or activity"
-  - "Legitimate software may use BHOs for valid functionality"
-  - "BHO presence doesn't prove malicious behavior occurred"
-  - "Advanced malware may not use traditional BHO registration"
+- Registry shows installed BHOs only, not actual usage or activity
+- Legitimate software may use BHOs for valid functionality
+- BHO presence doesn't prove malicious behavior occurred
+- Advanced malware may not use traditional BHO registration
 
 correlation:
   required_for_definitive_conclusions:
-    - "Network traffic logs showing malicious communication"
-    - "Browser history showing redirected or injected content"
-    - "Process execution logs showing BHO DLL loading"
-    - "File system artifacts showing malicious DLL files"
-  
+  - Network traffic logs showing malicious communication
+  - Browser history showing redirected or injected content
+  - Process execution logs showing BHO DLL loading
+  - File system artifacts showing malicious DLL files
+
   strengthens_evidence:
-    - "Timeline analysis of when BHOs were installed"
-    - "User activity showing unexpected browser behavior"
-    - "Other malware persistence mechanisms"
+  - Timeline analysis of when BHOs were installed
+  - User activity showing unexpected browser behavior
+  - Other malware persistence mechanisms
 
 metadata:
   windows_versions:
-    - "Windows 98"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 98
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Internet Explorer 4.0"
-  deprecated: "Legacy with IE, modern browsers use different extension models"
-  criticality: "high"
+  introduced: Internet Explorer 4.0
+  deprecated: Legacy with IE, modern browsers use different extension models
+
+  criticality: high
 
   investigation_types:
-    - "malware-analysis"
-    - "incident-response"
-    - "data-exfiltration"
-    - "persistence-analysis"
-    - "credential-theft"
+  - malware-analysis
+  - incident-response
+  - data-exfiltration
+  - persistence-analysis
+  - credential-theft
 
   tags:
-    - "browser-extensions"
-    - "bho"
-    - "browser-hijacking"
-    - "adware"
-    - "malicious-toolbars"
+  - browser-extensions
+  - bho
+  - browser-hijacking
+  - adware
+  - malicious-toolbars
 
   references:
-    - title: "Microsoft Documentation: Browser Helper Objects"
-      url: "https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/bb250436(v=vs.85)"
-      type: "official"
-    - title: "Browser Helper Object Malware Analysis"
-      url: "https://www.sans.org/white-papers/33439/"
-      type: "research"
+  - title: 'Microsoft Documentation: Browser Helper Objects'
+    url: https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/bb250436(v=vs.85)
+    type: official
+  - title: Browser Helper Object Malware Analysis
+    url: https://www.sans.org/white-papers/33439/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
-    persistence: "BHO registrations persist until manually removed"
-    volatility: "Automatically load with browser sessions"
+    default_location: Registry hive files (SOFTWARE, NTUSER.DAT)
+    persistence: BHO registrations persist until manually removed
+    volatility: Automatically load with browser sessions
 
   related_artifacts:
-    - "activex_controls"
-    - "com_objects"
-    - "internet_settings"
+  - activex_controls
+  - com_objects
+  - internet_settings
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-01-15"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-01-15'
+  version: '3.0'

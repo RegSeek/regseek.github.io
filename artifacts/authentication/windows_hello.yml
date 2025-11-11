@@ -1,133 +1,128 @@
-title: "Windows Hello Biometric Authentication"
-category: "authentication"
-description: "Windows Hello configuration, biometric enrollment, PIN settings, and passwordless authentication policies"
+title: Windows Hello Biometric Authentication
+category: authentication
+description: Windows Hello configuration, biometric enrollment, PIN settings, and passwordless authentication policies
 
 paths:
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WinBio"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WinBio\\Credentials"
-  - "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WinBio"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\WinBio\\Settings"
-  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\PassportForWork"
-  - "HKLM\\SOFTWARE\\Microsoft\\PolicyManager\\current\\device\\DeviceLock"
-  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\PassportForWork"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\WbioSrvc"
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WinBio
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WinBio\Credentials
+- HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\WinBio
+- HKCU\Software\Microsoft\Windows\CurrentVersion\WinBio\Settings
+- HKLM\SOFTWARE\Policies\Microsoft\PassportForWork
+- HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\DeviceLock
+- HKLM\SOFTWARE\Policies\Microsoft\PassportForWork
+- HKLM\SYSTEM\CurrentControlSet\Services\WbioSrvc
 
 details:
   what: |
-    Windows Hello biometric authentication system encompasses fingerprint reader configuration, 
-    facial recognition settings, iris scanning support, PIN complexity requirements, and enterprise 
-    policy enforcement. Controls biometric enrollment processes and passwordless authentication capabilities.
+    Windows Hello biometric authentication system encompasses fingerprint reader configuration, facial recognition settings, iris scanning support, PIN complexity requirements, and enterprise policy enforcement. Controls biometric enrollment processes and passwordless authentication capabilities.
 
   forensic_value: |
-    Critical for understanding authentication mechanisms that may affect system access, reveals 
-    biometric enrollment indicating user presence and device usage patterns, and shows enterprise 
-    authentication policies. May reveal attempts to bypass biometric authentication.
+    Critical for understanding authentication mechanisms that may affect system access, reveals biometric enrollment indicating user presence and device usage patterns, and shows enterprise authentication policies. May reveal attempts to bypass biometric authentication.
 
   structure: |
-    WinBio configuration includes biometric service settings, enrolled user information, sensor 
-    configuration, and policy enforcement. PassportForWork contains PIN policies, biometric 
-    requirements, and enterprise authentication settings. DeviceLock manages screen lock behavior.
-
+    WinBio configuration includes biometric service settings, enrolled user information, sensor configuration, and policy enforcement. PassportForWork contains PIN policies, biometric requirements, and enterprise authentication settings. DeviceLock manages screen lock behavior.
+  
   examples:
-    - "WinBio\\DatabaseConnections: Biometric database configuration"
-    - "EnrolledUsers: S-1-5-21-xxx-1001 (User SID with biometric enrollment)"
-    - "RequireBiometrics: 1 (Biometric authentication required)"
-    - "PIN\\MinimumLength: 6 (Minimum PIN length requirement)"
-    - "PIN\\MaximumLength: 127 (Maximum PIN length allowed)"
-    - "PIN\\RequireDigits: 1 (PIN must contain numbers)"
-    - "FacialRecognition: 1 (Windows Hello face authentication enabled)"
-    - "FingerprintReader: Microsoft Fingerprint Reader (Biometric device)"
-
+  - 'WinBio\DatabaseConnections: Biometric database configuration'
+  - 'EnrolledUsers: S-1-5-21-xxx-1001 (User SID with biometric enrollment)'
+  - 'RequireBiometrics: 1 (Biometric authentication required)'
+  - 'PIN\MinimumLength: 6 (Minimum PIN length requirement)'
+  - 'PIN\MaximumLength: 127 (Maximum PIN length allowed)'
+  - 'PIN\RequireDigits: 1 (PIN must contain numbers)'
+  - 'FacialRecognition: 1 (Windows Hello face authentication enabled)'
+  - 'FingerprintReader: Microsoft Fingerprint Reader (Biometric device)'
+  
   tools:
-    - name: "Windows Hello Setup"
-      description: "Built-in Windows Hello configuration and enrollment interface"
-    - name: "Sign-in Options (ms-settings:signinoptions)"
-      description: "Windows Settings authentication and Hello configuration"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "Group Policy Editor (gpedit.msc)"
-      description: "Windows Hello policy configuration and management"
-    - name: "Biometric Device Manager"
-      description: "Hardware management for biometric sensors and readers"
+  - name: Windows Hello Setup
+    description: Built-in Windows Hello configuration and enrollment interface
+  - name: Sign-in Options (ms-settings:signinoptions)
+    description: Windows Settings authentication and Hello configuration
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: Group Policy Editor (gpedit.msc)
+    description: Windows Hello policy configuration and management
+  - name: Biometric Device Manager
+    description: Hardware management for biometric sensors and readers
 
 limitations:
-  - "Biometric enrollment does NOT prove successful authentication occurred"
-  - "Hello configuration doesn't indicate actual biometric usage for system access"
-  - "PIN policy settings don't prove weak PIN credentials are in use"
-  - "Biometric hardware configuration doesn't indicate authentication bypass attempts"
-  - "Enrollment records may be from initial setup without indicating ongoing usage"
-  - "Authentication configuration may be enterprise-mandated rather than user-selected"
+- Biometric enrollment does NOT prove successful authentication occurred
+- Hello configuration doesn't indicate actual biometric usage for system access
+- PIN policy settings don't prove weak PIN credentials are in use
+- Biometric hardware configuration doesn't indicate authentication bypass attempts
+- Enrollment records may be from initial setup without indicating ongoing usage
+- Authentication configuration may be enterprise-mandated rather than user-selected
 
 correlation:
   required_for_definitive_usage_proof:
-    - "Event logs showing successful biometric authentication events"
-    - "Authentication logs confirming Windows Hello logon sessions"
-    - "Process execution logs showing applications launched after biometric authentication"
-    - "Registry changes showing biometric service activation during authentication periods"
-    - "File system access logs showing user activity following biometric authentication"
-    
+  - Event logs showing successful biometric authentication events
+  - Authentication logs confirming Windows Hello logon sessions
+  - Process execution logs showing applications launched after biometric authentication
+  - Registry changes showing biometric service activation during authentication periods
+  - File system access logs showing user activity following biometric authentication
+  
   strengthens_evidence:
-    - "Event logs showing multiple biometric authentication attempts"
-    - "Registry changes in user profile during biometric enrollment periods"
-    - "File modifications in biometric database during enrollment or authentication"
-    - "Network activity following successful biometric authentication sessions"
+  - Event logs showing multiple biometric authentication attempts
+  - Registry changes in user profile during biometric enrollment periods
+  - File modifications in biometric database during enrollment or authentication
+  - Network activity following successful biometric authentication sessions
 
 metadata:
   windows_versions:
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows 10
+  - Windows 11
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows 10"
-  criticality: "medium"
+  introduced: Windows 10
+
+  criticality: medium
 
   investigation_types:
-    - "incident-response"
-    - "behavioral-analysis"
-    - "insider-threat"
-    - "timeline-analysis"
-
+  - incident-response
+  - behavioral-analysis
+  - insider-threat
+  - timeline-analysis
+  
   tags:
-    - "security"
-    - "windows-hello"
-    - "biometric"
-    - "authentication"
-    - "fingerprint"
-    - "facial-recognition"
-    - "pin-policy"
-    - "passwordless"
-
+  - security
+  - windows-hello
+  - biometric
+  - authentication
+  - fingerprint
+  - facial-recognition
+  - pin-policy
+  - passwordless
+  
   references:
-    - title: "Microsoft Documentation: Windows Hello"
-      url: "https://learn.microsoft.com/en-us/windows/security/identity-protection/hello-for-business/"
-      type: "official"
-    - title: "Windows Hello for Business Deployment"
-      url: "https://learn.microsoft.com/en-us/windows/security/identity-protection/hello-for-business/hello-planning-guide"
-      type: "official"
-    - title: "Biometric Authentication Security Analysis"
-      url: "https://www.sans.org/white-papers/36427/"
-      type: "research"
-
+  - title: 'Microsoft Documentation: Windows Hello'
+    url: https://learn.microsoft.com/en-us/windows/security/identity-protection/hello-for-business/
+    type: official
+  - title: Windows Hello for Business Deployment
+    url: https://learn.microsoft.com/en-us/windows/security/identity-protection/hello-for-business/hello-planning-guide
+    type: official
+  - title: Biometric Authentication Security Analysis
+    url: https://www.sans.org/white-papers/36427/
+    type: research
+  
   retention:
-    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT, SYSTEM)"
-    persistence: "Biometric configuration persists until manually changed or device modification"
-    volatility: "Authentication settings critical for ongoing system access and security"
-
+    default_location: Registry hive files (SOFTWARE, NTUSER.DAT, SYSTEM)
+    persistence: Biometric configuration persists until manually changed or device modification
+    volatility: Authentication settings critical for ongoing system access and security
+  
   related_artifacts:
-    - "security_policy"
-    - "user_profiles"
-    - "sam_security"
-    - "tpm_configuration"
+  - security_policy
+  - user_profiles
+  - sam_security
+  - tpm_configuration
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-07"
-  last_updated: "2025-06-13"
-  version: "3.0"
+  date_added: '2025-06-07'
+  last_updated: '2025-06-13'
+  version: '3.0'

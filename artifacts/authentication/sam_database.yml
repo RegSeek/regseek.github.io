@@ -1,142 +1,136 @@
-title: "SAM Database User Account Information"
-category: "authentication"
-description: "Local user account data including password hashes, logon statistics, and account security metadata"
+title: SAM Database User Account Information
+category: authentication
+description: Local user account data including password hashes, logon statistics, and account security metadata
 
 paths:
-  - "HKLM\\SAM\\SAM\\Domains\\Account\\Users"
-  - "HKLM\\SAM\\SAM\\Domains\\Account\\Users\\Names"
-  - "HKLM\\SAM\\SAM\\Domains\\Account\\Aliases"
+- HKLM\SAM\SAM\Domains\Account\Users
+- HKLM\SAM\SAM\Domains\Account\Users\Names
+- HKLM\SAM\SAM\Domains\Account\Aliases
 
 details:
   what: |
-    Security Account Manager (SAM) database stores comprehensive local user account information 
-    including usernames, NTLM password hashes, account policies, logon counts, last logon times, 
-    password change dates, and account lockout information for local authentication management.
+    Security Account Manager (SAM) database stores comprehensive local user account information including usernames, NTLM password hashes, account policies, logon counts, last logon times, password change dates, and account lockout information for local authentication management.
 
   forensic_value: |
-    Critical for identifying unauthorized accounts, password attack evidence, account creation 
-    timelines, and authentication patterns during security incidents. Password hashes enable 
-    offline password cracking for credential recovery and privilege escalation analysis.
+    Important for identifying unauthorized accounts, password attack evidence, account creation timelines, and authentication patterns during security incidents. Password hashes enable offline password cracking for credential recovery and privilege escalation analysis.
 
   structure: |
-    User accounts organized by Relative Identifier (RID) starting from 500 for built-in accounts. 
-    Binary data structures contain NTLM password hashes, account creation timestamps, last logon 
-    times, logon counts, bad password attempts, and account flags.
-
+    User accounts organized by Relative Identifier (RID) starting from 500 for built-in accounts. Binary data structures contain NTLM password hashes, account creation timestamps, last logon times, logon counts, bad password attempts, and account flags.
+  
   examples:
-    - "RID 500: Built-in Administrator account (Default system administrator)"
-    - "RID 1001: Local user account (First user-created account)"
-    - "Username: administrator (Account name in Names subkey)"
-    - "NTLM Hash: aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0"
-    - "Last Logon: 2024-01-15 14:30:25 UTC (Most recent authentication)"
-    - "Password Last Set: 2024-01-01 08:00:00 UTC (Password change timestamp)"
-    - "Logon Count: 157 (Total successful authentications)"
-    - "Bad Password Count: 3 (Failed authentication attempts)"
-
+  - 'RID 500: Built-in Administrator account (Default system administrator)'
+  - 'RID 1001: Local user account (First user-created account)'
+  - 'Username: administrator (Account name in Names subkey)'
+  - 'NTLM Hash: aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0'
+  - 'Last Logon: 2024-01-15 14:30:25 UTC (Most recent authentication)'
+  - 'Password Last Set: 2024-01-01 08:00:00 UTC (Password change timestamp)'
+  - 'Logon Count: 157 (Total successful authentications)'
+  - 'Bad Password Count: 3 (Failed authentication attempts)'
+  
   tools:
-    - name: "SAMInside"
-      description: "Professional SAM database analysis and password recovery tool"
-    - name: "pwdump"
-      description: "Command-line tool for extracting password hashes from SAM database"
-    - name: "John the Ripper"
-      url: "https://www.openwall.com/john/"
-      description: "Advanced password cracking tool for hash analysis"
-    - name: "Ophcrack"
-      url: "https://ophcrack.sourceforge.io/"
-      description: "Rainbow table-based password cracking utility"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
+  - name: SAMInside
+    description: Professional SAM database analysis and password recovery tool
+  - name: pwdump
+    description: Command-line tool for extracting password hashes from SAM database
+  - name: John the Ripper
+    url: https://www.openwall.com/john/
+    description: Advanced password cracking tool for hash analysis
+  - name: Ophcrack
+    url: https://ophcrack.sourceforge.io/
+    description: Rainbow table-based password cracking utility
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
 
 limitations:
-  - "SAM data does NOT prove successful password cracking occurred"
-  - "Account creation timestamps don't prove unauthorized account usage"
-  - "Password hashes may be strong and resistant to cracking attempts"
-  - "Logon statistics don't indicate the nature or authorization of access"
-  - "Account metadata doesn't prove actual compromise or malicious activity"
-  - "Bad password counts may reflect legitimate forgotten password attempts"
-
+- SAM data does NOT prove successful password cracking occurred
+- Account creation timestamps don't prove unauthorized account usage
+- Password hashes may be strong and resistant to cracking attempts
+- Logon statistics don't indicate the nature or authorization of access
+- Account metadata doesn't prove actual compromise or malicious activity
+- Bad password counts may reflect legitimate forgotten password attempts
 
 correlation:
   required_for_definitive_compromise_proof:
-    - "Event logs showing successful logons using compromised accounts"
-    - "Network traffic logs showing lateral movement using cracked credentials"
-    - "Process execution logs showing unauthorized commands executed by compromised accounts"
-    - "File system artifacts showing unauthorized access using compromised credentials"
-    - "Application logs showing successful authentication using extracted passwords"
-    
+  - Event logs showing successful logons using compromised accounts
+  - Network traffic logs showing lateral movement using cracked credentials
+  - Process execution logs showing unauthorized commands executed by compromised accounts
+  - File system artifacts showing unauthorized access using compromised credentials
+  - Application logs showing successful authentication using extracted passwords
+  
   strengthens_evidence:
-    - "Registry changes showing account modifications during suspicious periods"
-    - "Event logs showing failed authentication attempts before successful compromise"
-    - "File modifications in user profile directories during account compromise windows"
-    - "Network connections from compromised account sessions"
+  - Registry changes showing account modifications during suspicious periods
+  - Event logs showing failed authentication attempts before successful compromise
+  - File modifications in user profile directories during account compromise windows
+  - Network connections from compromised account sessions
 
 metadata:
   windows_versions:
-    - "Windows NT"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2000"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
-
-  introduced: "Windows NT 3.1"
-  criticality: "high"
-
+  - Windows NT
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2000
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
+  
+  introduced: Windows NT 3.1
+  
+  criticality: high
+  
   investigation_types:
-    - "lateral-movement"
-    - "incident-response"
-    - "timeline-analysis"
-    - "privilege-escalation"
-    - "credential-theft"
-
+  - lateral-movement
+  - incident-response
+  - timeline-analysis
+  - privilege-escalation
+  - credential-theft
+  
   tags:
-    - "security"
-    - "user-accounts"
-    - "password-hashes"
-    - "authentication"
-    - "account-creation"
-    - "sam-database"
-    - "credential-analysis"
-
+  - security
+  - user-accounts
+  - password-hashes
+  - authentication
+  - account-creation
+  - sam-database
+  - credential-analysis
+  
   references:
-    - title: "Microsoft Documentation: Security Account Manager"
-      url: "https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/"
-      type: "official"
-    - title: "SAM Database Forensics and Analysis"
-      url: "https://www.sans.org/white-papers/36427/"
-      type: "research"
-    - title: "Windows Authentication and Credential Analysis"
-      url: "https://attack.mitre.org/techniques/T1003/002/"
-      type: "research"
-
+  - title: 'Microsoft Documentation: Security Account Manager'
+    url: https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/
+    type: official
+  - title: SAM Database Forensics and Analysis
+    url: https://www.sans.org/white-papers/36427/
+    type: research
+  - title: Windows Authentication and Credential Analysis
+    url: https://attack.mitre.org/techniques/T1003/002/
+    type: research
+  
   retention:
-    default_location: "Registry hive files (SAM)"
-    persistence: "Account data persists until account deletion or system reinstallation"
-    volatility: "Authentication data provides immediate evidence of credential compromise"
-
+    default_location: Registry hive files (SAM)
+    persistence: Account data persists until account deletion or system reinstallation
+    volatility: Authentication data provides immediate evidence of credential compromise
+  
   related_artifacts:
-    - "security_policy"
-    - "user_profiles"
-    - "event_log_config"
-    - "lsa_packages"
+  - security_policy
+  - user_profiles
+  - event_log_config
+  - lsa_packages
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-13"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-13'
+  version: '3.0'

@@ -1,144 +1,139 @@
-title: "Windows Services Configuration and Execution"
-category: "persistence-methods"
-description: "Windows service definitions, startup configurations, dependencies, and service-based persistence mechanisms"
+title: Windows Services Configuration and Execution
+category: persistence-methods
+description: Windows service definitions, startup configurations, dependencies, and service-based persistence mechanisms
 
 paths:
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\ServiceGroupOrder"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GroupOrderList"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Svchost"
+- HKLM\SYSTEM\CurrentControlSet\Services
+- HKLM\SYSTEM\CurrentControlSet\Control\ServiceGroupOrder
+- HKLM\SYSTEM\CurrentControlSet\Control\GroupOrderList
+- HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Svchost
 
 details:
   what: |
-    Windows Services registry contains service configuration including executable paths, 
-    startup types, dependencies, security descriptors, service accounts, and failure recovery actions. 
-    Controls system service behavior, automatic startup sequences, and service isolation.
+    Windows Services registry contains service configuration including executable paths, startup types, dependencies, security descriptors, service accounts, and failure recovery actions. Controls system service behavior, automatic startup sequences, and service isolation.
 
   forensic_value: |
-    Critical for identifying malicious service installation, service hijacking attacks, and unauthorized 
-    service modifications used for persistence. Shows evidence of malware services, suspicious service 
-    configurations, privilege escalation through service accounts, and service-based backdoors.
+    Critical for identifying malicious service installation, service hijacking attacks, and unauthorized service modifications used for persistence. Shows evidence of malware services, suspicious service configurations, privilege escalation through service accounts, and service-based backdoors.
 
   structure: |
-    Individual service subkeys contain ImagePath (executable), Start (startup type), Type (service type), 
-    ObjectName (service account), DependOnService (dependencies), and ServiceSidType (security identifier type). 
-    Svchost configuration manages service hosting for shared processes.
+    Individual service subkeys contain ImagePath (executable), Start (startup type), Type (service type), ObjectName (service account), DependOnService (dependencies), and ServiceSidType (security identifier type). Svchost configuration manages service hosting for shared processes.
 
   examples:
-    - "Services\\MaliciousService\\ImagePath: C:\\malware\\backdoor.exe"
-    - "Services\\Spooler\\Start: 2 (Automatic startup)"
-    - "Services\\BITS\\Type: 32 (Win32 service, share process)"
-    - "Services\\TrustedInstaller\\ObjectName: NT SERVICE\\TrustedInstaller"
-    - "Services\\Themes\\DependOnService: RpcSs (RPC dependency)"
-    - "Svchost\\netsvcs: BITS,Themes,Schedule,ProfSvc (Service group)"
-    - "Services\\BackdoorSvc\\FailureActions: [Binary recovery settings]"
-    - "Services\\SuspiciousSvc\\ServiceSidType: 1 (Unrestricted service SID)"
+  - 'Services\MaliciousService\ImagePath: C:\malware\backdoor.exe'
+  - 'Services\Spooler\Start: 2 (Automatic startup)'
+  - 'Services\BITS\Type: 32 (Win32 service, share process)'
+  - 'Services\TrustedInstaller\ObjectName: NT SERVICE\TrustedInstaller'
+  - 'Services\Themes\DependOnService: RpcSs (RPC dependency)'
+  - 'Svchost\netsvcs: BITS,Themes,Schedule,ProfSvc (Service group)'
+  - 'Services\BackdoorSvc\FailureActions: [Binary recovery settings]'
+  - 'Services\SuspiciousSvc\ServiceSidType: 1 (Unrestricted service SID)'
 
   tools:
-    - name: "Services Management Console (services.msc)"
-      description: "Built-in Windows service management and configuration interface"
-    - name: "sc.exe"
-      description: "Service Control command-line utility for service management"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "Autoruns"
-      url: "https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns"
-      description: "Microsoft Sysinternals comprehensive service enumeration tool"
-    - name: "Service Security Analyzer"
-      description: "Tools for analyzing service security configurations and permissions"
+  - name: Services Management Console (services.msc)
+    description: Built-in Windows service management and configuration interface
+  - name: sc.exe
+    description: Service Control command-line utility for service management
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: Autoruns
+    url: https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns
+    description: Microsoft Sysinternals comprehensive service enumeration tool
+  - name: Service Security Analyzer
+    description: Tools for analyzing service security configurations and permissions
 
 limitations:
-  - "Service registration does NOT prove service was started or executed"
-  - "Disabled services (Start=4) will not execute automatically"
-  - "Service configuration may be created by installers without immediate activation"
-  - "Manual start services (Start=3) require explicit user or system initiation"
-  - "Service dependencies may prevent service from starting even if configured"
-  - "Administrative privileges are required to install services"
-  - "Service accounts may lack necessary permissions for execution"
-  - "Service failure actions may not trigger if dependencies fail"
+- Service registration does NOT prove service was started or executed
+- Disabled services (Start=4) will not execute automatically
+- Service configuration may be created by installers without immediate activation
+- Manual start services (Start=3) require explicit user or system initiation
+- Service dependencies may prevent service from starting even if configured
+- Administrative privileges are required to install services
+- Service accounts may lack necessary permissions for execution
+- Service failure actions may not trigger if dependencies fail
 
 correlation:
   required_for_definitive_execution_proof:
-    - "Windows Event Logs (Service Control Manager Event IDs 7034, 7035, 7036)"
-    - "Process execution logs showing service executable launches"
-    - "Service startup and shutdown event logs"
-    - "System boot logs showing automatic service startup"
-    
+  - Windows Event Logs (Service Control Manager Event IDs 7034, 7035, 7036)
+  - Process execution logs showing service executable launches
+  - Service startup and shutdown event logs
+  - System boot logs showing automatic service startup
+
   strengthens_evidence:
-    - "File system artifacts showing service executable activity"
-    - "Network connections initiated by service processes"
-    - "Registry modifications made by service during execution"
-    - "Application logs showing service-specific operations"
+  - File system artifacts showing service executable activity
+  - Network connections initiated by service processes
+  - Registry modifications made by service during execution
+  - Application logs showing service-specific operations
 
 metadata:
   windows_versions:
-    - "Windows NT 3.1"
-    - "Windows NT 4.0"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows NT 3.1
+  - Windows NT 4.0
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows NT 3.1"
-  criticality: "high"
+  introduced: Windows NT 3.1
+
+  criticality: high
 
   investigation_types:
-    - "malware-analysis"
-    - "persistence-analysis"
-    - "privilege-escalation"
-    - "incident-response"
-    - "behavioral-analysis"
+  - malware-analysis
+  - persistence-analysis
+  - privilege-escalation
+  - incident-response
+  - behavioral-analysis
 
   tags:
-    - "execution"
-    - "windows-services"
-    - "persistence"
-    - "privilege-escalation"
-    - "service-hijacking"
-    - "malware-services"
-    - "system-services"
-    - "service-accounts"
+  - execution
+  - windows-services
+  - persistence
+  - privilege-escalation
+  - service-hijacking
+  - malware-services
+  - system-services
+  - service-accounts
 
   references:
-    - title: "Microsoft Documentation: Windows Services"
-      url: "https://learn.microsoft.com/en-us/windows/win32/services/services"
-      type: "official"
-    - title: "MITRE ATT&CK: Windows Service"
-      url: "https://attack.mitre.org/techniques/T1543/003/"
-      type: "research"
-    - title: "Windows Service Security Analysis"
-      url: "https://www.sans.org/white-papers/36240/"
-      type: "research"
+  - title: 'Microsoft Documentation: Windows Services'
+    url: https://learn.microsoft.com/en-us/windows/win32/services/services
+    type: official
+  - title: 'MITRE ATT&CK: Windows Service'
+    url: https://attack.mitre.org/techniques/T1543/003/
+    type: research
+  - title: Windows Service Security Analysis
+    url: https://www.sans.org/white-papers/36240/
+    type: research
 
   retention:
-    default_location: "SYSTEM registry hive"
-    persistence: "Service configuration persists until service removal or modification"
-    volatility: "Service settings control ongoing system behavior and security posture"
+    default_location: SYSTEM registry hive
+    persistence: Service configuration persists until service removal or modification
+    volatility: Service settings control ongoing system behavior and security posture
 
   related_artifacts:
-    - "registry_run_keys"
-    - "scheduled_tasks"
-    - "winlogon_userinit"
-    - "startup_programs"
-    - "lsa_packages"
+  - registry_run_keys
+  - scheduled_tasks
+  - winlogon_userinit
+  - startup_programs
+  - lsa_packages
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

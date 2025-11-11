@@ -1,4 +1,57 @@
-// Global variables
+// RegSeek Enhanced Application
+// Version: 2.0 with Security Fixes, Mobile Optimization, and Interactive Features
+
+// ============================================================================
+// SECURITY: HTML Escaping Helper
+// ============================================================================
+function escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') return '';
+    const div = document.createElement('div');
+    div.textContent = unsafe;
+    return div.innerHTML;
+}
+
+// ============================================================================
+// SECURITY: URL Validation Helper
+// ============================================================================
+function isValidUrl(url) {
+    if (!url) return false;
+    try {
+        const parsed = new URL(url);
+        // Only allow https and http protocols (prevent javascript:, data:, etc.)
+        if (!['https:', 'http:'].includes(parsed.protocol)) {
+            console.warn(`Blocked invalid URL protocol: ${parsed.protocol}`);
+            return false;
+        }
+        return true;
+    } catch (error) {
+        console.warn(`Invalid URL: ${url}`, error);
+        return false;
+    }
+}
+
+// ============================================================================
+// UTILITY: Category Name Formatter
+// ============================================================================
+function formatCategoryName(category) {
+    if (!category) return '';
+
+    // Special case for AI-related categories
+    if (category.toLowerCase().startsWith('ai-')) {
+        return 'AI ' + category.slice(3).split('-').map(word =>
+            word.charAt(0).toUpperCase() + word.slice(1)
+        ).join(' ');
+    }
+
+    // Standard formatting: capitalize first letter of each word, replace hyphens with spaces
+    return category.split('-').map(word =>
+        word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
+}
+
+// ============================================================================
+// GLOBAL STATE
+// ============================================================================
 let allArtifacts = [];
 let filteredArtifacts = [];
 let currentFilters = {
@@ -12,7 +65,59 @@ let currentFilters = {
     hasTools: ''
 };
 
-// Load artifacts from JSON file
+// Event listener references for cleanup
+let modalEventListeners = {
+    toolClick: null,
+    keydown: null
+};
+
+// ============================================================================
+// FEATHER ICONS: Enhanced Loading
+// ============================================================================
+function waitForFeather() {
+    return new Promise((resolve) => {
+        if (typeof feather !== 'undefined') {
+            resolve(true);
+            return;
+        }
+
+        let attempts = 0;
+        const maxAttempts = 100; // 5 seconds max
+        const check = setInterval(() => {
+            attempts++;
+            if (typeof feather !== 'undefined') {
+                clearInterval(check);
+                resolve(true);
+            } else if (attempts >= maxAttempts) {
+                clearInterval(check);
+                console.warn('Feather icons failed to load');
+                resolve(false);
+            }
+        }, 50);
+    });
+}
+
+function initializeFeatherIcons() {
+    try {
+        if (typeof feather !== 'undefined' && feather.replace) {
+            feather.replace();
+        } else {
+            // Fallback: hide icon elements
+            document.querySelectorAll('[data-feather]').forEach(icon => {
+                icon.style.display = 'none';
+            });
+        }
+    } catch (error) {
+        console.error('Error initializing Feather icons:', error);
+        document.querySelectorAll('[data-feather]').forEach(icon => {
+            icon.style.display = 'none';
+        });
+    }
+}
+
+// ============================================================================
+// DATA LOADING
+// ============================================================================
 async function loadArtifacts() {
     try {
         const response = await fetch('build/artifacts.json');
@@ -21,18 +126,20 @@ async function loadArtifacts() {
         }
         const data = await response.json();
         allArtifacts = data.artifacts;
-        
+
         console.log(`Loaded ${allArtifacts.length} artifacts`);
-        
+
         // Initialize the UI
         init(data);
     } catch (error) {
         console.error('Failed to load artifacts:', error);
-        showError('Failed to load artifacts. Please check the console for details.');
+        showError('Failed to load artifacts. Please check your network connection or try refreshing the page.');
     }
 }
 
-// Initialize application
+// ============================================================================
+// INITIALIZATION
+// ============================================================================
 function init(data) {
     populateFilterOptions(data);
     filteredArtifacts = [...allArtifacts];
@@ -41,7 +148,9 @@ function init(data) {
     setupEventListeners();
 }
 
-// Populate filter dropdown options
+// ============================================================================
+// UI POPULATION
+// ============================================================================
 function populateFilterOptions(data) {
     // Categories
     const categorySelect = document.getElementById('filter-category');
@@ -49,101 +158,116 @@ function populateFilterOptions(data) {
         data.categories.forEach(category => {
             const option = document.createElement('option');
             option.value = category;
-            option.textContent = category.charAt(0).toUpperCase() + category.slice(1).replace(/-/g, ' ');
+            option.textContent = escapeHtml(formatCategoryName(category));
             categorySelect.appendChild(option);
         });
     }
-    
+
     // Windows versions
     const versionSelect = document.getElementById('filter-windows-version');
     if (versionSelect && data.statistics?.windows_versions) {
         data.statistics.windows_versions.forEach(version => {
             const option = document.createElement('option');
             option.value = version;
-            option.textContent = version;
+            option.textContent = escapeHtml(version);
             versionSelect.appendChild(option);
         });
     }
 }
 
-// Render artifacts
+// ============================================================================
+// ARTIFACT RENDERING
+// ============================================================================
 function renderArtifacts(artifacts) {
     const grid = document.getElementById('registry-grid');
     grid.innerHTML = '';
-    
+
     if (artifacts.length === 0) {
-        grid.innerHTML = `
-            <div class="empty-state">
-                <h3>No artifacts found</h3>
-                <p>Try adjusting your search criteria or filters</p>
-            </div>
+        const emptyDiv = document.createElement('div');
+        emptyDiv.className = 'empty-state';
+        emptyDiv.innerHTML = `
+            <h3>No artifacts found</h3>
+            <p>Try adjusting your search criteria or filters</p>
         `;
+        grid.appendChild(emptyDiv);
         return;
     }
-    
+
     artifacts.forEach((artifact, index) => {
         const item = createArtifactElement(artifact, index);
         grid.appendChild(item);
     });
-    
+
     updateVisibleCount(artifacts.length);
 }
 
-// Create artifact element
+// SECURITY FIX: Safe element creation with proper escaping
 function createArtifactElement(artifact, index) {
     const div = document.createElement('div');
     div.className = 'registry-item';
     div.dataset.category = artifact.category;
     div.dataset.index = index;
-    
+
     const metadata = artifact.metadata || {};
     const criticality = metadata.criticality || 'unspecified';
     const primaryPath = artifact.paths && artifact.paths[0] ?
-        artifact.paths[0].trim() : 'Unknown path';
-    // Create tags from investigation types and other metadata
+        escapeHtml(artifact.paths[0].trim()) : 'Unknown path';
+
+    // Create tags
     const tags = [];
     if (metadata.investigation_types) {
-        tags.push(...metadata.investigation_types.slice(0, 3)); // Show max 3
+        tags.push(...metadata.investigation_types.slice(0, 3));
     }
     if (metadata.tags) {
-        tags.push(...metadata.tags.slice(0, 2)); // Show max 2 more
+        tags.push(...metadata.tags.slice(0, 2));
     }
-    
+
     const tagsHtml = tags.length > 0 ? `
         <div class="item-tags">
-            ${tags.map(tag => `<span class="item-tag">${tag}</span>`).join('')}
+            ${tags.map(tag => `<span class="item-tag">${escapeHtml(tag)}</span>`).join('')}
         </div>
     ` : '';
-    
+
     const criticalityBadge = criticality !== 'unspecified' ? `
-        <span class="item-criticality ${criticality}">${criticality}</span>
+        <span class="item-criticality ${criticality}">${escapeHtml(criticality)}</span>
     ` : '';
-    
+
     div.innerHTML = `
         <div class="item-header">
             <div class="item-badges">
-                <span class="item-category">${artifact.category}</span>
+                <span class="item-category">${escapeHtml(formatCategoryName(artifact.category))}</span>
                 ${criticalityBadge}
             </div>
-            <h3 class="item-title">${artifact.title}</h3>
+            <h3 class="item-title">${escapeHtml(artifact.title)}</h3>
         </div>
         <div class="item-path">${primaryPath}</div>
-        <div class="item-description">${artifact.description}</div>
+        <div class="item-description">${escapeHtml(artifact.description)}</div>
         ${tagsHtml}
         <div class="item-footer">
             <span class="item-meta">Click for details</span>
             <span class="item-arrow">→</span>
         </div>
     `;
-    
+
     div.addEventListener('click', () => showEnhancedModal(artifact));
+
+    // Mobile: Add touch feedback
+    div.addEventListener('touchstart', () => {
+        div.style.transform = 'scale(0.98)';
+    });
+    div.addEventListener('touchend', () => {
+        div.style.transform = '';
+    });
+
     return div;
 }
 
-// Show enhanced modal with artifact details
+// ============================================================================
+// MODAL MANAGEMENT
+// ============================================================================
 function showEnhancedModal(artifact) {
     const modal = document.getElementById('modal');
-    
+
     // Track artifact view
     if (typeof trackArtifactView === 'function') {
         trackArtifactView(
@@ -152,59 +276,62 @@ function showEnhancedModal(artifact) {
             artifact.metadata?.criticality
         );
     }
-    
+
+    // Clean up old event listeners before creating new modal
+    cleanupModalListeners();
+
     // Create enhanced modal structure
     modal.innerHTML = `
         <div class="enhanced-modal">
-            <span class="close-modal" id="close-modal">&times;</span>
-                
+            <span class="close-modal" id="close-modal" tabindex="0" role="button" aria-label="Close modal">&times;</span>
+
             <!-- Sidebar Navigation -->
-            <div class="modal-sidebar">
+            <div class="modal-sidebar" role="navigation" aria-label="Section navigation">
                 <div class="sidebar-section">
                     <div class="sidebar-title">Quick Overview</div>
-                    <div class="nav-item active" data-section="overview">
+                    <div class="nav-item active" data-section="overview" tabindex="0" role="button">
                         <i data-feather="info" class="nav-icon"></i>
                         Overview
                     </div>
-                    <div class="nav-item" data-section="limitations">
+                    <div class="nav-item" data-section="limitations" tabindex="0" role="button">
                         <i data-feather="alert-triangle" class="nav-icon"></i>
                         Limitations
                         <span class="nav-badge">Important</span>
                     </div>
-                    <div class="nav-item" data-section="correlation">
+                    <div class="nav-item" data-section="correlation" tabindex="0" role="button">
                         <i data-feather="link" class="nav-icon"></i>
                         Correlation
                         <span class="nav-badge warning">Required</span>
                     </div>
                 </div>
-                    
+
                 <div class="sidebar-section">
                     <div class="sidebar-title">Details</div>
-                    <div class="nav-item" data-section="structure">
+                    <div class="nav-item" data-section="structure" tabindex="0" role="button">
                         <i data-feather="layers" class="nav-icon"></i>
                         Structure & Format
                     </div>
-                    <div class="nav-item" data-section="examples">
+                    <div class="nav-item" data-section="examples" tabindex="0" role="button">
                         <i data-feather="file-text" class="nav-icon"></i>
                         Examples
                     </div>
-                    <div class="nav-item" data-section="tools">
+                    <div class="nav-item" data-section="tools" tabindex="0" role="button">
                         <i data-feather="tool" class="nav-icon"></i>
                         Analysis Tools
                     </div>
                 </div>
-                    
+
                 <div class="sidebar-section">
                     <div class="sidebar-title">Metadata</div>
-                    <div class="nav-item" data-section="investigation">
+                    <div class="nav-item" data-section="investigation" tabindex="0" role="button">
                         <i data-feather="search" class="nav-icon"></i>
                         Investigation Use
                     </div>
-                    <div class="nav-item" data-section="references">
+                    <div class="nav-item" data-section="references" tabindex="0" role="button">
                         <i data-feather="book-open" class="nav-icon"></i>
                         References
                     </div>
-                    <div class="nav-item" data-section="contribution">
+                    <div class="nav-item" data-section="contribution" tabindex="0" role="button">
                         <i data-feather="user" class="nav-icon"></i>
                         Contribution Info
                     </div>
@@ -214,65 +341,65 @@ function showEnhancedModal(artifact) {
             <!-- Main Content -->
             <div class="modal-main">
                 <!-- Enhanced Header -->
-                <div class="modal-header-enhanced" id="modal-header">
-                    <!-- Content will be populated -->
-                </div>
+                <div class="modal-header-enhanced" id="modal-header"></div>
 
                 <!-- Content Area -->
-                <div class="modal-content-area" id="modal-content">
-                    <!-- Content sections will be populated -->
-                </div>
+                <div class="modal-content-area" id="modal-content"></div>
             </div>
         </div>
     `;
-    
-    // Populate header
+
+    // Populate content
     populateModalHeader(artifact);
-    
-    // Populate content sections
     populateModalContent(artifact);
-    
-    // Setup navigation
+
+    // Setup navigation and listeners
     setupModalNavigation();
-    
-    // Show overview section by default
-    showSection('overview');
-    
-    // Setup event listeners
     setupModalEventListeners();
-    
-    // Setup feather icons
+    showSection('overview');
     initializeFeatherIcons();
-    
+
+    // Show modal with accessibility
     modal.style.display = 'block';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+
+    // Disable body scroll
+    const scrollY = window.scrollY;
     document.body.style.overflow = 'hidden';
     document.body.style.position = 'fixed';
-    document.body.style.top = `-${window.scrollY}px`;
+    document.body.style.top = `-${scrollY}px`;
     document.body.style.width = '100%';
+
+    // Focus close button for accessibility
+    setTimeout(() => {
+        document.getElementById('close-modal')?.focus();
+    }, 100);
 }
 
-// Populate modal header
+// SECURITY FIX: Safe modal header population
 function populateModalHeader(artifact) {
     const header = document.getElementById('modal-header');
     const metadata = artifact.metadata || {};
     const criticality = metadata.criticality || 'unspecified';
     const cleanPaths = artifact.paths ?
         artifact.paths
-            .map(path => path.trim())
+            .map(path => escapeHtml(path.trim()))
             .filter(path => path.length > 0)
         : [];
 
     header.innerHTML = `
-        <h2 class="artifact-title">${artifact.title}</h2>
+        <h2 class="artifact-title">${escapeHtml(artifact.title)}</h2>
         <div class="artifact-badges">
-            <span class="badge badge-category">${artifact.category}</span>
-            ${criticality !== 'unspecified' ? `<span class="badge badge-criticality">${criticality} priority</span>` : ''}
+            <span class="badge badge-category">${escapeHtml(formatCategoryName(artifact.category))}</span>
+            ${criticality !== 'unspecified' ? `<span class="badge badge-criticality">${escapeHtml(criticality)} priority</span>` : ''}
+            ${metadata.deprecated ? `<span class="badge badge-deprecated">Deprecated ${escapeHtml(metadata.deprecated)}</span>` : ''}
         </div>
         <div class="artifact-paths">${cleanPaths.join('\n')}</div>
     `;
 }
 
-// Populate modal content
+// SECURITY FIX: Safe modal content population
 function populateModalContent(artifact) {
     const content = document.getElementById('modal-content');
     const details = artifact.details || {};
@@ -281,7 +408,13 @@ function populateModalContent(artifact) {
     const contribution = artifact.contribution || {};
     const limitations = artifact.limitations || [];
     const correlation = artifact.correlation || {};
-    
+
+    // Safe text conversion helper
+    const safeText = (text) => {
+        if (!text) return 'No information available';
+        return escapeHtml(text).replace(/\n/g, '<br>');
+    };
+
     content.innerHTML = `
         <!-- Overview Section -->
         <div class="content-section active" id="overview">
@@ -289,15 +422,15 @@ function populateModalContent(artifact) {
                 <i data-feather="info" class="section-icon"></i>
                 <h3 class="section-title">Artifact Overview</h3>
             </div>
-            
+
             <div class="info-card">
                 <h3>What It Stores</h3>
-                <p>${details.what || 'No details available'}</p>
+                <p>${safeText(details.what)}</p>
             </div>
-            
+
             <div class="info-card">
                 <h3>Forensic Value</h3>
-                <p>${details.forensic_value || 'No forensic value description'}</p>
+                <p>${safeText(details.forensic_value)}</p>
             </div>
         </div>
 
@@ -307,7 +440,7 @@ function populateModalContent(artifact) {
                 <i data-feather="alert-triangle" class="section-icon"></i>
                 <h3 class="section-title">Forensic Limitations</h3>
             </div>
-            
+
             ${limitations.length > 0 ? `
             <div class="limitations-section">
                 <div class="limitations-header">
@@ -315,12 +448,12 @@ function populateModalContent(artifact) {
                     <h4 class="limitations-title">What This Artifact CANNOT Prove</h4>
                 </div>
                 <ul class="limitations-list">
-                    ${limitations.map(limitation => `<li>${limitation}</li>`).join('')}
+                    ${limitations.map(limitation => `<li>${escapeHtml(limitation)}</li>`).join('')}
                 </ul>
             </div>
             ` : `
             <div class="info-card">
-                <p>No specific limitations documented for this artifact. Consider what assumptions you might be making about what this artifact proves vs. what it actually shows.</p>
+                <p>No specific limitations documented. Consider what assumptions you might be making.</p>
             </div>
             `}
         </div>
@@ -331,35 +464,35 @@ function populateModalContent(artifact) {
                 <i data-feather="link" class="section-icon"></i>
                 <h3 class="section-title">Artifact Correlation</h3>
             </div>
-            
+
             ${correlation.required_for_definitive_conclusions || correlation.strengthens_evidence ? `
             <div class="correlation-section">
                 <div class="correlation-header">
                     <i data-feather="link" class="warning-icon"></i>
                     <h4 class="correlation-title">Required for Definitive Conclusions</h4>
                 </div>
-                
+
                 ${correlation.required_for_definitive_conclusions ? `
                 <div class="correlation-subsection">
                     <h5 class="correlation-subtitle">Required for Proof:</h5>
                     <ul class="correlation-list">
-                        ${correlation.required_for_definitive_conclusions.map(item => `<li>${item}</li>`).join('')}
+                        ${correlation.required_for_definitive_conclusions.map(item => `<li>${escapeHtml(item)}</li>`).join('')}
                     </ul>
                 </div>
                 ` : ''}
-                
+
                 ${correlation.strengthens_evidence ? `
                 <div class="correlation-subsection">
                     <h5 class="correlation-subtitle">Strengthens Evidence:</h5>
                     <ul class="correlation-list">
-                        ${correlation.strengthens_evidence.map(item => `<li>${item}</li>`).join('')}
+                        ${correlation.strengthens_evidence.map(item => `<li>${escapeHtml(item)}</li>`).join('')}
                     </ul>
                 </div>
                 ` : ''}
             </div>
             ` : `
             <div class="info-card">
-                <p>No correlation requirements documented. Consider what other artifacts you need to validate findings from this artifact before drawing conclusions.</p>
+                <p>No correlation requirements documented.</p>
             </div>
             `}
         </div>
@@ -370,10 +503,10 @@ function populateModalContent(artifact) {
                 <i data-feather="layers" class="section-icon"></i>
                 <h3 class="section-title">Data Structure & Format</h3>
             </div>
-            
+
             <div class="info-card">
                 <h3>Storage Format</h3>
-                <p>${details.structure || 'No structure information available'}</p>
+                <p>${safeText(details.structure)}</p>
             </div>
         </div>
 
@@ -383,11 +516,11 @@ function populateModalContent(artifact) {
                 <i data-feather="file-text" class="section-icon"></i>
                 <h3 class="section-title">Examples</h3>
             </div>
-            
+
             ${details.examples && details.examples.length > 0 ? `
             <div class="examples-grid">
                 ${details.examples.map(example => `
-                    <div class="example-item">${example.replace(/\\n/g, '<br>')}</div>
+                    <div class="example-item">${escapeHtml(example).replace(/\\n/g, '<br>')}</div>
                 `).join('')}
             </div>
             ` : `
@@ -403,23 +536,25 @@ function populateModalContent(artifact) {
                 <i data-feather="tool" class="section-icon"></i>
                 <h3 class="section-title">Analysis Tools</h3>
             </div>
-            
+
             ${details.tools && details.tools.length > 0 ? `
             <div class="tools-grid">
                 ${details.tools.map(tool => {
                     if (typeof tool === 'string') {
                         return `
                             <div class="tool-card">
-                                <div class="tool-name">${tool}</div>
+                                <div class="tool-name">${escapeHtml(tool)}</div>
                             </div>
                         `;
                     }
+                    // SECURITY FIX: Validate URLs before creating links
+                    const toolUrl = tool.url && isValidUrl(tool.url) ? tool.url : null;
                     return `
                         <div class="tool-card">
                             <div class="tool-name">
-                                ${tool.url ? `<a href="${tool.url}" target="_blank" rel="noopener" data-tool-name="${tool.name}" data-tool-url="${tool.url}" class="tool-link">${tool.name}</a>` : tool.name}
+                                ${toolUrl ? `<a href="${escapeHtml(toolUrl)}" target="_blank" rel="noopener noreferrer" data-tool-name="${escapeHtml(tool.name)}" data-tool-url="${escapeHtml(toolUrl)}" class="tool-link">${escapeHtml(tool.name)}</a>` : escapeHtml(tool.name)}
                             </div>
-                            ${tool.description ? `<div class="tool-description">${tool.description}</div>` : ''}
+                            ${tool.description ? `<div class="tool-description">${escapeHtml(tool.description)}</div>` : ''}
                         </div>
                     `;
                 }).join('')}
@@ -437,27 +572,48 @@ function populateModalContent(artifact) {
                 <i data-feather="search" class="section-icon"></i>
                 <h3 class="section-title">Investigation Use Cases</h3>
             </div>
-            
+
             ${metadata.investigation_types && metadata.investigation_types.length > 0 ? `
             <div class="info-card">
                 <h3>Investigation Types</h3>
                 <div class="tag-grid">
-                    ${metadata.investigation_types.map(type => `<span class="tag">${type}</span>`).join('')}
+                    ${metadata.investigation_types.map(type => `<span class="tag">${escapeHtml(type)}</span>`).join('')}
                 </div>
             </div>
             ` : ''}
-            
+
             ${metadata.windows_versions && metadata.windows_versions.length > 0 ? `
             <div class="info-card">
                 <h3>Windows Versions</h3>
-                <p>${metadata.windows_versions.join(', ')}</p>
+                <p>${metadata.windows_versions.map(v => escapeHtml(v)).join(', ')}</p>
             </div>
             ` : ''}
-            
+
             ${metadata.criticality ? `
             <div class="info-card">
                 <h3>Criticality Level</h3>
-                <p class="text-${metadata.criticality}">${metadata.criticality.charAt(0).toUpperCase() + metadata.criticality.slice(1)} Priority</p>
+                <p class="text-${metadata.criticality}">${escapeHtml(metadata.criticality.charAt(0).toUpperCase() + metadata.criticality.slice(1))} Priority</p>
+            </div>
+            ` : ''}
+
+            ${metadata.retention ? `
+            <div class="info-card">
+                <h3>Retention Information</h3>
+                <ul>
+                    ${metadata.retention.default_location ? `<li><strong>Default Location:</strong> ${escapeHtml(metadata.retention.default_location)}</li>` : ''}
+                    ${metadata.retention.persistence ? `<li><strong>Persistence:</strong> ${escapeHtml(metadata.retention.persistence)}</li>` : ''}
+                    ${metadata.retention.volatility ? `<li><strong>Volatility:</strong> ${escapeHtml(metadata.retention.volatility)}</li>` : ''}
+                </ul>
+            </div>
+            ` : ''}
+
+            ${metadata.introduced || metadata.deprecated ? `
+            <div class="info-card">
+                <h3>Version History</h3>
+                <ul>
+                    ${metadata.introduced ? `<li><strong>Introduced:</strong> ${escapeHtml(metadata.introduced)}</li>` : ''}
+                    ${metadata.deprecated ? `<li><strong>Deprecated:</strong> ${escapeHtml(metadata.deprecated)}</li>` : ''}
+                </ul>
             </div>
             ` : ''}
         </div>
@@ -468,17 +624,20 @@ function populateModalContent(artifact) {
                 <i data-feather="book-open" class="section-icon"></i>
                 <h3 class="section-title">References & Resources</h3>
             </div>
-            
+
             ${metadata.references && metadata.references.length > 0 ? `
             <div class="info-card">
                 <h3>Documentation & Research</h3>
                 <ul>
-                    ${metadata.references.map(ref => `
-                        <li>
-                            ${ref.url ? `<a href="${ref.url}" target="_blank" rel="noopener">${ref.title}</a>` : ref.title}
-                            ${ref.type ? ` (${ref.type})` : ''}
-                        </li>
-                    `).join('')}
+                    ${metadata.references.map(ref => {
+                        const refUrl = ref.url && isValidUrl(ref.url) ? ref.url : null;
+                        return `
+                            <li>
+                                ${refUrl ? `<a href="${escapeHtml(refUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(ref.title)}</a>` : escapeHtml(ref.title)}
+                                ${ref.type ? ` (${escapeHtml(ref.type)})` : ''}
+                            </li>
+                        `;
+                    }).join('')}
                 </ul>
             </div>
             ` : `
@@ -494,16 +653,16 @@ function populateModalContent(artifact) {
                 <i data-feather="user" class="section-icon"></i>
                 <h3 class="section-title">Contribution Information</h3>
             </div>
-            
+
             ${author.name || contribution.date_added ? `
             <div class="info-card">
                 <h3>Author & Version</h3>
                 <ul>
-                    ${author.name ? `<li><strong>Author:</strong> ${author.name}${author.organization ? ` (${author.organization})` : ''}</li>` : ''}
-                    ${author.github ? `<li><strong>GitHub:</strong> <a href="https://github.com/${author.github}" target="_blank" rel="noopener">@${author.github}</a></li>` : ''}
-                    ${author.x ? `<li><strong>X (Twitter):</strong> <a href="https://x.com/${author.x}" target="_blank" rel="noopener">@${author.x}</a></li>` : ''}
-                    ${contribution.date_added ? `<li><strong>Added:</strong> ${contribution.date_added}</li>` : ''}
-                    ${contribution.version ? `<li><strong>Version:</strong> ${contribution.version}</li>` : ''}
+                    ${author.name ? `<li><strong>Author:</strong> ${escapeHtml(author.name)}${author.organization ? ` (${escapeHtml(author.organization)})` : ''}</li>` : ''}
+                    ${author.github ? `<li><strong>GitHub:</strong> <a href="https://github.com/${escapeHtml(author.github)}" target="_blank" rel="noopener noreferrer">@${escapeHtml(author.github)}</a></li>` : ''}
+                    ${author.x ? `<li><strong>X (Twitter):</strong> <a href="https://x.com/${escapeHtml(author.x)}" target="_blank" rel="noopener noreferrer">@${escapeHtml(author.x)}</a></li>` : ''}
+                    ${contribution.date_added ? `<li><strong>Added:</strong> ${escapeHtml(contribution.date_added)}</li>` : ''}
+                    ${contribution.version ? `<li><strong>Version:</strong> ${escapeHtml(contribution.version)}</li>` : ''}
                 </ul>
             </div>
             ` : `
@@ -515,69 +674,91 @@ function populateModalContent(artifact) {
     `;
 }
 
-// Setup modal navigation
+// ============================================================================
+// MODAL NAVIGATION
+// ============================================================================
 function setupModalNavigation() {
-    document.querySelectorAll('.nav-item').forEach(item => {
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+        // Click handler
         item.addEventListener('click', function() {
             const sectionId = this.getAttribute('data-section');
             showSection(sectionId);
-            
-            // Update navigation
-            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-            this.classList.add('active');
+            updateNavigation(this);
+        });
+
+        // Keyboard handler for accessibility
+        item.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.click();
+            }
         });
     });
-    
-    // Add touch handling for mobile horizontal scrolling
+
+    // Touch scrolling for mobile sidebar
     const sidebar = document.querySelector('.modal-sidebar');
-    if (sidebar) {
+    if (sidebar && 'ontouchstart' in window) {
         let isDown = false;
         let startX;
         let scrollLeft;
-        
+
         sidebar.addEventListener('touchstart', (e) => {
             isDown = true;
             startX = e.touches[0].pageX - sidebar.offsetLeft;
             scrollLeft = sidebar.scrollLeft;
-        });
-        
+        }, { passive: true });
+
         sidebar.addEventListener('touchmove', (e) => {
             if (!isDown) return;
-            e.preventDefault();
             const x = e.touches[0].pageX - sidebar.offsetLeft;
             const walk = (x - startX) * 2;
             sidebar.scrollLeft = scrollLeft - walk;
-        });
-        
+        }, { passive: true });
+
         sidebar.addEventListener('touchend', () => {
             isDown = false;
-        });
+        }, { passive: true });
     }
 }
 
-// Show content section
 function showSection(sectionId) {
     // Hide all sections
-    document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
-    
+    document.querySelectorAll('.content-section').forEach(section =>
+        section.classList.remove('active')
+    );
+
     // Show selected section
     const targetSection = document.getElementById(sectionId);
     if (targetSection) {
         targetSection.classList.add('active');
-        
-        // Refresh feather icons for the newly shown section
         initializeFeatherIcons();
     }
 }
 
-// Setup modal event listeners
+function updateNavigation(activeItem) {
+    document.querySelectorAll('.nav-item').forEach(nav =>
+        nav.classList.remove('active')
+    );
+    activeItem.classList.add('active');
+}
+
+// ============================================================================
+// MODAL EVENT LISTENERS (with cleanup)
+// ============================================================================
 function setupModalEventListeners() {
-    // Close modal
+    // Close modal handlers
     const closeBtn = document.getElementById('close-modal');
     if (closeBtn) {
         closeBtn.addEventListener('click', hideModal);
+        closeBtn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                hideModal();
+            }
+        });
     }
-    
+
     // Close on background click
     const modal = document.getElementById('modal');
     if (modal) {
@@ -587,49 +768,103 @@ function setupModalEventListeners() {
             }
         });
     }
-    
-    document.addEventListener('click', (e) => {
+
+    // SECURITY FIX: Tool link handler with validation and cleanup tracking
+    modalEventListeners.toolClick = (e) => {
         if (e.target.classList.contains('tool-link')) {
             e.preventDefault();
             const toolName = e.target.dataset.toolName;
             const toolUrl = e.target.dataset.toolUrl;
-            
+
+            // Track tool click
             if (typeof trackToolClick === 'function') {
                 trackToolClick(toolName, toolUrl);
             }
-            
-            // Open the link
-            window.open(toolUrl, '_blank', 'noopener,noreferrer');
+
+            // Open validated URL
+            if (isValidUrl(toolUrl)) {
+                window.open(toolUrl, '_blank', 'noopener,noreferrer');
+            } else {
+                console.warn('Attempted to open invalid URL:', toolUrl);
+            }
         }
-    });
+    };
+    document.addEventListener('click', modalEventListeners.toolClick);
+
+    // Keyboard shortcuts for modal
+    modalEventListeners.keydown = (e) => {
+        // ESC to close modal
+        if (e.key === 'Escape') {
+            hideModal();
+        }
+    };
+    document.addEventListener('keydown', modalEventListeners.keydown);
 }
 
-// Setup event listeners
+// PERFORMANCE FIX: Cleanup modal event listeners
+function cleanupModalListeners() {
+    if (modalEventListeners.toolClick) {
+        document.removeEventListener('click', modalEventListeners.toolClick);
+        modalEventListeners.toolClick = null;
+    }
+    if (modalEventListeners.keydown) {
+        document.removeEventListener('keydown', modalEventListeners.keydown);
+        modalEventListeners.keydown = null;
+    }
+}
+
+function hideModal() {
+    const modal = document.getElementById('modal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.removeAttribute('role');
+        modal.removeAttribute('aria-modal');
+
+        // Restore scrolling
+        const scrollY = document.body.style.top;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+
+        if (scrollY) {
+            window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        }
+
+        // Clean up listeners
+        cleanupModalListeners();
+    }
+}
+
+// ============================================================================
+// MAIN EVENT LISTENERS
+// ============================================================================
 function setupEventListeners() {
     // Search functionality
     const searchInput = document.getElementById('search');
     if (searchInput) {
         searchInput.addEventListener('input', debounce(performSearch, 300));
     }
-    
-    // Quick filter buttons with tracking
+
+    // Quick filter buttons
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.filter-btn').forEach(b =>
+                b.classList.remove('active')
+            );
             e.target.classList.add('active');
-            
+
             const filterValue = e.target.dataset.filter;
             currentFilters.category = filterValue === 'all' ? '' : filterValue;
-            
-            // Track quick filter usage
+
             if (typeof trackFilterUsage === 'function' && filterValue !== 'all') {
                 trackFilterUsage('quick_category', filterValue);
             }
-            
+
             performSearch();
         });
     });
-    
+
     // Advanced search toggle
     const advancedBtn = document.getElementById('advanced-search-btn');
     const advancedPanel = document.getElementById('advanced-search-panel');
@@ -638,46 +873,48 @@ function setupEventListeners() {
             advancedPanel.classList.toggle('open');
         });
     }
-    
-    // Advanced search filters - updated with split dropdowns
+
+    // Advanced search filters
     const filterElements = [
         'filter-category', 'filter-criticality', 'filter-investigation-phase',
         'filter-attack-technique', 'filter-windows-version', 'filter-hive', 'filter-has-tools'
     ];
-    
+
     filterElements.forEach(id => {
         const element = document.getElementById(id);
         if (element) {
             element.addEventListener('change', updateAdvancedFilters);
         }
     });
-    
+
     // Advanced search actions
     const applyBtn = document.getElementById('apply-filters');
     const clearBtn = document.getElementById('clear-filters');
-    
+
     if (applyBtn) {
         applyBtn.addEventListener('click', () => {
             updateAdvancedFilters();
-            advancedPanel.classList.remove('open');
+            advancedPanel?.classList.remove('open');
         });
     }
-    
+
     if (clearBtn) {
         clearBtn.addEventListener('click', clearAllFilters);
     }
-    
+
     // Sort functionality
     const sortSelect = document.getElementById('sort-select');
     if (sortSelect) {
         sortSelect.addEventListener('change', handleSort);
     }
 }
- 
-// Update advanced filters
+
+// ============================================================================
+// FILTERING & SEARCH
+// ============================================================================
 function updateAdvancedFilters() {
     const oldFilters = {...currentFilters};
-    
+
     currentFilters.category = document.getElementById('filter-category')?.value || '';
     currentFilters.criticality = document.getElementById('filter-criticality')?.value || '';
     currentFilters.investigationPhase = document.getElementById('filter-investigation-phase')?.value || '';
@@ -685,7 +922,7 @@ function updateAdvancedFilters() {
     currentFilters.windowsVersion = document.getElementById('filter-windows-version')?.value || '';
     currentFilters.hive = document.getElementById('filter-hive')?.value || '';
     currentFilters.hasTools = document.getElementById('filter-has-tools')?.value || '';
-    
+
     // Track filter changes
     if (typeof trackFilterUsage === 'function') {
         Object.keys(currentFilters).forEach(filterType => {
@@ -694,26 +931,25 @@ function updateAdvancedFilters() {
             }
         });
     }
-    
+
     performSearch();
 }
 
-// Clear all filters
 function clearAllFilters() {
     // Reset form elements
-    document.getElementById('filter-category').value = '';
-    document.getElementById('filter-criticality').value = '';
-    document.getElementById('filter-investigation-phase').value = '';
-    document.getElementById('filter-attack-technique').value = '';
-    document.getElementById('filter-windows-version').value = '';
-    document.getElementById('filter-hive').value = '';
-    document.getElementById('filter-has-tools').value = '';
-    document.getElementById('search').value = '';
-    
+    ['filter-category', 'filter-criticality', 'filter-investigation-phase',
+     'filter-attack-technique', 'filter-windows-version', 'filter-hive',
+     'filter-has-tools', 'search'].forEach(id => {
+        const element = document.getElementById(id);
+        if (element) element.value = '';
+    });
+
     // Reset quick filters
-    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
-    
+    document.querySelectorAll('.filter-btn').forEach(btn =>
+        btn.classList.remove('active')
+    );
+    document.querySelector('.filter-btn[data-filter="all"]')?.classList.add('active');
+
     // Reset filters object
     currentFilters = {
         search: '',
@@ -725,20 +961,19 @@ function clearAllFilters() {
         hive: '',
         hasTools: ''
     };
-    
+
     performSearch();
 }
 
-// Perform search with all active filters
 function performSearch() {
     const searchInput = document.getElementById('search');
     currentFilters.search = searchInput ? searchInput.value.toLowerCase() : '';
-    
+
     // Track search queries
     if (currentFilters.search && typeof trackSearch === 'function') {
         trackSearch(currentFilters.search);
     }
-    
+
     filteredArtifacts = allArtifacts.filter(artifact => {
         // Text search
         if (currentFilters.search) {
@@ -750,17 +985,17 @@ function performSearch() {
                 ...(artifact.search_tags || []),
                 ...(artifact.metadata?.tags || [])
             ].join(' ').toLowerCase();
-            
+
             if (!searchableText.includes(currentFilters.search)) {
                 return false;
             }
         }
-        
+
         // Category filter
         if (currentFilters.category && artifact.category !== currentFilters.category) {
             return false;
         }
-        
+
         // Criticality filter
         if (currentFilters.criticality) {
             const criticality = artifact.metadata?.criticality;
@@ -768,7 +1003,7 @@ function performSearch() {
                 return false;
             }
         }
-        
+
         // Investigation phase filter
         if (currentFilters.investigationPhase) {
             const investigationTypes = artifact.metadata?.investigation_types || [];
@@ -776,7 +1011,7 @@ function performSearch() {
                 return false;
             }
         }
-        
+
         // Attack technique filter
         if (currentFilters.attackTechnique) {
             const investigationTypes = artifact.metadata?.investigation_types || [];
@@ -784,7 +1019,7 @@ function performSearch() {
                 return false;
             }
         }
-        
+
         // Windows version filter
         if (currentFilters.windowsVersion) {
             const versions = artifact.metadata?.windows_versions || [];
@@ -792,7 +1027,7 @@ function performSearch() {
                 return false;
             }
         }
-        
+
         // Registry hive filter
         if (currentFilters.hive) {
             const paths = artifact.paths || [];
@@ -801,7 +1036,7 @@ function performSearch() {
                 return false;
             }
         }
-        
+
         // Has tools filter
         if (currentFilters.hasTools) {
             const tools = artifact.details?.tools || [];
@@ -813,23 +1048,24 @@ function performSearch() {
                 return false;
             }
         }
-        
+
         return true;
     });
-    
+
     renderArtifacts(filteredArtifacts);
 }
 
-// Handle sorting
+// ============================================================================
+// SORTING
+// ============================================================================
 function handleSort() {
     const sortSelect = document.getElementById('sort-select');
-    const sortBy = sortSelect.value;
-    
-    // Track sort usage
+    const sortBy = sortSelect?.value;
+
     if (typeof trackSort === 'function') {
         trackSort(sortBy);
     }
-    
+
     const sorted = [...filteredArtifacts].sort((a, b) => {
         switch (sortBy) {
             case 'title':
@@ -851,30 +1087,13 @@ function handleSort() {
                 return 0;
         }
     });
-    
+
     renderArtifacts(sorted);
 }
 
-// Hide modal
-function hideModal() {
-    const modal = document.getElementById('modal');
-    if (modal) {
-        modal.style.display = 'none';
-        
-        // Restore scrolling for mobile
-        const scrollY = document.body.style.top;
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.width = '';
-        document.body.style.overflow = 'auto';
-        
-        if (scrollY) {
-            window.scrollTo(0, parseInt(scrollY || '0') * -1);
-        }
-    }
-}
-
-// Update statistics
+// ============================================================================
+// STATISTICS & UI UPDATES
+// ============================================================================
 function updateStats(statistics) {
     const elements = {
         'total-artifacts': statistics?.total || allArtifacts.length,
@@ -882,7 +1101,7 @@ function updateStats(statistics) {
         'visible-artifacts': filteredArtifacts.length,
         'high-criticality': statistics?.by_criticality?.high || 0
     };
-    
+
     Object.entries(elements).forEach(([id, value]) => {
         const element = document.getElementById(id);
         if (element) {
@@ -891,7 +1110,6 @@ function updateStats(statistics) {
     });
 }
 
-// Update visible count
 function updateVisibleCount(count) {
     const element = document.getElementById('visible-artifacts');
     if (element) {
@@ -899,20 +1117,23 @@ function updateVisibleCount(count) {
     }
 }
 
-// Show error message
 function showError(message) {
     const grid = document.getElementById('registry-grid');
     if (grid) {
-        grid.innerHTML = `
-            <div class="empty-state">
-                <h3>Error</h3>
-                <p>${message}</p>
-            </div>
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'empty-state';
+        errorDiv.innerHTML = `
+            <h3>Error</h3>
+            <p>${escapeHtml(message)}</p>
         `;
+        grid.innerHTML = '';
+        grid.appendChild(errorDiv);
     }
 }
 
-// Utility: debounce function
+// ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -925,32 +1146,21 @@ function debounce(func, wait) {
     };
 }
 
-// Add feature icons
-function initializeFeatherIcons() {
-    try {
-        if (typeof feather !== 'undefined' && feather.replace) {
-            feather.replace();
-        } else {
-            console.warn('Feather icons library not loaded');
-            // Fallback: hide icons or use text alternatives
-            document.querySelectorAll('[data-feather]').forEach(icon => {
-                icon.style.display = 'none';
-            });
-        }
-    } catch (error) {
-        console.error('Error initializing Feather icons:', error);
-        // Fallback for icon failures
-        document.querySelectorAll('[data-feather]').forEach(icon => {
-            icon.style.display = 'none';
-        });
-    }
-}
+// ============================================================================
+// INITIALIZATION ON PAGE LOAD
+// ============================================================================
+document.addEventListener('DOMContentLoaded', async () => {
+    // Wait for Feather icons to load
+    const featherLoaded = await waitForFeather();
 
-// Load artifacts when page loads
-document.addEventListener('DOMContentLoaded', () => {
-    // Wait a bit for external scripts to load
-    setTimeout(() => {
+    if (featherLoaded) {
         initializeFeatherIcons();
-        loadArtifacts();
-    }, 100);
+    }
+
+    // Load artifacts
+    await loadArtifacts();
+
+    // Show keyboard shortcuts hint
+    console.log('%c⌨️ Keyboard Shortcuts:', 'font-size: 14px; font-weight: bold;');
+    console.log('/ - Focus search | t - Toggle theme | e - Export | ? - Show help');
 });

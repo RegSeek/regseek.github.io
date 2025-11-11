@@ -1,130 +1,124 @@
-title: "Common Dialog Settings and File Browser History"
-category: "user-behaviour"
-description: "File dialog preferences, view settings, and browsing behavior configuration"
+title: Common Dialog Settings and File Browser History
+category: user-behaviour
+description: File dialog preferences, view settings, and browsing behavior configuration
 
 paths:
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\CIDSizeMRU"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\LastVisitedMRU"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\PlacesBar"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\FirstFolder"
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\CIDSizeMRU
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\LastVisitedMRU
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\PlacesBar
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\FirstFolder
 
 details:
   what: |
-    Common file dialog configuration including window sizing preferences, last visited folders,
-    custom places bar shortcuts, and initial folder settings. Manages user interface 
-    customization and navigation preferences across Windows applications.
+    Common file dialog configuration including window sizing preferences, last visited folders, custom places bar shortcuts, and initial folder settings. Manages user interface customization and navigation preferences across Windows applications.
 
   forensic_value: |
-    Provides insights into user interaction patterns with file dialogs across applications,
-    revealing preferred locations for file operations and workflow patterns. Critical for 
-    understanding user navigation habits and correlating file access activities with user intentions.
+    Provides insights into user interaction patterns with file dialogs across applications, revealing preferred locations for file operations and workflow patterns. Critical for understanding user navigation habits and correlating file access activities with user intentions.
 
   structure: |
-    CIDSizeMRU stores dialog sizing information by application executable names.
-    LastVisitedMRU maintains recent folder navigation history. PlacesBar contains custom
-    shortcuts displayed in file dialogs. FirstFolder tracks default starting locations
-    with binary PIDL data structures.
+    CIDSizeMRU stores dialog sizing information by application executable names. LastVisitedMRU maintains recent folder navigation history. PlacesBar contains custom shortcuts displayed in file dialogs. FirstFolder tracks default starting locations with binary PIDL data structures.
 
   examples:
-    - "CIDSizeMRU\\\\notepad.exe: Dialog window size 800x600 (Notepad file dialog preferences)"
-    - "CIDSizeMRU\\\\winword.exe: Microsoft Word dialog sizing information"
-    - "LastVisitedMRU\\\\exe files: C:\\\\Tools\\\\Utilities (Executable file access location)"
-    - "PlacesBar\\\\Place0: Desktop (Custom shortcut in file dialog)"
-    - "PlacesBar\\\\Place1: C:\\\\Users\\\\user\\\\Documents (Quick access folder)"
-    - "PlacesBar\\\\Place2: \\\\\\\\server\\\\shared (Network location shortcut)"
-    - "FirstFolder\\\\*.pdf: C:\\\\Downloads (Default PDF file location)"
+  - 'CIDSizeMRU\\notepad.exe: Dialog window size 800x600 (Notepad file dialog preferences)'
+  - 'CIDSizeMRU\\winword.exe: Microsoft Word dialog sizing information'
+  - 'LastVisitedMRU\\exe files: C:\\Tools\\Utilities (Executable file access location)'
+  - 'PlacesBar\\Place0: Desktop (Custom shortcut in file dialog)'
+  - 'PlacesBar\\Place1: C:\\Users\\user\\Documents (Quick access folder)'
+  - 'PlacesBar\\Place2: \\\\server\\shared (Network location shortcut)'
+  - 'FirstFolder\\*.pdf: C:\\Downloads (Default PDF file location)'
 
   tools:
-    - name: "File Dialog Customization Tools"
-      description: "Third-party utilities for analyzing and customizing file dialog behavior"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "Common Dialog Parser"
-      description: "Specialized tools for analyzing Windows common dialog registry data"
-    - name: "RegRipper"
-      url: "https://github.com/keydet89/RegRipper3.0"
-      description: "Registry data extraction and analysis framework"
-    - name: "PIDL Analyzer"
-      description: "Tools for decoding Windows Shell Item Lists and folder references"
+  - name: File Dialog Customization Tools
+    description: Third-party utilities for analyzing and customizing file dialog behavior
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: Common Dialog Parser
+    description: Specialized tools for analyzing Windows common dialog registry data
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry data extraction and analysis framework
+  - name: PIDL Analyzer
+    description: Tools for decoding Windows Shell Item Lists and folder references
 
 limitations:
-  - "Dialog settings do NOT prove files were accessed or operations performed"
-  - "Places bar shortcuts don't indicate actual folder usage or access"
-  - "Size preferences don't show successful file operations or document interactions"
-  - "Last visited entries may reflect browsing without file selection"
-  - "Custom shortcuts can exist without being used for file operations"
-  - "First folder settings don't prove files were opened from those locations"
-  - "Configuration may persist from previous users or system installations"
+- Dialog settings do NOT prove files were accessed or operations performed
+- Places bar shortcuts don't indicate actual folder usage or access
+- Size preferences don't show successful file operations or document interactions
+- Last visited entries may reflect browsing without file selection
+- Custom shortcuts can exist without being used for file operations
+- First folder settings don't prove files were opened from those locations
+- Configuration may persist from previous users or system installations
 
 correlation:
   required_for_definitive_usage_proof:
-    - "File system access logs showing actual file operations in configured locations"
-    - "Application event logs showing dialog box usage and file selections"
-    - "Process execution logs confirming applications used these dialog settings"
-    - "Registry keys modified during actual file operations"
-    
+  - File system access logs showing actual file operations in configured locations
+  - Application event logs showing dialog box usage and file selections
+  - Process execution logs confirming applications used these dialog settings
+  - Registry keys modified during actual file operations
+
   strengthens_evidence:
-    - "OpenSaveMRU entries showing files accessed through these dialog configurations"
-    - "Recent documents correlating with places bar shortcuts and default folders"
-    - "ShellBags showing folder navigation patterns matching dialog preferences"
-    - "Jump Lists showing application usage correlating with dialog customizations"
+  - OpenSaveMRU entries showing files accessed through these dialog configurations
+  - Recent documents correlating with places bar shortcuts and default folders
+  - ShellBags showing folder navigation patterns matching dialog preferences
+  - Jump Lists showing application usage correlating with dialog customizations
 
 metadata:
   windows_versions:
-    - "Windows 95"
-    - "Windows NT"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 95
+  - Windows NT
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Windows 95"
-  criticality: "low"
+  introduced: Windows 95
+
+  criticality: low
 
   investigation_types:
-    - "behavioral-analysis"
-    - "insider-threat"
-    - "incident-response"
-    - "timeline-analysis"
+  - behavioral-analysis
+  - insider-threat
+  - incident-response
+  - timeline-analysis
 
   tags:
-    - "file-dialogs"
-    - "browsing-behavior"
-    - "dialog-preferences"
-    - "folder-navigation"
-    - "places-bar"
-    - "user-interface"
-    - "application-settings"
+  - file-dialogs
+  - browsing-behavior
+  - dialog-preferences
+  - folder-navigation
+  - places-bar
+  - user-interface
+  - application-settings
 
   references:
-    - title: "Microsoft Documentation: Common Dialog Box Library"
-      url: "https://learn.microsoft.com/en-us/windows/win32/dlgbox/common-dialog-box-library"
-      type: "official"
-    - title: "Windows File Dialog Forensics"
-      url: "https://www.forensicfocus.com/articles/windows-file-dialog-forensics/"
-      type: "research"
+  - title: 'Microsoft Documentation: Common Dialog Box Library'
+    url: https://learn.microsoft.com/en-us/windows/win32/dlgbox/common-dialog-box-library
+    type: official
+  - title: Windows File Dialog Forensics
+    url: https://www.forensicfocus.com/articles/windows-file-dialog-forensics/
+    type: research
 
   retention:
-    default_location: "Registry hive files (NTUSER.DAT)"
-    persistence: "Dialog preferences persist until manually changed or application reinstallation"
-    volatility: "Real-time updates with file dialog interactions and user customization"
+    default_location: Registry hive files (NTUSER.DAT)
+    persistence: Dialog preferences persist until manually changed or application reinstallation
+    volatility: Real-time updates with file dialog interactions and user customization
 
   related_artifacts:
-    - "opensavemru"
-    - "lastvisited_pidlmru"
-    - "acmru"
-    - "shellbags"
+  - opensavemru
+  - lastvisited_pidlmru
+  - acmru
+  - shellbags
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

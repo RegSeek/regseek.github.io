@@ -1,147 +1,140 @@
-title: "Hardware Devices and Driver Information"
-category: "system-modifications"
-description: "Complete hardware device enumeration, driver information, and device configuration data"
+title: Hardware Devices and Driver Information
+category: system-modifications
+description: Complete hardware device enumeration, driver information, and device configuration data
 
 paths:
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Enum"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceClasses"
+- HKLM\SYSTEM\CurrentControlSet\Enum
+- HKLM\SYSTEM\CurrentControlSet\Control\Class
+- HKLM\SYSTEM\CurrentControlSet\Services
+- HKLM\SYSTEM\CurrentControlSet\Control\DeviceClasses
 
 details:
   what: |
-    Windows maintains comprehensive hardware device information including complete device enumeration 
-    data, installed device drivers, hardware capabilities, device properties, configuration settings, 
-    and system hardware inventory. Tracks all system components including CPUs, storage devices, 
-    network adapters, USB devices, and audio equipment.
+    Windows maintains comprehensive hardware device information including complete device enumeration data, installed device drivers, hardware capabilities, device properties, configuration settings, and system hardware inventory. Tracks all system components including CPUs, storage devices, network adapters, USB devices, and audio equipment.
 
   forensic_value: |
-    Provides essential hardware inventory for system identification, baseline establishment, and 
-    investigation correlation. Shows connected external devices that may have been used for data 
-    transfer or evidence destruction, reveals specialized hardware that could indicate system purpose, 
-    and identifies hardware changes that might indicate tampering.
+    Provides essential hardware inventory for system identification, baseline establishment, and investigation correlation. Shows connected external devices that may have been used for data transfer or evidence destruction, reveals specialized hardware that could indicate system purpose, and identifies hardware changes that might indicate tampering.
 
   structure: |
-    Device enumeration organized hierarchically by bus type (PCI, USB, IDE, ACPI, etc.) with unique 
-    device instance identifiers. Each device contains DeviceDesc (description), HardwareID (vendor/product), 
-    Service (driver), LocationInformation (physical location), and Capabilities (device features).
+    Device enumeration organized hierarchically by bus type (PCI, USB, IDE, ACPI, etc.) with unique device instance identifiers. Each device contains DeviceDesc (description), HardwareID (vendor/product), Service (driver), LocationInformation (physical location), and Capabilities (device features).
 
   examples:
-    - "ENUM\\PCI\\VEN_8086&DEV_1234&SUBSYS_56781234&REV_01: Intel Network Adapter"
-    - "ENUM\\USB\\VID_0951&PID_1666: Kingston DataTraveler USB Drive"
-    - "ENUM\\IDE\\DiskST31000528AS: Seagate 1TB Hard Drive"
-    - "ENUM\\ACPI\\GenuineIntel_-_Intel64_Family_6_Model_158: Intel Core i7 CPU"
-    - "Class\\{4D36E967-E325-11CE-BFC1-08002BE10318}: Disk Drives Class"
-    - "Services\\nvlddmkm: NVIDIA Display Driver Service"
-    - "DeviceDesc: High Definition Audio Controller"
-    - "HardwareID: PCI\\VEN_10DE&DEV_1B83 (NVIDIA Graphics Card)"
+  - 'ENUM\PCI\VEN_8086&DEV_1234&SUBSYS_56781234&REV_01: Intel Network Adapter'
+  - 'ENUM\USB\VID_0951&PID_1666: Kingston DataTraveler USB Drive'
+  - 'ENUM\IDE\DiskST31000528AS: Seagate 1TB Hard Drive'
+  - 'ENUM\ACPI\GenuineIntel_-_Intel64_Family_6_Model_158: Intel Core i7 CPU'
+  - 'Class\{4D36E967-E325-11CE-BFC1-08002BE10318}: Disk Drives Class'
+  - 'Services\nvlddmkm: NVIDIA Display Driver Service'
+  - 'DeviceDesc: High Definition Audio Controller'
+  - 'HardwareID: PCI\VEN_10DE&DEV_1B83 (NVIDIA Graphics Card)'
 
   tools:
-    - name: "Device Manager (devmgmt.msc)"
-      description: "Built-in Windows hardware device management interface"
-    - name: "DevManView"
-      url: "https://www.nirsoft.net/utils/device_manager_view.html"
-      description: "Alternative device manager with export capabilities"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "DriverView"
-      url: "https://www.nirsoft.net/utils/driverview.html"
-      description: "List all device drivers currently loaded on system"
-    - name: "HWiNFO"
-      url: "https://www.hwinfo.com/"
-      description: "Comprehensive hardware information and analysis tool"
-    - name: "USB Device Tree Viewer"
-      url: "https://www.uwe-sieber.de/usbtreeview_e.html"
-      description: "Detailed USB device hierarchy and information viewer"
+  - name: Device Manager (devmgmt.msc)
+    description: Built-in Windows hardware device management interface
+  - name: DevManView
+    url: https://www.nirsoft.net/utils/device_manager_view.html
+    description: Alternative device manager with export capabilities
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: DriverView
+    url: https://www.nirsoft.net/utils/driverview.html
+    description: List all device drivers currently loaded on system
+  - name: HWiNFO
+    url: https://www.hwinfo.com/
+    description: Comprehensive hardware information and analysis tool
+  - name: USB Device Tree Viewer
+    url: https://www.uwe-sieber.de/usbtreeview_e.html
+    description: Detailed USB device hierarchy and information viewer
 
 limitations:
-  - "Hardware enumeration does NOT prove devices were actively used"
-  - "Device presence doesn't indicate data transfer or malicious activity occurred"
-  - "Driver installation doesn't prove device functionality or operation"
-  - "Hardware configuration may be from legitimate system setup or maintenance"
-  - "Device capabilities don't indicate actual usage patterns or activities"
-  - "Connection records don't prove unauthorized access or data exfiltration"
+- Hardware enumeration does NOT prove devices were actively used
+- Device presence doesn't indicate data transfer or malicious activity occurred
+- Driver installation doesn't prove device functionality or operation
+- Hardware configuration may be from legitimate system setup or maintenance
+- Device capabilities don't indicate actual usage patterns or activities
+- Connection records don't prove unauthorized access or data exfiltration
 
 correlation:
   required_for_definitive_usage_proof:
-    - "Event logs showing device driver loading and hardware operation events"
-    - "File system artifacts showing device-specific software or data access"
-    - "Process execution logs showing applications interacting with specific hardware"
-    - "Registry changes showing device configuration during usage periods"
-    - "Network logs if devices were used for network communication"
-    
+  - Event logs showing device driver loading and hardware operation events
+  - File system artifacts showing device-specific software or data access
+  - Process execution logs showing applications interacting with specific hardware
+  - Registry changes showing device configuration during usage periods
+  - Network logs if devices were used for network communication
+
   strengthens_evidence:
-    - "USB device connection logs correlating with hardware enumeration data"
-    - "Driver installation logs showing hardware setup during investigation periods"
-    - "File modifications showing device-specific software installation or usage"
-    - "Registry changes in related hardware configuration areas"
+  - USB device connection logs correlating with hardware enumeration data
+  - Driver installation logs showing hardware setup during investigation periods
+  - File modifications showing device-specific software installation or usage
+  - Registry changes in related hardware configuration areas
 
 metadata:
   windows_versions:
-    - "Windows NT"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2000"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows NT
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2000
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows NT 3.1"
-  criticality: "medium"
+  introduced: Windows NT 3.1
+
+  criticality: medium
 
   investigation_types:
-    - "incident-response"
-    - "data-exfiltration"
-    - "behavioral-analysis"
+  - incident-response
+  - data-exfiltration
+  - behavioral-analysis
 
   tags:
-    - "hardware"
-    - "device-drivers"
-    - "device-enumeration"
-    - "hardware-inventory"
-    - "system-profiling"
-    - "usb-devices"
-    - "network-adapters"
-    - "storage-devices"
+  - hardware
+  - device-drivers
+  - device-enumeration
+  - hardware-inventory
+  - system-profiling
+  - usb-devices
+  - network-adapters
+  - storage-devices
 
   references:
-    - title: "Microsoft Documentation: Device Installation"
-      url: "https://learn.microsoft.com/en-us/windows-hardware/drivers/install/"
-      type: "official"
-    - title: "Windows Hardware Forensics Guide"
-      url: "https://www.forensicfocus.com/articles/windows-hardware-forensics/"
-      type: "research"
-    - title: "USB Device Forensics in Windows"
-      url: "https://www.sans.org/white-papers/33584/"
-      type: "research"
+  - title: 'Microsoft Documentation: Device Installation'
+    url: https://learn.microsoft.com/en-us/windows-hardware/drivers/install/
+    type: official
+  - title: Windows Hardware Forensics Guide
+    url: https://www.forensicfocus.com/articles/windows-hardware-forensics/
+    type: research
+  - title: USB Device Forensics in Windows
+    url: https://www.sans.org/white-papers/33584/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SYSTEM)"
-    persistence: "Device information persists until device removal or driver uninstallation"
-    volatility: "Real-time updates with hardware changes, provides current system state"
+    default_location: Registry hive files (SYSTEM)
+    persistence: Device information persists until device removal or driver uninstallation
+    volatility: Real-time updates with hardware changes, provides current system state
 
   related_artifacts:
-    - "usb_device_history"
-    - "drive_letter_mapping"
-    - "device_capabilities"
-    - "installed_programs"
+  - usb_device_history
+  - drive_letter_mapping
+  - device_capabilities
+  - installed_programs
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-13"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-13'
+  version: '3.0'

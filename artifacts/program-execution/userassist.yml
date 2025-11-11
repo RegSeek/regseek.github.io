@@ -1,134 +1,128 @@
-title: "UserAssist Execution Statistics"
-category: "program-execution"
-description: "ROT13-encoded execution statistics including run count and last execution time"
+title: UserAssist Execution Statistics
+category: program-execution
+description: ROT13-encoded execution statistics including run count and last execution time
 
 paths:
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\UserAssist"
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist
 
 details:
   what: |
-    Windows UserAssist tracks program execution statistics for GUI applications accessed through 
-    Windows Explorer, desktop, and Start menu. Stores execution count, last run time, session data, 
-    and focus time encoded with ROT13 obfuscation. Different GUIDs track different application categories.
+    Windows UserAssist tracks program execution statistics for GUI applications accessed through Windows Explorer, desktop, and Start menu. Stores execution count, last run time, session data, and focus time encoded with ROT13 obfuscation. Different GUIDs track different application categories.
 
   forensic_value: |
-    Provides detailed execution statistics showing how many times programs were run and when they 
-    were last executed. Critical for establishing user behavior patterns, program usage frequency, 
-    and timeline analysis of application execution. Can prove user interaction with specific applications 
-    and reveal usage of portable/malicious tools.
+    Provides detailed execution statistics showing how many times programs were run and when they were last executed. Critical for establishing user behavior patterns, program usage frequency, and timeline analysis of application execution. Can prove user interaction with specific applications and reveal usage of portable/malicious tools.
 
   structure: |
-    ROT13-encoded executable paths as value names with binary data containing execution count, 
-    last run time (FILETIME), session ID, and focus time. Multiple subkeys for different program 
-    categories and Windows versions. Data structure varies between Windows versions with consistent core elements.
+    ROT13-encoded executable paths as value names with binary data containing execution count, last run time (FILETIME), session ID, and focus time. Multiple subkeys for different program categories and Windows versions. Data structure varies between Windows versions with consistent core elements.
 
   examples:
-    - "Encoded: HRZR_PGYFRFFVAT\\{CEBTENF}\\Count"
-    - "Decoded: UEME_CTLSESSION\\{PROGRAMS}\\Count"
-    - "Encoded: HRZR_HAVPBQR\\{Q311ZRQ4-R36O-11PR-O310-00N026RQQ67N}\\Count"
-    - "Decoded: UEME_UNICODE\\{F4E57C4B-2036-45F0-A9AB-443BCFE33D93}\\Count"
-    - "Program: notepad.exe"
-    - "Run Count: 15"
-    - "Last Executed: 2024-01-15 14:30:25"
-    - "Focus Time: 120000ms"
-    - "Session ID: 2"
-    - "ROT13 Example: abgrCnq.rkr -> notepad.exe"
-    
+  - 'Encoded: HRZR_PGYFRFFVAT\{CEBTENF}\Count'
+  - 'Decoded: UEME_CTLSESSION\{PROGRAMS}\Count'
+  - 'Encoded: HRZR_HAVPBQR\{Q311ZRQ4-R36O-11PR-O310-00N026RQQ67N}\Count'
+  - 'Decoded: UEME_UNICODE\{F4E57C4B-2036-45F0-A9AB-443BCFE33D93}\Count'
+  - 'Program: notepad.exe'
+  - 'Run Count: 15'
+  - 'Last Executed: 2024-01-15 14:30:25'
+  - 'Focus Time: 120000ms'
+  - 'Session ID: 2'
+  - 'ROT13 Example: abgrCnq.rkr -> notepad.exe'
+
   tools:
-    - name: "UserAssistView"
-      url: "https://www.nirsoft.net/utils/userassist_view.html"
-      description: "NirSoft tool for viewing and decoding UserAssist data"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry browser with UserAssist parsing"
-    - name: "RegRipper"
-      url: "https://github.com/keydet89/RegRipper3.0"
-      description: "Registry analysis with userassist.pl plugin"
-    - name: "UserAssist Parser"
-      description: "Custom Python/PowerShell scripts for bulk analysis"
+  - name: UserAssistView
+    url: https://www.nirsoft.net/utils/userassist_view.html
+    description: NirSoft tool for viewing and decoding UserAssist data
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry browser with UserAssist parsing
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry analysis with userassist.pl plugin
+  - name: UserAssist Parser
+    description: Custom Python/PowerShell scripts for bulk analysis
 
 limitations:
-  - "UserAssist only tracks GUI applications launched through Windows Explorer shell"
-  - "Command-line executed programs do not appear in UserAssist"
-  - "Programs launched via Run dialog, batch files, or scripts may not be tracked"
-  - "Portable applications on removable media may not create persistent entries"
-  - "UserAssist can be disabled through registry modification or Group Policy"
-  - "Data corruption can occur causing inaccurate counts or timestamps"
-  - "Focus time calculations may be unreliable on systems with multiple monitors"
-  - "Administrative privileges may be required to access other users' UserAssist data"
+- UserAssist only tracks GUI applications launched through Windows Explorer shell
+- Command-line executed programs do not appear in UserAssist
+- Programs launched via Run dialog, batch files, or scripts may not be tracked
+- Portable applications on removable media may not create persistent entries
+- UserAssist can be disabled through registry modification or Group Policy
+- Data corruption can occur causing inaccurate counts or timestamps
+- Focus time calculations may be unreliable on systems with multiple monitors
+- Administrative privileges may be required to access other users' UserAssist data
 
 correlation:
   required_for_definitive_execution_proof:
-    - "Process execution logs (Event ID 4688) confirming actual program launches"
-    - "Prefetch files (.pf) with execution counters validating program runs"
-    - "Application event logs showing successful program startup and operation"
-    - "File system artifacts showing program activity and file modifications"
-    
+  - Process execution logs (Event ID 4688) confirming actual program launches
+  - Prefetch files (.pf) with execution counters validating program runs
+  - Application event logs showing successful program startup and operation
+  - File system artifacts showing program activity and file modifications
+
   strengthens_evidence:
-    - "ShimCache entries with matching executable paths and access times"
-    - "AmCache entries with matching file hashes and metadata"
-    - "Recent documents and jump lists showing application usage"
-    - "MUICache entries with matching application display names"
+  - ShimCache entries with matching executable paths and access times
+  - AmCache entries with matching file hashes and metadata
+  - Recent documents and jump lists showing application usage
+  - MUICache entries with matching application display names
 
 metadata:
   windows_versions:
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Windows XP"
-  criticality: "high"
+  introduced: Windows XP
+
+  criticality: high
 
   investigation_types:
-    - "timeline-analysis"
-    - "behavioral-analysis"
-    - "incident-response"
-    - "malware-analysis"
-    - "program-execution"
+  - timeline-analysis
+  - behavioral-analysis
+  - incident-response
+  - malware-analysis
+  - program-execution
 
   tags:
-    - "execution"
-    - "statistics"
-    - "program-usage"
-    - "timeline"
-    - "user-behavior"
-    - "rot13-encoding"
-    - "gui-applications"
-    - "execution-count"
+  - execution
+  - statistics
+  - program-usage
+  - timeline
+  - user-behavior
+  - rot13-encoding
+  - gui-applications
+  - execution-count
 
   references:
-    - title: "UserAssist Registry Key"
-      url: "https://www.aldeid.com/wiki/Windows-userassist-keys"
-      type: "research"
-    - title: "Decoding UserAssist"
-      url: "https://blog.didierstevens.com/2009/10/13/userassist/"
-      type: "blog"
-    - title: "SANS UserAssist Analysis"
-      url: "https://www.sans.org/blog/windows-registry-analysis/"
-      type: "research"
+  - title: UserAssist Registry Key
+    url: https://www.aldeid.com/wiki/Windows-userassist-keys
+    type: research
+  - title: Decoding UserAssist
+    url: https://blog.didierstevens.com/2009/10/13/userassist/
+    type: blog
+  - title: SANS UserAssist Analysis
+    url: https://www.sans.org/blog/windows-registry-analysis/
+    type: research
 
   retention:
-    default_location: "NTUSER.DAT registry hive"
-    persistence: "Survives reboots, persists per user profile"
-    volatility: "Can be cleared but often persists through normal system usage"
+    default_location: NTUSER.DAT registry hive
+    persistence: Survives reboots, persists per user profile
+    volatility: Can be cleared but often persists through normal system usage
 
   related_artifacts:
-    - "amcache"
-    - "appcompat_cache"
-    - "muicache"
-    - "recent_docs"
-    - "jump_lists"
+  - amcache
+  - appcompat_cache
+  - muicache
+  - recent_docs
+  - jump_lists
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-07-06"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-07-06'
+  version: '3.0'

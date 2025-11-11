@@ -1,95 +1,91 @@
-title: "Slack Desktop Application"
-category: "communication-apps"
-description: "Slack workspace configuration, team memberships, and enterprise communication settings"
+title: Slack Desktop Application
+category: communication-apps
+description: Slack workspace configuration, team memberships, and enterprise communication settings
 
 paths:
-  - "HKCU\\Software\\Slack\\Teams"
-  - "HKLM\\SOFTWARE\\Slack Technologies\\Slack"
-  - "HKCU\\Software\\Slack Technologies Inc\\Slack"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ApplicationFrame\\Positions\\SlackTechnologies.Slack_4k3xh6g9q8ydm!App"
+- HKCU\Software\Slack\Teams
+- HKLM\SOFTWARE\Slack Technologies\Slack
+- HKCU\Software\Slack Technologies Inc\Slack
+- HKCU\Software\Microsoft\Windows\CurrentVersion\ApplicationFrame\Positions\SlackTechnologies.Slack_4k3xh6g9q8ydm!App
 
 details:
   what: |
-    Slack client settings for workplace communication. Stores workspace configurations,
-    user credentials, notification settings, and team associations.
+    Slack client settings for workplace communication. Stores workspace configurations, user credentials, notification settings, and team associations.
 
   forensic_value: |
-    Essential for investigating workplace communications, unauthorized workspace access,
-    and data sharing through Slack channels. Shows workspace memberships, external
-    Slack usage, and potential data exfiltration through file sharing capabilities.
+    Essential for investigating workplace communications, unauthorized workspace access, and data sharing through Slack channels. Shows workspace memberships, external Slack usage, and potential data exfiltration through file sharing capabilities.
 
   structure: |
-    Configuration includes workspace identifiers, team memberships, user authentication,
-    notification preferences, and integration settings.
+    Configuration includes workspace identifiers, team memberships, user authentication, notification preferences, and integration settings.
 
   examples:
-    - "Team: company-workspace.slack.com (Primary workspace)"
-    - "Team: external-partner.slack.com (External workspace access)"
-    - "UserID: U123456789 (Slack user identifier)"
-    - "Email: user@company.com (Associated email address)"
-    - "NotificationSound: 1 (Audio notifications enabled)"
-    - "ShowUnreadBadge: 1 (Unread message indicators enabled)"
+  - 'Team: company-workspace.slack.com (Primary workspace)'
+  - 'Team: external-partner.slack.com (External workspace access)'
+  - 'UserID: U123456789 (Slack user identifier)'
+  - 'Email: user@company.com (Associated email address)'
+  - 'NotificationSound: 1 (Audio notifications enabled)'
+  - 'ShowUnreadBadge: 1 (Unread message indicators enabled)'
 
   tools:
-    - name: "Slack Desktop Preferences"
-      description: "Built-in configuration and workspace management"
-    - name: "Slack Enterprise Grid Admin"
-      description: "Enterprise administration and audit capabilities"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Registry analysis tool"
+  - name: Slack Desktop Preferences
+    description: Built-in configuration and workspace management
+  - name: Slack Enterprise Grid Admin
+    description: Enterprise administration and audit capabilities
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Registry analysis tool
 
 limitations:
-  - "Shows workspace membership but not actual message content"
-  - "Team configurations don't indicate what information was shared"
-  - "External workspace access doesn't confirm what data was exchanged"
+- Shows workspace membership but not actual message content
+- Team configurations don't indicate what information was shared
+- External workspace access doesn't confirm what data was exchanged
 
 correlation:
   required_for_definitive_conclusions:
-    - "Slack audit logs showing actual message and file activities"
-    - "Network traffic analysis confirming Slack communication sessions"
-    - "File system artifacts showing downloaded files from Slack channels"
-  
+  - Slack audit logs showing actual message and file activities
+  - Network traffic analysis confirming Slack communication sessions
+  - File system artifacts showing downloaded files from Slack channels
+
   strengthens_evidence:
-    - "Browser artifacts showing Slack web client usage"
-    - "Email artifacts showing Slack workspace invitations"
-    - "Mobile device analysis for Slack mobile app synchronization"
+  - Browser artifacts showing Slack web client usage
+  - Email artifacts showing Slack workspace invitations
+  - Mobile device analysis for Slack mobile app synchronization
 
 metadata:
   windows_versions:
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  criticality: "high"
+  criticality: high
 
   investigation_types:
-    - "insider-threat"
-    - "data-exfiltration"
-    - "behavioral-analysis"
-    - "incident-response"
+  - insider-threat
+  - data-exfiltration
+  - behavioral-analysis
+  - incident-response
 
   tags:
-    - "slack"
-    - "workplace-communication"
-    - "team-collaboration"
-    - "workspace-access"
-    - "enterprise-messaging"
-    - "file-sharing"
+  - slack
+  - workplace-communication
+  - team-collaboration
+  - workspace-access
+  - enterprise-messaging
+  - file-sharing
 
   references:
-    - title: "Slack Documentation"
-      url: "https://slack.com/help"
-      type: "official"
+  - title: Slack Documentation
+    url: https://slack.com/help
+    type: official
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-08"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-06-08'
+  last_updated: '2025-06-12'
+  version: '3.0'

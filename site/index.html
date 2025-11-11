@@ -2,62 +2,85 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline' https://unpkg.com https://www.googletagmanager.com;
+        style-src 'self' 'unsafe-inline';
+        img-src 'self' data: https://avatars.githubusercontent.com;
+        connect-src 'self';
+        font-src 'self';
+        frame-src 'none';
+        base-uri 'self';
+        form-action 'self';
+    ">
+
     <!-- Primary SEO Meta Tags -->
-    <title>RegSeek - Windows Registry Forensics Reference | 137+ Registry Artifacts Database</title>
-    <meta name="title" content="RegSeek - Windows Registry Forensics Reference | 137+ Registry Artifacts Database">
-    <meta name="description" content="Advanced Windows Registry forensics reference with 137+ artifacts across 13 categories. Search program execution, browser activity, user behavior, persistence methods, and more for digital forensics investigations.">
+    <title>RegSeek - Windows Registry Forensics Reference | 148 Registry Artifacts Database</title>
+    <meta name="title" content="RegSeek - Windows Registry Forensics Reference | 148 Registry Artifacts Database">
+    <meta name="description" content="Advanced Windows Registry forensics reference with 148 artifacts across 14 categories. Search program execution, browser activity, user behavior, persistence methods, and more for digital forensics investigations.">
     <meta name="keywords" content="windows registry forensics, digital forensics, registry artifacts, incident response, malware analysis, forensic investigation, windows forensics, registry analysis, DFIR, cyber forensics">
     <meta name="author" content="RegSeek">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://regseek.github.io/">
-        
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="RegSeek">
     <meta property="og:title" content="RegSeek - Windows Registry Forensics Reference">
-    <meta property="og:description" content="Advanced Windows Registry forensics reference with 137+ artifacts across 13 categories for digital forensics investigations.">
+    <meta property="og:description" content="Advanced Windows Registry forensics reference with 148 artifacts across 14 categories for digital forensics investigations.">
     <meta property="og:image" content="https://avatars.githubusercontent.com/u/215176684?s=96&v=4">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="RegSeek Windows Registry Forensics Reference Tool">
     <meta property="og:url" content="https://regseek.github.io/">
     <meta property="og:locale" content="en_US">
-    
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@tonmoy0010">
     <meta name="twitter:creator" content="@tonmoy0010">
     <meta name="twitter:title" content="RegSeek - Windows Registry Forensics Reference">
-    <meta name="twitter:description" content="Advanced Windows Registry forensics reference with 137+ artifacts across 13 categories for digital forensics investigations.">
+    <meta name="twitter:description" content="Advanced Windows Registry forensics reference with 148 artifacts across 14 categories for digital forensics investigations.">
     <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/215176684?s=96&v=4">
     <meta name="twitter:image:alt" content="RegSeek Windows Registry Forensics Reference Tool">
 
-    <!-- Performance and Preloading -->
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RegSeek">
+    <link rel="apple-touch-icon" href="https://avatars.githubusercontent.com/u/215176684?s=180&v=4">
+
+    <!-- Performance and Preloading - PRIVACY FIX: No analytics preconnect until consent -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="dns-prefetch" href="//unpkg.com">
-    
+
     <!-- CSS -->
     <link rel="stylesheet" href="css/styles.css">
-    
+
     <!-- Conditional Google Analytics - Only loads if user consents -->
     <script>
         // Check for existing consent
         const hasConsent = localStorage.getItem('analytics-consent') === 'true';
-        
+
         // Initialize Google Analytics only if consent is given
         function initializeAnalytics() {
-            // Load Google Analytics
+            // PRIVACY FIX: Add preconnect AFTER consent
+            const preconnect = document.createElement('link');
+            preconnect.rel = 'preconnect';
+            preconnect.href = 'https://www.googletagmanager.com';
+            document.head.appendChild(preconnect);
+
             const script = document.createElement('script');
             script.async = true;
             script.src = 'https://www.googletagmanager.com/gtag/js?id=G-4HYJ4F0Y01';
             document.head.appendChild(script);
-            
+
             script.onload = function() {
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
@@ -66,17 +89,17 @@
                     anonymize_ip: true,
                     cookie_flags: 'SameSite=None;Secure'
                 });
-                
+
                 // Set global flag that analytics is loaded
                 window.analyticsLoaded = true;
             };
         }
-        
+
         // Load analytics immediately if consent already given
         if (hasConsent) {
             initializeAnalytics();
         }
-        
+
         // Enhanced tracking functions with consent check
         function trackArtifactView(artifactTitle, category, criticality) {
             if (window.analyticsLoaded && typeof gtag !== 'undefined') {
@@ -87,7 +110,7 @@
                 });
             }
         }
-        
+
         function trackSearch(searchTerm) {
             if (window.analyticsLoaded && typeof gtag !== 'undefined' && searchTerm && searchTerm.length > 2) {
                 gtag('event', 'search', {
@@ -95,7 +118,7 @@
                 });
             }
         }
-        
+
         function trackFilterUsage(filterType, filterValue) {
             if (window.analyticsLoaded && typeof gtag !== 'undefined') {
                 gtag('event', 'filter_applied', {
@@ -104,7 +127,7 @@
                 });
             }
         }
-        
+
         function trackToolClick(toolName, toolUrl) {
             if (window.analyticsLoaded && typeof gtag !== 'undefined') {
                 gtag('event', 'tool_click', {
@@ -113,7 +136,7 @@
                 });
             }
         }
-        
+
         function trackSort(sortType) {
             if (window.analyticsLoaded && typeof gtag !== 'undefined') {
                 gtag('event', 'sort_applied', {
@@ -122,8 +145,8 @@
             }
         }
     </script>
-    
-    <!-- Cookie Banner Styles -->
+
+    <!-- Cookie Banner Styles - MOBILE FIX -->
     <style>
         .cookie-banner {
             position: fixed;
@@ -132,51 +155,51 @@
             right: 0;
             background: #1a1a1a;
             border-top: 1px solid #333;
-            padding: 16px 24px;
+            padding: 16px 20px;
             z-index: 10000;
             display: none;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-        
+
         .cookie-banner.show {
             display: block;
         }
-        
+
         .cookie-content {
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 24px;
+            gap: 20px;
             flex-wrap: wrap;
         }
-        
+
         .cookie-text {
             color: #e5e5e5;
             font-size: 14px;
             line-height: 1.5;
             flex: 1;
-            min-width: 300px;
+            min-width: 0; /* MOBILE FIX: Allow shrinking */
         }
-        
+
         .cookie-text a {
             color: #3b82f6;
             text-decoration: none;
         }
-        
+
         .cookie-text a:hover {
             text-decoration: underline;
         }
-        
+
         .cookie-buttons {
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
         }
-        
+
         .cookie-btn {
-            padding: 8px 16px;
+            padding: 10px 20px;
             border: none;
             border-radius: 6px;
             font-size: 14px;
@@ -184,36 +207,55 @@
             cursor: pointer;
             transition: all 0.2s;
             white-space: nowrap;
+            min-height: 44px; /* MOBILE FIX: Touch target */
         }
-        
+
         .cookie-btn.accept {
             background: #3b82f6;
             color: white;
         }
-        
+
         .cookie-btn.accept:hover {
             background: #2563eb;
         }
-        
+
         .cookie-btn.decline {
             background: transparent;
             color: #a0a0a0;
             border: 1px solid #404040;
         }
-        
+
         .cookie-btn.decline:hover {
             background: #2a2a2a;
             color: #e5e5e5;
         }
-        
+
+        /* MOBILE FIX: Better cookie banner layout */
         @media (max-width: 768px) {
+            .cookie-banner {
+                padding: 16px;
+            }
+
             .cookie-content {
                 flex-direction: column;
-                text-align: center;
+                align-items: stretch;
+                gap: 16px;
             }
-            
+
             .cookie-text {
-                min-width: auto;
+                text-align: center;
+                font-size: 13px;
+            }
+
+            .cookie-buttons {
+                width: 100%;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .cookie-btn {
+                width: 100%;
+                padding: 12px 20px;
             }
         }
     </style>
@@ -225,7 +267,7 @@
             <div class="cookie-text">
                 We use Google Analytics to understand how visitors use our forensics reference tool.
                 This helps us improve RegSeek for the digital forensics community.
-                <a href="#" onclick="showPrivacyDetails()">Learn more about our data practices</a>.
+                <a href="#" onclick="showPrivacyDetails(); return false;">Learn more about our data practices</a>.
             </div>
             <div class="cookie-buttons">
                 <button class="cookie-btn decline" onclick="declineAnalytics()">
@@ -242,20 +284,23 @@
     <header>
         <div class="container">
             <div class="header-content">
-                <a href="https://github.com/RegSeek/regseek.github.io" target="_blank" rel="noopener" class="logo-link">
-                    <h1 class="logo">RegSeek</h1>
-                </a>
+                <div class="header-top">
+                    <a href="https://github.com/RegSeek/regseek.github.io" target="_blank" rel="noopener noreferrer" class="logo-link">
+                        <h1 class="logo">RegSeek</h1>
+                    </a>
+                </div>
                 <p class="tagline">Advanced Windows Registry forensics reference and search engine</p>
+                <!-- MOBILE FIX: Allow text wrapping -->
                 <p class="project-info">
                     For more info on the project, click on the logo. If you want to contribute, check out our
-                    <a href="https://github.com/RegSeek/regseek.github.io/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener" class="contribute-link">contribution guide</a>.
+                    <a href="https://github.com/RegSeek/regseek.github.io/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="contribute-link">contribution guide</a>.
                 </p>
             </div>
         </div>
     </header>
 
     <main class="container">
-        <!-- Search Container -->
+        <!-- Search Container - MOBILE FIX -->
         <div class="search-container">
             <div class="search-wrapper">
                 <input
@@ -263,39 +308,39 @@
                     id="search"
                     placeholder="Search artifacts by name, path, description, or keywords..."
                     autocomplete="off"
+                    aria-label="Search artifacts"
                 >
-                <button class="advanced-search-btn" id="advanced-search-btn">Advanced Search</button>
+                <button class="advanced-search-btn" id="advanced-search-btn" aria-label="Open advanced search">Advanced Search</button>
             </div>
         </div>
 
-        <!-- Advanced Search Panel - FIXED: No hardcoded categories -->
-        <div class="advanced-search-panel" id="advanced-search-panel">
+        <!-- Advanced Search Panel -->
+        <div class="advanced-search-panel" id="advanced-search-panel" role="region" aria-label="Advanced search filters">
             <div class="advanced-search-content">
                 <h3>Advanced Search Filters</h3>
-                
+
                 <div class="filter-grid">
                     <div class="filter-group">
-                        <label>Category</label>
-                        <select id="filter-category">
+                        <label for="filter-category">Category</label>
+                        <select id="filter-category" aria-label="Filter by category">
                             <option value="">All Categories</option>
                             <!-- Options populated dynamically by JavaScript -->
                         </select>
                     </div>
-                    
+
                     <div class="filter-group">
-                        <label>Criticality</label>
-                        <select id="filter-criticality">
+                        <label for="filter-criticality">Criticality</label>
+                        <select id="filter-criticality" aria-label="Filter by criticality">
                             <option value="">All Levels</option>
                             <option value="high">High</option>
                             <option value="medium">Medium</option>
                             <option value="low">Low</option>
                         </select>
                     </div>
-                    
-                    <!-- Clean split dropdowns without guide or tooltips -->
+
                     <div class="filter-group">
-                        <label>Investigation Phase</label>
-                        <select id="filter-investigation-phase">
+                        <label for="filter-investigation-phase">Investigation Phase</label>
+                        <select id="filter-investigation-phase" aria-label="Filter by investigation phase">
                             <option value="">All Phases</option>
                             <option value="incident-response">Incident Response</option>
                             <option value="malware-analysis">Malware Analysis</option>
@@ -304,10 +349,10 @@
                             <option value="insider-threat">Insider Threat</option>
                         </select>
                     </div>
-                    
+
                     <div class="filter-group">
-                        <label>Attack Technique</label>
-                        <select id="filter-attack-technique">
+                        <label for="filter-attack-technique">Attack Technique</label>
+                        <select id="filter-attack-technique" aria-label="Filter by attack technique">
                             <option value="">All Techniques</option>
                             <option value="initial-access">Initial Access</option>
                             <option value="program-execution">Program Execution</option>
@@ -320,17 +365,17 @@
                             <option value="anti-forensics">Anti-Forensics</option>
                         </select>
                     </div>
-                    
+
                     <div class="filter-group">
-                        <label>Windows Version</label>
-                        <select id="filter-windows-version">
+                        <label for="filter-windows-version">Windows Version</label>
+                        <select id="filter-windows-version" aria-label="Filter by Windows version">
                             <option value="">All Versions</option>
                         </select>
                     </div>
-                    
+
                     <div class="filter-group">
-                        <label>Registry Hive</label>
-                        <select id="filter-hive">
+                        <label for="filter-hive">Registry Hive</label>
+                        <select id="filter-hive" aria-label="Filter by registry hive">
                             <option value="">All Hives</option>
                             <option value="HKLM">HKLM (Local Machine)</option>
                             <option value="HKCU">HKCU (Current User)</option>
@@ -339,17 +384,17 @@
                             <option value="HKCC">HKCC (Current Config)</option>
                         </select>
                     </div>
-                    
+
                     <div class="filter-group">
-                        <label>Has Tools</label>
-                        <select id="filter-has-tools">
+                        <label for="filter-has-tools">Has Tools</label>
+                        <select id="filter-has-tools" aria-label="Filter by tool availability">
                             <option value="">Any</option>
                             <option value="yes">Has Analysis Tools</option>
                             <option value="no">No Tools Listed</option>
                         </select>
                     </div>
                 </div>
-                
+
                 <div class="advanced-search-actions">
                     <button class="btn-secondary" id="clear-filters">Clear All Filters</button>
                     <button class="btn-primary" id="apply-filters">Apply Filters</button>
@@ -357,7 +402,7 @@
             </div>
         </div>
 
-        <!-- Quick Filters -->
+        <!-- Quick Filters - MOBILE FIX: Allow wrapping -->
         <div class="quick-filters">
             <div class="filter-section">
                 <label>Quick Category Filter:</label>
@@ -375,7 +420,7 @@
             </div>
         </div>
 
-        <!-- Statistics Bar -->
+        <!-- Statistics Bar - MOBILE FIX: 2x2 grid on small screens -->
         <div class="stats-bar">
             <div class="stat-item">
                 <div class="stat-value" id="total-artifacts">0</div>
@@ -398,7 +443,7 @@
         <!-- Sort Options -->
         <div class="sort-options">
             <label for="sort-select">Sort by:</label>
-            <select id="sort-select">
+            <select id="sort-select" aria-label="Sort artifacts">
                 <option value="title">Title (A-Z)</option>
                 <option value="title-desc">Title (Z-A)</option>
                 <option value="category">Category</option>
@@ -424,31 +469,31 @@
         function showCookieBanner() {
             const banner = document.getElementById('cookie-banner');
             const hasConsent = localStorage.getItem('analytics-consent');
-            
+
             // Show banner if no consent decision has been made
             if (hasConsent === null) {
                 banner.classList.add('show');
             }
         }
-        
+
         function acceptAnalytics() {
             localStorage.setItem('analytics-consent', 'true');
             document.getElementById('cookie-banner').classList.remove('show');
-            
+
             // Initialize analytics now
             if (typeof initializeAnalytics === 'function') {
                 initializeAnalytics();
             }
         }
-        
+
         function declineAnalytics() {
             localStorage.setItem('analytics-consent', 'false');
             document.getElementById('cookie-banner').classList.remove('show');
         }
-        
+
         function showPrivacyDetails() {
             alert(`Privacy Information:
-            
+
 • We use Google Analytics to understand how visitors use RegSeek
 • This includes page views, search queries, and feature usage
 • We anonymize IP addresses and use privacy-friendly settings
@@ -458,7 +503,7 @@
 
 This tool is provided free for educational and professional use.`);
         }
-        
+
         // Show banner when page loads
         document.addEventListener('DOMContentLoaded', function() {
             showCookieBanner();
@@ -467,5 +512,16 @@ This tool is provided free for educational and professional use.`);
 
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="js/app.js"></script>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed'));
+            });
+        }
+    </script>
 </body>
 </html>

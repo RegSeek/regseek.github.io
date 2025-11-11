@@ -1,136 +1,131 @@
-title: "USB Drive Letter Assignments"
-category: "external-storage"
-description: "Drive letter mappings for USB storage devices with volume serial numbers and device correlation"
+title: USB Drive Letter Assignments
+category: external-storage
+description: Drive letter mappings for USB storage devices with volume serial numbers and device correlation
 
 paths:
-  - "HKLM\\SYSTEM\\MountedDevices"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceClasses\\{53f56307-b6bf-11d0-94f2-00a0c91efb8b}"
-  - "HKLM\\SYSTEM\\MountManager\\MountedDevices"
+- HKLM\SYSTEM\MountedDevices
+- HKLM\SYSTEM\CurrentControlSet\Control\DeviceClasses\{53f56307-b6bf-11d0-94f2-00a0c91efb8b}
+- HKLM\SYSTEM\MountManager\MountedDevices
 
 details:
   what: |
-    Windows maintains drive letter assignments for storage devices including USB drives and removable media. 
-    Correlates drive letters with device identifiers, volume serial numbers, and hardware signatures to 
-    ensure consistent assignment across connection sessions.
+    Windows maintains drive letter assignments for storage devices including USB drives and removable media. Correlates drive letters with device identifiers, volume serial numbers, and hardware signatures to ensure consistent assignment across connection sessions.
 
   forensic_value: |
-    Critical for correlating USB device connections with file system artifacts, establishing which specific 
-    USB device was assigned particular drive letters during file operations. Essential for linking file 
-    access artifacts to specific hardware devices and establishing timeline correlations.
+    Critical for correlating USB device connections with file system artifacts, establishing which specific USB device was assigned particular drive letters during file operations. Essential for linking file access artifacts to specific hardware devices and establishing timeline correlations.
 
   structure: |
-    Binary data structures linking drive letters (\\\\DosDevices\\\\C:) to device identifiers and volume 
-    information. USB storage devices identified by unique signatures including vendor ID, product ID, 
-    and serial numbers embedded in binary format.
+    Binary data structures linking drive letters (\\\\DosDevices\\\\C:) to device identifiers and volume information. USB storage devices identified by unique signatures including vendor ID, product ID, and serial numbers embedded in binary format.
 
   examples:
-    - "\\\\DosDevices\\\\E:: USB#VID_0951&PID_1666#50E549C6E258F571&0 (Kingston DataTraveler)"
-    - "\\\\DosDevices\\\\F:: USB#VID_090C&PID_1000#12345678&0 (SanDisk Cruzer)"
-    - "Volume{GUID}: Device instance path linkage"
-    - "Serial: 001CC0EC336BD480&0 (Unique device serial identifier)"
-    - "Signature: _??_USBSTOR#Disk&Ven_Kingston&Prod_DataTraveler_3.0&Rev_PMAP"
-    - "MountPoint: \\\\??\\\\Volume{12345678-1234-5678-9abc-123456789012}\\\\"
+  - '\\DosDevices\\E:: USB#VID_0951&PID_1666#50E549C6E258F571&0 (Kingston DataTraveler)'
+  - '\\DosDevices\\F:: USB#VID_090C&PID_1000#12345678&0 (SanDisk Cruzer)'
+  - 'Volume{GUID}: Device instance path linkage'
+  - 'Serial: 001CC0EC336BD480&0 (Unique device serial identifier)'
+  - 'Signature: _??_USBSTOR#Disk&Ven_Kingston&Prod_DataTraveler_3.0&Rev_PMAP'
+  - 'MountPoint: \\??\\Volume{12345678-1234-5678-9abc-123456789012}\\'
 
   tools:
-    - name: "DriveLetterView"
-      url: "https://www.nirsoft.net/utils/drive_letter_view.html"
-      description: "View and analyze drive letter assignments and device mappings"
-    - name: "USB Detective"
-      description: "Specialized tool for USB device forensics and drive letter correlation"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "RegRipper"
-      url: "https://github.com/keydet89/RegRipper3.0"
-      description: "Registry data extraction and analysis framework"
-    - name: "Disk Management (diskmgmt.msc)"
-      description: "Windows built-in drive and volume management interface"
+  - name: DriveLetterView
+    url: https://www.nirsoft.net/utils/drive_letter_view.html
+    description: View and analyze drive letter assignments and device mappings
+  - name: USB Detective
+    description: Specialized tool for USB device forensics and drive letter correlation
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry data extraction and analysis framework
+  - name: Disk Management (diskmgmt.msc)
+    description: Windows built-in drive and volume management interface
 
 limitations:
-  - "Drive letter assignment does NOT prove files were accessed from the device"
-  - "Mount point creation doesn't indicate actual file operations occurred"
-  - "Device mapping may persist after legitimate usage without indicating data theft"
-  - "Drive letter assignment can occur from antivirus scanning without user access"
-  - "Multiple assignments don't prove repeated unauthorized access"
-  - "Volume mounting doesn't indicate what files were viewed or copied"
+- Drive letter assignment does NOT prove files were accessed from the device
+- Mount point creation doesn't indicate actual file operations occurred
+- Device mapping may persist after legitimate usage without indicating data theft
+- Drive letter assignment can occur from antivirus scanning without user access
+- Multiple assignments don't prove repeated unauthorized access
+- Volume mounting doesn't indicate what files were viewed or copied
 
 correlation:
   required_for_definitive_access_proof:
-    - "File system artifacts showing actual file access or modification on USB device"
-    - "ShellBags showing user navigation to specific drive letters"
-    - "Recent documents or LNK files pointing to files on assigned drive letters"
-    - "Event logs (Event ID 6416) showing successful volume access"
-    - "Application logs showing file operations on the mounted drive"
-    
+  - File system artifacts showing actual file access or modification on USB device
+  - ShellBags showing user navigation to specific drive letters
+  - Recent documents or LNK files pointing to files on assigned drive letters
+  - Event logs (Event ID 6416) showing successful volume access
+  - Application logs showing file operations on the mounted drive
+
   strengthens_evidence:
-    - "USB device connection history correlating to drive letter assignment times"
-    - "Registry last write times showing device mounting correlation"
-    - "Prefetch files showing execution of programs from specific drive letters"
-    - "Network logs if drive contained remote access tools or exfiltrated data"
+  - USB device connection history correlating to drive letter assignment times
+  - Registry last write times showing device mounting correlation
+  - Prefetch files showing execution of programs from specific drive letters
+  - Network logs if drive contained remote access tools or exfiltrated data
 
 metadata:
   windows_versions:
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows 2000"
-  criticality: "high"
+  introduced: Windows 2000
+
+  criticality: high
 
   investigation_types:
-    - "data-exfiltration"
-    - "insider-threat"
-    - "timeline-analysis"
-    - "incident-response"
+  - data-exfiltration
+  - insider-threat
+  - timeline-analysis
+  - incident-response
 
   tags:
-    - "usb"
-    - "drive-letters"
-    - "device-mapping"
-    - "volume-tracking"
-    - "file-system-correlation"
-    - "mounted-devices"
-    - "storage-forensics"
+  - usb
+  - drive-letters
+  - device-mapping
+  - volume-tracking
+  - file-system-correlation
+  - mounted-devices
+  - storage-forensics
 
   references:
-    - title: "Microsoft Documentation: Mount Manager"
-      url: "https://learn.microsoft.com/en-us/windows-hardware/drivers/storage/mount-manager"
-      type: "official"
-    - title: "USB Device Drive Letter Forensics"
-      url: "https://www.sans.org/white-papers/33584/"
-      type: "research"
-    - title: "Windows Storage Device Analysis"
-      url: "https://www.forensicfocus.com/articles/usb-device-forensics/"
-      type: "research"
+  - title: 'Microsoft Documentation: Mount Manager'
+    url: https://learn.microsoft.com/en-us/windows-hardware/drivers/storage/mount-manager
+    type: official
+  - title: USB Device Drive Letter Forensics
+    url: https://www.sans.org/white-papers/33584/
+    type: research
+  - title: Windows Storage Device Analysis
+    url: https://www.forensicfocus.com/articles/usb-device-forensics/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SYSTEM)"
-    persistence: "Drive letter mappings persist until device record cleanup or manual removal"
-    volatility: "Device mappings provide ongoing correlation data for USB device usage"
+    default_location: Registry hive files (SYSTEM)
+    persistence: Drive letter mappings persist until device record cleanup or manual removal
+    volatility: Device mappings provide ongoing correlation data for USB device usage
 
   related_artifacts:
-    - "device_history"
-    - "device_capabilities"
-    - "last_write_times"
-    - "mounted_volumes"
+  - device_history
+  - device_capabilities
+  - last_write_times
+  - mounted_volumes
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-13"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-13'
+  version: '3.0'

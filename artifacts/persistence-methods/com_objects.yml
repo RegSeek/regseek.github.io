@@ -1,155 +1,147 @@
-title: "COM Objects and Class Registration"
-category: "persistence-methods"
-description: "Component Object Model registration database for DLL hijacking and sophisticated persistence mechanisms"
+title: COM Objects and Class Registration
+category: persistence-methods
+description: Component Object Model registration database for DLL hijacking and sophisticated persistence mechanisms
 
 paths:
-  - "HKCR\\CLSID"
-  - "HKLM\\SOFTWARE\\Classes\\CLSID"
-  - "HKCU\\SOFTWARE\\Classes\\CLSID"
-  - "HKCR\\Interface"
-  - "HKCR\\TypeLib"
+- HKCR\CLSID
+- HKLM\SOFTWARE\Classes\CLSID
+- HKCU\SOFTWARE\Classes\CLSID
+- HKCR\Interface
+- HKCR\TypeLib
 
 details:
   what: |
-    Component Object Model (COM) registration database containing Class IDs (CLSIDs),
-    Interface IDs (IIDs), Type Library information, and associated DLL/executable paths.
-    Controls how applications instantiate and interact with COM objects, services, and
-    components. Includes InProcess and OutProcess server registrations.
+    Component Object Model (COM) registration database containing Class IDs (CLSIDs), Interface IDs (IIDs), Type Library information, and associated DLL/executable paths. Controls how applications instantiate and interact with COM objects, services, and components. Includes InProcess and OutProcess server registrations.
 
   forensic_value: |
-    COM hijacking is a sophisticated persistence technique where malware replaces legitimate
-    COM object paths with malicious DLLs. Shows unauthorized COM object registration, DLL
-    path modifications, and potential hijacking attempts. Can indicate rootkit activity,
-    advanced persistent threats, and sophisticated malware families using COM for stealth.
+    COM hijacking is a sophisticated persistence technique where malware replaces legitimate COM object paths with malicious DLLs. Shows unauthorized COM object registration, DLL path modifications, and potential hijacking attempts. Can indicate rootkit activity, advanced persistent threats, and sophisticated malware families using COM for stealth.
 
   structure: |
-    CLSID entries contain InprocServer32 (DLL path), LocalServer32 (EXE path), ProgID
-    associations, threading models, and interface definitions. Each CLSID represents a
-    unique COM class with specific functionality and implementation. Binary data includes
-    type libraries and interface marshaling information.
+    CLSID entries contain InprocServer32 (DLL path), LocalServer32 (EXE path), ProgID associations, threading models, and interface definitions. Each CLSID represents a unique COM class with specific functionality and implementation. Binary data includes type libraries and interface marshaling information.
 
   examples:
-    - "CLSID\\{00021401-0000-0000-C000-000000000046}\\InprocServer32: C:\\malware\\evil.dll"
-    - "CLSID\\{BCDE0395-E52F-467C-8E3D-C4579291692E}\\LocalServer32: C:\\Windows\\System32\\mmcndmgr.dll"
-    - "ProgID: Shell.Application"
-    - "ThreadingModel: Apartment"
-    - "Version: 1.0"
-    - "InprocServer32\\(Default): %SystemRoot%\\system32\\shell32.dll"
-    - "AppID: {GUID} (Application ID for DCOM configuration)"
-    - "TypeLib: {GUID} (Type Library reference)"
-    - "Hijacked CLSID: {GUID}\\InprocServer32: C:\\temp\\backdoor.dll"
+  - 'CLSID\{00021401-0000-0000-C000-000000000046}\InprocServer32: C:\malware\evil.dll'
+  - 'CLSID\{BCDE0395-E52F-467C-8E3D-C4579291692E}\LocalServer32: C:\Windows\System32\mmcndmgr.dll'
+  - 'ProgID: Shell.Application'
+  - 'ThreadingModel: Apartment'
+  - 'Version: 1.0'
+  - 'InprocServer32\(Default): %SystemRoot%\system32\shell32.dll'
+  - 'AppID: {GUID} (Application ID for DCOM configuration)'
+  - 'TypeLib: {GUID} (Type Library reference)'
+  - 'Hijacked CLSID: {GUID}\InprocServer32: C:\temp\backdoor.dll'
 
   tools:
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry browser for COM object analysis and CLSID enumeration"
-    - name: "Autoruns"
-      url: "https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns"
-      description: "Microsoft Sysinternals tool with comprehensive COM object enumeration"
-    - name: "RegDllView"
-      url: "https://www.nirsoft.net/utils/registered_dll_view.html"
-      description: "NirSoft tool for viewing registered DLLs and COM components"
-    - name: "OLE/COM Object Viewer"
-      description: "Microsoft OLE/COM Object Viewer for detailed COM analysis"
-    - name: "COM Hijack Toolkit"
-      description: "Specialized tools for COM hijacking detection and analysis"
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry browser for COM object analysis and CLSID enumeration
+  - name: Autoruns
+    url: https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns
+    description: Microsoft Sysinternals tool with comprehensive COM object enumeration
+  - name: RegDllView
+    url: https://www.nirsoft.net/utils/registered_dll_view.html
+    description: NirSoft tool for viewing registered DLLs and COM components
+  - name: OLE/COM Object Viewer
+    description: Microsoft OLE/COM Object Viewer for detailed COM analysis
+  - name: COM Hijack Toolkit
+    description: Specialized tools for COM hijacking detection and analysis
 
 limitations:
-  - "COM object registration does NOT prove objects were instantiated or executed"
-  - "CLSID entries don't indicate successful COM object creation or usage"
-  - "DLL paths don't show malicious code was loaded or executed"
-  - "Registry hijacking may fail due to application-specific COM binding"
-  - "COM object modifications don't prove persistence mechanism was activated"
-  - "Threading model settings don't indicate actual COM object behavior"
-  - "Interface definitions don't show successful COM interface marshaling"
+- COM object registration does NOT prove objects were instantiated or executed
+- CLSID entries don't indicate successful COM object creation or usage
+- DLL paths don't show malicious code was loaded or executed
+- Registry hijacking may fail due to application-specific COM binding
+- COM object modifications don't prove persistence mechanism was activated
+- Threading model settings don't indicate actual COM object behavior
+- Interface definitions don't show successful COM interface marshaling
 
 correlation:
   required_for_definitive_hijacking_proof:
-    - "Process execution logs showing COM object instantiation and DLL loading"
-    - "File system artifacts showing malicious DLL files at hijacked paths"
-    - "Application event logs showing COM object creation and interface usage"
-    - "Memory dumps showing hijacked COM objects in application address spaces"
-    
+  - Process execution logs showing COM object instantiation and DLL loading
+  - File system artifacts showing malicious DLL files at hijacked paths
+  - Application event logs showing COM object creation and interface usage
+  - Memory dumps showing hijacked COM objects in application address spaces
+
   strengthens_evidence:
-    - "Registry modifications made by hijacked COM objects"
-    - "Network traffic initiated by malicious COM components"
-    - "File system changes indicating COM object activity"
-    - "Event logs showing COM+ application activity"
+  - Registry modifications made by hijacked COM objects
+  - Network traffic initiated by malicious COM components
+  - File system changes indicating COM object activity
+  - Event logs showing COM+ application activity
 
 metadata:
   windows_versions:
-    - "Windows 95"
-    - "Windows NT 3.5"
-    - "Windows NT 4.0"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2000"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows 95
+  - Windows NT 3.5
+  - Windows NT 4.0
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2000
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows 95 / Windows NT 3.5"
-  criticality: "high"
+  introduced: Windows 95 / Windows NT 3.5
+
+  criticality: high
 
   investigation_types:
-    - "persistence-analysis"
-    - "malware-analysis"
-    - "privilege-escalation"
-    - "incident-response"
-    - "behavioral-analysis"
+  - persistence-analysis
+  - malware-analysis
+  - privilege-escalation
+  - incident-response
+  - behavioral-analysis
 
   tags:
-    - "persistence"
-    - "com-objects"
-    - "dll-hijacking"
-    - "clsid"
-    - "advanced-persistence"
-    - "object-registration"
-    - "rootkits"
-    - "sophisticated-malware"
-    - "process-injection"
+  - persistence
+  - com-objects
+  - dll-hijacking
+  - clsid
+  - advanced-persistence
+  - object-registration
+  - rootkits
+  - sophisticated-malware
+  - process-injection
 
   references:
-    - title: "Component Object Model (COM)"
-      url: "https://learn.microsoft.com/en-us/windows/win32/com/component-object-model--com--portal"
-      type: "official"
-    - title: "COM Security and Authentication"
-      url: "https://learn.microsoft.com/en-us/windows/win32/com/security-in-com"
-      type: "official"
-    - title: "MITRE ATT&CK: Component Object Model Hijacking"
-      url: "https://attack.mitre.org/techniques/T1546/015/"
-      type: "research"
-    - title: "COM Hijacking Techniques"
-      url: "https://www.sans.org/blog/com-hijacking-techniques/"
-      type: "research"
+  - title: Component Object Model (COM)
+    url: https://learn.microsoft.com/en-us/windows/win32/com/component-object-model--com--portal
+    type: official
+  - title: COM Security and Authentication
+    url: https://learn.microsoft.com/en-us/windows/win32/com/security-in-com
+    type: official
+  - title: 'MITRE ATT&CK: Component Object Model Hijacking'
+    url: https://attack.mitre.org/techniques/T1546/015/
+    type: research
+  - title: COM Hijacking Techniques
+    url: https://www.sans.org/blog/com-hijacking-techniques/
+    type: research
 
   retention:
-    default_location: "Registry hives (SOFTWARE, CLASSES)"
-    persistence: "Survives reboots and application uninstallation, highly persistent"
-    volatility: "COM registrations persist until explicitly removed or system corruption"
+    default_location: Registry hives (SOFTWARE, CLASSES)
+    persistence: Survives reboots and application uninstallation, highly persistent
+    volatility: COM registrations persist until explicitly removed or system corruption
 
   related_artifacts:
-    - "shell_extensions"
-    - "image_hijack"
-    - "registry_run_keys"
-    - "lsa_packages"
-    - "print_processors"
+  - shell_extensions
+  - image_hijack
+  - registry_run_keys
+  - lsa_packages
+  - print_processors
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

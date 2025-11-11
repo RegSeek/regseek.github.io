@@ -1,115 +1,108 @@
-title: "VMware Workstation and Player Configuration"
-category: "virtualization"
-description: "VMware virtualization software configuration, virtual machine management, and hypervisor settings"
+title: VMware Workstation and Player Configuration
+category: virtualization
+description: VMware virtualization software configuration, virtual machine management, and hypervisor settings
 
 paths:
-  - "HKCU\\Software\\VMware Inc\\VMware Workstation"
-  - "HKLM\\SOFTWARE\\VMware Inc\\VMware Workstation"
-  - "HKCU\\Software\\VMware Inc\\VMware Player"
-  - "HKLM\\SOFTWARE\\VMware Inc\\VMware Player"
+- HKCU\Software\VMware Inc\VMware Workstation
+- HKLM\SOFTWARE\VMware Inc\VMware Workstation
+- HKCU\Software\VMware Inc\VMware Player
+- HKLM\SOFTWARE\VMware Inc\VMware Player
 
 details:
   what: |
-    VMware Workstation and Player manage desktop virtualization including virtual
-    machine creation, hardware configuration, network settings, and hypervisor
-    management. Registry stores VM configurations, licensing information,
-    performance settings, and virtual hardware preferences.
+    VMware Workstation and Player manage desktop virtualization including virtual machine creation, hardware configuration, network settings, and hypervisor management. Registry stores VM configurations, licensing information, performance settings, and virtual hardware preferences.
 
   forensic_value: |
-    Critical for investigating virtual machine usage, potential evidence isolation,
-    malware analysis environments, and sophisticated attack techniques using
-    virtualization. Shows evidence of VM creation, configuration changes,
-    and virtual network setups that could hide activities.
+    Critical for investigating virtual machine usage, potential evidence isolation, malware analysis environments, and sophisticated attack techniques using virtualization. Shows evidence of VM creation, configuration changes, and virtual network setups that could hide activities.
 
   structure: |
-    VMware configuration includes virtual machine paths, hardware settings, network
-    configurations, licensing data, and performance preferences. VM registry entries
-    track virtual hardware assignments, snapshot locations, and isolation settings.
+    VMware configuration includes virtual machine paths, hardware settings, network configurations, licensing data, and performance preferences. VM registry entries track virtual hardware assignments, snapshot locations, and isolation settings.
 
   examples:
-    - "InstallPath: C:\\Program Files (x86)\\VMware\\VMware Workstation"
-    - "VMInventory: C:\\Users\\user\\Documents\\Virtual Machines"
-    - "RecentVM0: C:\\VMs\\Windows_Analysis.vmx"
-    - "RecentVM1: C:\\VMs\\Malware_Sandbox.vmx"
-    - "Networking.Host-Only: vmnet1 (Host-only network adapter)"
-    - "VMware.Player.SharedFolders: 1 (Shared folders enabled)"
-    - "Hardware.MemSize: 4096 (4GB RAM allocation)"
+  - 'InstallPath: C:\Program Files (x86)\VMware\VMware Workstation'
+  - 'VMInventory: C:\Users\user\Documents\Virtual Machines'
+  - 'RecentVM0: C:\VMs\Windows_Analysis.vmx'
+  - 'RecentVM1: C:\VMs\Malware_Sandbox.vmx'
+  - 'Networking.Host-Only: vmnet1 (Host-only network adapter)'
+  - 'VMware.Player.SharedFolders: 1 (Shared folders enabled)'
+  - 'Hardware.MemSize: 4096 (4GB RAM allocation)'
 
   tools:
-    - name: "VMware Workstation/Player"
-      description: "VMware virtualization management interface"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis tool"
-    - name: "VMware Tools"
-      description: "VMware virtual machine management utilities"
+  - name: VMware Workstation/Player
+    description: VMware virtualization management interface
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis tool
+  - name: VMware Tools
+    description: VMware virtual machine management utilities
 
 limitations:
-  - "Registry shows configuration only, not actual VM usage or guest OS activity"
-  - "Recent VM list doesn't prove virtual machines were actively used"
-  - "Shared folder settings don't indicate actual file sharing occurred"
-  - "VM inventory paths don't prove VMs were executed or contained malware"
-  - "Malware sandbox VMs suggest analysis but don't prove malicious activity"
+- Registry shows configuration only, not actual VM usage or guest OS activity
+- Recent VM list doesn't prove virtual machines were actively used
+- Shared folder settings don't indicate actual file sharing occurred
+- VM inventory paths don't prove VMs were executed or contained malware
+- Malware sandbox VMs suggest analysis but don't prove malicious activity
 
 correlation:
   required_for_definitive_conclusions:
-    - "VMware log files showing actual VM operations"
-    - "Virtual machine disk files (.vmdk, .vmx, .nvram)"
-    - "Process execution logs showing vmware.exe activity"
-    - "File system artifacts in VM storage directories"
-    - "Network traffic logs showing VM communications"
-  
+  - VMware log files showing actual VM operations
+  - Virtual machine disk files (.vmdk, .vmx, .nvram)
+  - Process execution logs showing vmware.exe activity
+  - File system artifacts in VM storage directories
+  - Network traffic logs showing VM communications
+
   strengthens_evidence:
-    - "Timeline analysis of VM creation and configuration changes"
-    - "User activity showing VMware application usage"
-    - "File operations in VM inventory directories"
+  - Timeline analysis of VM creation and configuration changes
+  - User activity showing VMware application usage
+  - File operations in VM inventory directories
 
 metadata:
   windows_versions:
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "VMware Workstation"
-  criticality: "medium"
+  introduced: VMware Workstation
+
+  criticality: medium
 
   investigation_types:
-    - "malware-analysis"
-    - "incident-response"
-    - "behavioral-analysis"
-    - "anti-forensics"
+  - malware-analysis
+  - incident-response
+  - behavioral-analysis
+  - anti-forensics
 
   tags:
-    - "vmware"
-    - "virtual-machines"
-    - "hypervisor"
-    - "isolation"
-    - "malware-analysis"
+  - vmware
+  - virtual-machines
+  - hypervisor
+  - isolation
+  - malware-analysis
 
   references:
-    - title: "VMware Workstation Documentation"
-      url: "https://docs.vmware.com/en/VMware-Workstation-Pro/"
-      type: "official"
+  - title: VMware Workstation Documentation
+    url: https://docs.vmware.com/en/VMware-Workstation-Pro/
+    type: official
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
-    persistence: "Virtualization settings persist until software removal or reconfiguration"
-    volatility: "VM configuration changes provide evidence of virtualization usage patterns"
+    default_location: Registry hive files (SOFTWARE, NTUSER.DAT)
+    persistence: Virtualization settings persist until software removal or reconfiguration
+    volatility: VM configuration changes provide evidence of virtualization usage patterns
 
   related_artifacts:
-    - "oracle_virtual_box"
-    - "hyperv"
+  - oracle_virtual_box
+  - hyperv
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-08"
-  last_updated: "2025-07-06"
-  version: "1.0"
+  date_added: '2025-06-08'
+  last_updated: '2025-07-06'
+  version: '1.0'

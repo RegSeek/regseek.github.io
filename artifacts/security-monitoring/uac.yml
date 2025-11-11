@@ -1,115 +1,110 @@
-title: "User Account Control (UAC) Configuration"
-category: "security-monitoring"
-description: "UAC elevation policies, prompt behavior, and administrative approval mode settings"
+title: User Account Control (UAC) Configuration
+category: security-monitoring
+description: UAC elevation policies, prompt behavior, and administrative approval mode settings
 
 paths:
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System"
-  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Installer"
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System
+- HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer
 
 details:
   what: |
-    User Account Control (UAC) manages privilege elevation requests and administrative approval mode 
-    for standard users and administrators. Registry controls prompt behavior, elevation policies, 
-    secure desktop usage, and administrative token filtering to prevent unauthorized privilege escalation.
+    User Account Control (UAC) manages privilege elevation requests and administrative approval mode for standard users and administrators. Registry controls prompt behavior, elevation policies, secure desktop usage, and administrative token filtering to prevent unauthorized privilege escalation.
 
   forensic_value: |
-    Critical for investigating privilege escalation attempts, UAC bypass techniques, and unauthorized 
-    administrative access. Shows evidence of UAC policy modifications that could weaken security and 
-    indicates sophisticated attacks targeting Windows privilege control mechanisms.
+    Critical for investigating privilege escalation attempts, UAC bypass techniques, and unauthorized administrative access. Shows evidence of UAC policy modifications that could weaken security and indicates sophisticated attacks targeting Windows privilege control mechanisms.
 
   structure: |
-    UAC configuration includes EnableLUA (UAC enabled/disabled), ConsentPromptBehaviorAdmin (admin 
-    prompt behavior), ConsentPromptBehaviorUser (standard user prompts), PromptOnSecureDesktop 
-    (secure desktop usage), and EnableInstallerDetection (installer privilege detection).
+    UAC configuration includes EnableLUA (UAC enabled/disabled), ConsentPromptBehaviorAdmin (admin prompt behavior), ConsentPromptBehaviorUser (standard user prompts), PromptOnSecureDesktop (secure desktop usage), and EnableInstallerDetection (installer privilege detection).
 
   examples:
-    - "EnableLUA: 1 (UAC enabled)"
-    - "EnableLUA: 0 (UAC disabled - security risk)"
-    - "ConsentPromptBehaviorAdmin: 2 (Prompt for consent on secure desktop)"
-    - "ConsentPromptBehaviorAdmin: 0 (Elevate without prompting - dangerous)"
-    - "ConsentPromptBehaviorUser: 3 (Prompt for credentials)"
-    - "PromptOnSecureDesktop: 1 (Use secure desktop for prompts)"
-    - "EnableInstallerDetection: 1 (Detect installation programs)"
+  - 'EnableLUA: 1 (UAC enabled)'
+  - 'EnableLUA: 0 (UAC disabled - security risk)'
+  - 'ConsentPromptBehaviorAdmin: 2 (Prompt for consent on secure desktop)'
+  - 'ConsentPromptBehaviorAdmin: 0 (Elevate without prompting - dangerous)'
+  - 'ConsentPromptBehaviorUser: 3 (Prompt for credentials)'
+  - 'PromptOnSecureDesktop: 1 (Use secure desktop for prompts)'
+  - 'EnableInstallerDetection: 1 (Detect installation programs)'
 
   tools:
-    - name: "UAC Settings (Control Panel)"
-      description: "Built-in Windows UAC configuration interface"
-    - name: "Group Policy Editor (secpol.msc)"
-      description: "Local security policy UAC configuration"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
+  - name: UAC Settings (Control Panel)
+    description: Built-in Windows UAC configuration interface
+  - name: Group Policy Editor (secpol.msc)
+    description: Local security policy UAC configuration
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
 
 limitations:
-  - "UAC configuration does NOT prove privilege escalation attacks occurred"
-  - "Disabled UAC settings don't indicate successful unauthorized elevation"
-  - "Policy modifications may be legitimate administrative security adjustments"
-  - "Prompt behavior settings don't prove bypass techniques were used"
-  - "Configuration changes don't indicate actual privilege abuse happened"
-  - "UAC settings may be enterprise-configured for operational requirements"
+- UAC configuration does NOT prove privilege escalation attacks occurred
+- Disabled UAC settings don't indicate successful unauthorized elevation
+- Policy modifications may be legitimate administrative security adjustments
+- Prompt behavior settings don't prove bypass techniques were used
+- Configuration changes don't indicate actual privilege abuse happened
+- UAC settings may be enterprise-configured for operational requirements
 
 correlation:
   required_for_definitive_bypass_proof:
-    - "Event logs showing successful privilege escalation despite UAC settings"
-    - "Process execution logs showing elevated processes launched without proper authorization"
-    - "Registry changes showing unauthorized modifications during weakened UAC periods"
-    - "File system artifacts showing administrative operations performed by standard users"
-    - "Application logs showing successful bypass of UAC restrictions"
-    
+  - Event logs showing successful privilege escalation despite UAC settings
+  - Process execution logs showing elevated processes launched without proper authorization
+  - Registry changes showing unauthorized modifications during weakened UAC periods
+  - File system artifacts showing administrative operations performed by standard users
+  - Application logs showing successful bypass of UAC restrictions
+
   strengthens_evidence:
-    - "Event logs showing UAC prompt suppression or bypass attempts"
-    - "Process execution with administrative privileges during UAC configuration changes"
-    - "Registry modifications in administrative areas during reduced UAC enforcement"
-    - "File system access to protected areas correlating with UAC setting changes"
+  - Event logs showing UAC prompt suppression or bypass attempts
+  - Process execution with administrative privileges during UAC configuration changes
+  - Registry modifications in administrative areas during reduced UAC enforcement
+  - File system access to protected areas correlating with UAC setting changes
 
 metadata:
   windows_versions:
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Windows Vista"
-  criticality: "high"
+  introduced: Windows Vista
+
+  criticality: high
 
   investigation_types:
-    - "malware-analysis"
-    - "incident-response"
-    - "behavioral-analysis"
-    - "privilege-escalation"
+  - malware-analysis
+  - incident-response
+  - behavioral-analysis
+  - privilege-escalation
 
   tags:
-    - "uac"
-    - "privilege-escalation"
-    - "security-bypass"
-    - "administrative-access"
-    - "elevation"
-    - "malware-evasion"
+  - uac
+  - privilege-escalation
+  - security-bypass
+  - administrative-access
+  - elevation
+  - malware-evasion
 
   references:
-    - title: "UAC Documentation"
-      url: "https://learn.microsoft.com/en-us/windows/security/identity-protection/user-account-control/"
-      type: "official"
+  - title: UAC Documentation
+    url: https://learn.microsoft.com/en-us/windows/security/identity-protection/user-account-control/
+    type: official
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, SYSTEM)"
-    persistence: "UAC settings persist until administratively changed"
-    volatility: "Critical security configuration affecting system privilege model"
+    default_location: Registry hive files (SOFTWARE, SYSTEM)
+    persistence: UAC settings persist until administratively changed
+    volatility: Critical security configuration affecting system privilege model
 
   related_artifacts:
-    - "security_policies"
-    - "administrative_access"
-    - "privilege_escalation"
+  - security_policies
+  - administrative_access
+  - privilege_escalation
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-08"
-  last_updated: "2025-06-13"
-  version: "3.0"
+  date_added: '2025-06-08'
+  last_updated: '2025-06-13'
+  version: '3.0'

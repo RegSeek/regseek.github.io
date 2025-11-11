@@ -1,149 +1,141 @@
-title: "Registry Run Keys Persistence"
-category: "persistence-methods"
-description: "Autostart programs via Run and RunOnce registry keys - primary malware persistence method"
+title: Registry Run Keys Persistence
+category: persistence-methods
+description: Autostart programs via Run and RunOnce registry keys - primary malware persistence method
 
 paths:
-  - "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run"
-  - "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce"
-  - "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\RunServices"
-  - "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\RunServicesOnce"
+- HKLM\Software\Microsoft\Windows\CurrentVersion\Run
+- HKLM\Software\Microsoft\Windows\CurrentVersion\RunOnce
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Run
+- HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce
+- HKLM\Software\Microsoft\Windows\CurrentVersion\RunServices
+- HKLM\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce
 
 details:
   what: |
-    Registry locations where Windows automatically executes programs during user logon or system
-    startup. HKLM keys run for all users with SYSTEM privileges, HKCU keys run for specific users
-    with user privileges. RunOnce keys execute once then delete themselves. RunServices keys exist
-    on older Windows versions for service startup.
+    Registry locations where Windows automatically executes programs during user logon or system startup. HKLM keys run for all users with SYSTEM privileges, HKCU keys run for specific users with user privileges. RunOnce keys execute once then delete themselves. RunServices keys exist on older Windows versions for service startup.
 
   forensic_value: |
-    Primary persistence mechanism used by malware, backdoors, and legitimate software. Shows what
-    programs automatically start with Windows. Critical for identifying unauthorized persistence
-    and malware installation. Can reveal privilege escalation attempts and system compromise
-    indicators. Essential for incident response triage.
+    Primary persistence mechanism used by malware, backdoors, and legitimate software. Shows what programs automatically start with Windows. Critical for identifying unauthorized persistence and malware installation. Can reveal privilege escalation attempts and system compromise indicators. Essential for incident response triage.
 
   structure: |
-    Value names are arbitrary (often program names), value data contains executable paths with
-    optional command line arguments. REG_SZ or REG_EXPAND_SZ format. Can include quotes around
-    paths, environment variables, and various command line switches. Entries beginning with
-    asterisk (*) are hidden from System Configuration Utility.
+    Value names are arbitrary (often program names), value data contains executable paths with optional command line arguments. REG_SZ or REG_EXPAND_SZ format. Can include quotes around paths, environment variables, and various command line switches. Entries beginning with asterisk (*) are hidden from System Configuration Utility.
 
   examples:
-    - "SecurityHealthSystray: C:\\Windows\\System32\\SecurityHealthSystray.exe"
-    - "Malware: C:\\Users\\user\\AppData\\Roaming\\malware.exe -silent"
-    - "UpdateCheck: \"C:\\Program Files\\App\\updater.exe\" /background"
-    - "*Persistence: powershell.exe -enc [base64]"
-    - "Adobe ARM: %ProgramFiles(x86)%\\Common Files\\Adobe\\ARM\\1.0\\AdobeARM.exe"
-    - "Backdoor: cmd.exe /c start /min C:\\temp\\payload.bat"
+  - 'SecurityHealthSystray: C:\Windows\System32\SecurityHealthSystray.exe'
+  - 'Malware: C:\Users\user\AppData\Roaming\malware.exe -silent'
+  - 'UpdateCheck: "C:\Program Files\App\updater.exe" /background'
+  - '*Persistence: powershell.exe -enc [base64]'
+  - 'Adobe ARM: %ProgramFiles(x86)%\Common Files\Adobe\ARM\1.0\AdobeARM.exe'
+  - 'Backdoor: cmd.exe /c start /min C:\temp\payload.bat'
 
   tools:
-    - name: "Autoruns"
-      url: "https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns"
-      description: "Microsoft Sysinternals comprehensive autostart enumeration tool"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "RegRipper"
-      url: "https://github.com/keydet89/RegRipper3.0"
-      description: "Registry data extraction with run keys plugins"
-    - name: "AutorunsToWinEventLog"
-      url: "https://github.com/palantir/windows-event-forwarding"
-      description: "Convert Autoruns output to Windows Event Log format"
+  - name: Autoruns
+    url: https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns
+    description: Microsoft Sysinternals comprehensive autostart enumeration tool
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry data extraction with run keys plugins
+  - name: AutorunsToWinEventLog
+    url: https://github.com/palantir/windows-event-forwarding
+    description: Convert Autoruns output to Windows Event Log format
 
 limitations:
-  - "Run key entries do NOT prove programs were successfully executed"
-  - "Registry persistence doesn't indicate successful program launch or completion"
-  - "Autostart configurations may be blocked by security software or policies"
-  - "RunOnce entries don't show if programs executed before key deletion"
-  - "Hidden entries (asterisk prefix) don't prove stealth execution occurred"
-  - "Registry entries don't reveal frequency, duration, or success of program execution"
+- Run key entries do NOT prove programs were successfully executed
+- Registry persistence doesn't indicate successful program launch or completion
+- Autostart configurations may be blocked by security software or policies
+- RunOnce entries don't show if programs executed before key deletion
+- Hidden entries (asterisk prefix) don't prove stealth execution occurred
+- Registry entries don't reveal frequency, duration, or success of program execution
 
 correlation:
   required_for_definitive_execution_proof:
-    - "Process execution logs showing successful program startup from Run keys"
-    - "File system artifacts showing program files at specified paths"
-    - "Windows Event Logs showing process creation events (Event ID 4688)"
-    - "Application event logs showing successful program initialization"
-    
+  - Process execution logs showing successful program startup from Run keys
+  - File system artifacts showing program files at specified paths
+  - Windows Event Logs showing process creation events (Event ID 4688)
+  - Application event logs showing successful program initialization
+
   strengthens_evidence:
-    - "UserAssist entries showing program execution statistics"
-    - "ShimCache entries showing program access attempts"
-    - "Registry modifications made by executed programs"
-    - "Network traffic initiated by autostart programs"
+  - UserAssist entries showing program execution statistics
+  - ShimCache entries showing program access attempts
+  - Registry modifications made by executed programs
+  - Network traffic initiated by autostart programs
 
 metadata:
   windows_versions:
-    - "Windows 95"
-    - "Windows 98"
-    - "Windows NT"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows 95
+  - Windows 98
+  - Windows NT
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows 95"
-  criticality: "high"
+  introduced: Windows 95
+
+  criticality: high
 
   investigation_types:
-    - "malware-analysis"
-    - "persistence-analysis"
-    - "incident-response"
-    - "timeline-analysis"
-    - "behavioral-analysis"
+  - malware-analysis
+  - persistence-analysis
+  - incident-response
+  - timeline-analysis
+  - behavioral-analysis
 
   tags:
-    - "persistence"
-    - "autostart"
-    - "malware"
-    - "startup-programs"
-    - "privilege-escalation"
-    - "system-compromise"
-    - "registry-persistence"
-    - "boot-execution"
+  - persistence
+  - autostart
+  - malware
+  - startup-programs
+  - privilege-escalation
+  - system-compromise
+  - registry-persistence
+  - boot-execution
 
   references:
-    - title: "Microsoft Documentation: Run and RunOnce Registry Keys"
-      url: "https://learn.microsoft.com/en-us/windows/win32/setupapi/run-and-runonce-registry-keys"
-      type: "official"
-    - title: "MITRE ATT&CK: Boot or Logon Autostart Execution"
-      url: "https://attack.mitre.org/techniques/T1547/001/"
-      type: "research"
-    - title: "SANS Registry Analysis"
-      url: "https://www.sans.org/blog/malware-persistence-windows-registry/"
-      type: "research"
-    - title: "Malware Persistence via Registry"
-      url: "https://attack.mitre.org/techniques/T1547/"
-      type: "research"
+  - title: 'Microsoft Documentation: Run and RunOnce Registry Keys'
+    url: https://learn.microsoft.com/en-us/windows/win32/setupapi/run-and-runonce-registry-keys
+    type: official
+  - title: 'MITRE ATT&CK: Boot or Logon Autostart Execution'
+    url: https://attack.mitre.org/techniques/T1547/001/
+    type: research
+  - title: SANS Registry Analysis
+    url: https://www.sans.org/blog/malware-persistence-windows-registry/
+    type: research
+  - title: Malware Persistence via Registry
+    url: https://attack.mitre.org/techniques/T1547/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SYSTEM, SOFTWARE, NTUSER.DAT)"
-    persistence: "Survives reboots, system cleaning, and basic malware removal attempts"
-    volatility: "Persistent until explicitly deleted or registry corruption occurs"
+    default_location: Registry hive files (SYSTEM, SOFTWARE, NTUSER.DAT)
+    persistence: Survives reboots, system cleaning, and basic malware removal attempts
+    volatility: Persistent until explicitly deleted or registry corruption occurs
 
   related_artifacts:
-    - "shell_folders"
-    - "winlogon_userinit"
-    - "scheduled_tasks"
-    - "shell_extensions"
-    - "wmi_events"
+  - shell_folders
+  - winlogon_userinit
+  - scheduled_tasks
+  - shell_extensions
+  - wmi_events
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

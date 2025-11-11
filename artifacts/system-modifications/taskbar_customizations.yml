@@ -1,0 +1,116 @@
+title: Windows 11 Taskbar Customization Settings
+category: system-modifications
+description: Taskbar alignment, icon sizing, and interface personalization revealing user preferences and system familiarity
+
+paths:
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarAl
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDa
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarSi
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Search\SearchboxTaskbarMode
+
+details:
+  what: |
+    Windows 11 introduced centered taskbar alignment (default) as major UI departure from Windows 10's left-aligned taskbar. Registry keys store taskbar alignment preference (TaskbarAl: 0=left, 1=center), widget button visibility (TaskbarDa), icon size preferences, search box display mode, taskbar position on screen, and auto-hide behavior. StuckRects3 contains binary data for taskbar dimensions and positioning across multiple monitors. These customizations reflect user interface preferences and adaptation to Windows 11 design changes.
+
+  forensic_value: |
+    Reveals user technical sophistication and resistance to interface changes. Left-aligned taskbar (TaskbarAl=0) indicates user reverted to Windows 10-style layout, suggesting familiarity with previous Windows versions or preference for traditional interface. Minimal customizations may indicate new user, temporary system access, or forensic awareness.
+
+  structure: |
+    Registry values stored as DWORD for simple toggle options and enumerated preferences. TaskbarAl (0/1) controls alignment, TaskbarDa shows widgets button visibility, TaskbarSi affects icon sizing. StuckRects3 contains binary blob with packed taskbar positioning data, monitor identifiers, and dimension values requiring specialized parsing. Search box mode uses integer enumeration (0-4).
+
+  examples:
+  - TaskbarAl = 0 (DWORD) - Left-aligned taskbar (Windows 10 style)
+  - TaskbarAl = 1 (DWORD) - Centered taskbar (Windows 11 default)
+  - TaskbarDa = 0 (DWORD) - Widgets button visible
+  - TaskbarDa = 1 (DWORD) - Widgets button hidden
+  - TaskbarSi = 0 (DWORD) - Small taskbar icons
+  - TaskbarSi = 1 (DWORD) - Large taskbar icons
+  - SearchboxTaskbarMode = 0 (DWORD) - Hidden; 1=Icon; 2=Box; 3=Expanded
+  - 'StuckRects3: Binary data containing taskbar position, size, auto-hide state'
+
+  tools:
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry browser with binary data hex view
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry analysis with Explorer settings parsing
+  - name: TaskbarX Configuration Parser
+    description: Third-party tool for advanced taskbar customization analysis
+
+limitations:
+- Registry customizations DO NOT prove active system usage or user presence
+- Default settings may indicate new account, reset system, or lack of personalization
+- Cannot determine when specific customizations were applied without registry transaction logs
+- Customization preferences show user intent, not actual productivity or usage patterns
+- Multi-monitor configurations visible in registry may not reflect current hardware setup
+- Auto-hide and positioning settings may be policy-enforced rather than user-selected
+- Third-party taskbar customization tools may override registry settings
+
+correlation:
+  required_for_definitive_conclusions:
+  - Analyze NTUSER.DAT transaction logs for timestamps of taskbar customization changes
+  - Check Windows Explorer policies for organizational restrictions on taskbar customization
+  - Review ShellBags for window positioning patterns consistent with taskbar configuration
+  - Examine display settings for multi-monitor setup validation
+  - Cross-reference with User Account creation date to determine customization timeline
+  - Verify Group Policy application logs if policy-managed taskbar settings suspected
+
+  strengthens_evidence:
+  - Desktop screenshots showing actual taskbar appearance and customization
+  - Multiple monitor configuration artifacts supporting StuckRects3 positioning data
+  - Third-party customization tool installation (TaskbarX, Start11, ExplorerPatcher)
+  - Windows Update history showing Windows 11 upgrade date for customization baseline
+  - User Assist entries for Settings app showing customization activity
+  - Recent registry modification timestamps correlating with user login events
+
+metadata:
+  windows_versions:
+  - Windows 11
+
+  introduced: Windows 11 21H2 (October 2021) - centered taskbar as default
+
+  criticality: low
+
+  investigation_types:
+  - behavioral-analysis
+  - timeline-analysis
+  - incident-response
+
+  tags:
+  - windows-11
+  - taskbar
+  - user-interface
+  - personalization
+  - customization
+  - ui-preferences
+  - explorer
+  - multi-monitor
+
+  references:
+  - title: Customize the Windows 11 Taskbar
+    url: https://support.microsoft.com/en-us/windows/how-to-use-and-customize-the-taskbar-in-windows-11-9ef8b42e-7e14-46c3-8afa-2c28d63de498
+    type: official
+
+  retention:
+    default_location: NTUSER.DAT registry hive
+    persistence: Survives reboots; preferences persistent until user modification
+    volatility: Persistent configuration; historical changes require transaction log analysis
+
+  related_artifacts:
+  - shellbags
+  - windows_explorer_policies
+  - widgets_dashboard
+  - snap_layouts_groups
+  - search_history
+
+author:
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
+
+contribution:
+  date_added: '2025-01-11'
+  last_updated: '2025-01-11'
+  version: '1.0'

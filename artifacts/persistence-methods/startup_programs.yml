@@ -1,144 +1,136 @@
-title: "Startup Programs and Load Order"
-category: "persistence-methods"
-description: "System startup configuration, boot order, service group dependencies, and early loading programs"
+title: Startup Programs and Load Order
+category: persistence-methods
+description: System startup configuration, boot order, service group dependencies, and early loading programs
 
 paths:
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\ServiceGroupOrder"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\SubSystems"
+- HKLM\SYSTEM\CurrentControlSet\Control\Session Manager
+- HKLM\SYSTEM\CurrentControlSet\Control\ServiceGroupOrder
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+- HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\SubSystems
 
 details:
   what: |
-    Windows startup sequence configuration encompasses boot execution programs, service group 
-    load order, session manager settings, subsystem initialization, and early program loading 
-    that occurs during system startup before user logon. Controls critical system component 
-    initialization and driver loading sequences for proper system startup.
+    Windows startup sequence configuration encompasses boot execution programs, service group load order, session manager settings, subsystem initialization, and early program loading that occurs during system startup before user logon. Controls critical system component initialization and driver loading sequences for proper system startup.
 
   forensic_value: |
-    Critical for identifying system-level persistence mechanisms that load before security 
-    software and user-level defenses. Shows boot-time malware installation, startup sequence 
-    modifications indicating system compromise, and early-loading persistence techniques used 
-    by advanced threats. Essential for detecting rootkits and sophisticated persistence mechanisms.
+    Critical for identifying system-level persistence mechanisms that load before security software and user-level defenses. Shows boot-time malware installation, startup sequence modifications indicating system compromise, and early-loading persistence techniques used by advanced threats. Essential for detecting rootkits and sophisticated persistence mechanisms.
 
   structure: |
-    Session Manager contains BootExecute (programs run during boot), SubSystems (core system 
-    components), ExcludeFromKnownDlls (DLL exclusions), and CriticalDeviceTimeout (hardware 
-    initialization timeouts). ServiceGroupOrder defines service loading sequence priorities 
-    for proper dependency management during startup operations.
+    Session Manager contains BootExecute (programs run during boot), SubSystems (core system components), ExcludeFromKnownDlls (DLL exclusions), and CriticalDeviceTimeout (hardware initialization timeouts). ServiceGroupOrder defines service loading sequence priorities for proper dependency management during startup operations.
 
   examples:
-    - "BootExecute: autocheck autochk *, C:\\\\malware\\\\startup.exe (Malicious boot program)"
-    - "ServiceGroupOrder: System Bus Extender, Base, Network Provider (Loading sequence)"
-    - "SubSystems: Windows, Posix (Core subsystem definitions)"
-    - "ExcludeFromKnownDlls: malicious.dll (DLL exclusion for hijacking)"
-    - "CriticalDeviceTimeout: 10 (10-second hardware initialization timeout)"
-    - "KnownDLLs: kernel32, ntdll, user32 (Protected system DLLs)"
-    - "Execute: wininit (Windows initialization program)"
+  - 'BootExecute: autocheck autochk *, C:\\malware\\startup.exe (Malicious boot program)'
+  - 'ServiceGroupOrder: System Bus Extender, Base, Network Provider (Loading sequence)'
+  - 'SubSystems: Windows, Posix (Core subsystem definitions)'
+  - 'ExcludeFromKnownDlls: malicious.dll (DLL exclusion for hijacking)'
+  - 'CriticalDeviceTimeout: 10 (10-second hardware initialization timeout)'
+  - 'KnownDLLs: kernel32, ntdll, user32 (Protected system DLLs)'
+  - 'Execute: wininit (Windows initialization program)'
 
   tools:
-    - name: "Autoruns"
-      url: "https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns"
-      description: "Microsoft Sysinternals comprehensive autostart program analyzer"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "MSConfig (System Configuration)"
-      description: "Built-in Windows startup program management utility"
-    - name: "System Configuration Utility"
-      description: "Windows tool for managing startup programs and services"
-    - name: "Service Control Manager"
-      description: "Windows service management and dependency analysis tools"
+  - name: Autoruns
+    url: https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns
+    description: Microsoft Sysinternals comprehensive autostart program analyzer
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: MSConfig (System Configuration)
+    description: Built-in Windows startup program management utility
+  - name: System Configuration Utility
+    description: Windows tool for managing startup programs and services
+  - name: Service Control Manager
+    description: Windows service management and dependency analysis tools
 
 limitations:
-  - "Startup configuration does NOT prove malicious programs were executed during boot"
-  - "Boot execution settings don't indicate successful malware loading or operation"
-  - "Service group order modifications may be for legitimate system optimization"
-  - "Subsystem configuration changes don't prove unauthorized system modifications"
-  - "DLL exclusions may be required for legitimate application compatibility"
-  - "Session manager settings don't indicate actual boot sequence execution results"
+- Startup configuration does NOT prove malicious programs were executed during boot
+- Boot execution settings don't indicate successful malware loading or operation
+- Service group order modifications may be for legitimate system optimization
+- Subsystem configuration changes don't prove unauthorized system modifications
+- DLL exclusions may be required for legitimate application compatibility
+- Session manager settings don't indicate actual boot sequence execution results
 
 correlation:
   required_for_definitive_persistence_proof:
-    - "Event logs showing actual boot execution and service loading events"
-    - "Process execution logs showing malicious programs launched during startup"
-    - "File system artifacts showing malicious executable files in startup locations"
-    - "Registry changes showing startup configuration modifications during attack periods"
-    - "System logs showing successful boot sequence completion with modified startup programs"
-    
+  - Event logs showing actual boot execution and service loading events
+  - Process execution logs showing malicious programs launched during startup
+  - File system artifacts showing malicious executable files in startup locations
+  - Registry changes showing startup configuration modifications during attack periods
+  - System logs showing successful boot sequence completion with modified startup programs
+
   strengthens_evidence:
-    - "Boot sector analysis showing low-level persistence mechanisms"
-    - "Event logs showing service loading failures or unexpected program execution during boot"
-    - "File modifications in startup directories during configuration change periods"
-    - "Registry changes in related persistence locations during startup configuration modifications"
+  - Boot sector analysis showing low-level persistence mechanisms
+  - Event logs showing service loading failures or unexpected program execution during boot
+  - File modifications in startup directories during configuration change periods
+  - Registry changes in related persistence locations during startup configuration modifications
 
 metadata:
   windows_versions:
-    - "Windows NT"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2000"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows NT
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2000
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows NT 3.1"
-  criticality: "high"
+  introduced: Windows NT 3.1
+
+  criticality: high
 
   investigation_types:
-    - "malware-analysis"
-    - "incident-response"
-    - "privilege-escalation"
-    - "lateral-movement"
-    - "persistence-analysis"
-    - "behavioral-analysis"
+  - malware-analysis
+  - incident-response
+  - privilege-escalation
+  - lateral-movement
+  - persistence-analysis
+  - behavioral-analysis
 
   tags:
-    - "startup"
-    - "boot-execution"
-    - "service-order"
-    - "early-persistence"
-    - "system-initialization"
-    - "session-manager"
-    - "subsystems"
+  - startup
+  - boot-execution
+  - service-order
+  - early-persistence
+  - system-initialization
+  - session-manager
+  - subsystems
 
   references:
-    - title: "Microsoft Documentation: Session Manager"
-      url: "https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/session-manager"
-      type: "official"
-    - title: "Windows Boot Process and Startup Analysis"
-      url: "https://www.sans.org/white-papers/33927/"
-      type: "research"
-    - title: "Advanced Persistent Threat Startup Techniques"
-      url: "https://attack.mitre.org/techniques/T1547/"
-      type: "research"
+  - title: 'Microsoft Documentation: Session Manager'
+    url: https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/session-manager
+    type: official
+  - title: Windows Boot Process and Startup Analysis
+    url: https://www.sans.org/white-papers/33927/
+    type: research
+  - title: Advanced Persistent Threat Startup Techniques
+    url: https://attack.mitre.org/techniques/T1547/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SYSTEM, SOFTWARE)"
-    persistence: "Startup configuration persists until manually modified"
-    volatility: "Critical system settings affecting boot process and early system security"
+    default_location: Registry hive files (SYSTEM, SOFTWARE)
+    persistence: Startup configuration persists until manually modified
+    volatility: Critical system settings affecting boot process and early system security
 
   related_artifacts:
-    - "boot_configuration"
-    - "run_keys"
-    - "scheduled_tasks"
-    - "winlogon_userinit"
+  - boot_configuration
+  - run_keys
+  - scheduled_tasks
+  - winlogon_userinit
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-13"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-13'
+  version: '3.0'

@@ -1,111 +1,104 @@
-title: "Box Sync and Drive Client"
-category: "user-behaviour"
-description: "Box Sync and Box Drive configuration, enterprise integration, and file synchronization"
+title: Box Sync and Drive Client
+category: user-behaviour
+description: Box Sync and Box Drive configuration, enterprise integration, and file synchronization
 
 paths:
-  - "HKCU\\Software\\Box\\Box"
-  - "HKLM\\SOFTWARE\\Box\\Box Edit"
-  - "HKLM\\SOFTWARE\\Box\\Box Sync"
-  - "HKCU\\Software\\Box\\Box Drive"
+- HKCU\Software\Box\Box
+- HKLM\SOFTWARE\Box\Box Edit
+- HKLM\SOFTWARE\Box\Box Sync
+- HKCU\Software\Box\Box Drive
 
 details:
   what: |
-    Box Sync and Box Drive manage enterprise cloud storage synchronization including
-    folder mapping, authentication with Box enterprise accounts, collaboration settings,
-    and security policies. Registry tracks installation configurations, user credentials,
-    and folder sync preferences.
+    Box Sync and Box Drive manage enterprise cloud storage synchronization including folder mapping, authentication with Box enterprise accounts, collaboration settings, and security policies. Registry tracks installation configurations, user credentials, and folder sync preferences.
 
   forensic_value: |
-    Critical for investigating enterprise data exfiltration and unauthorized access to
-    Box repositories. Shows evidence of Box usage in enterprise environments, shared
-    folder access, and potential data leakage through Box platform. Essential for
-    analyzing insider threats in corporate settings.
+    Critical for investigating enterprise data exfiltration and unauthorized access to Box repositories. Shows evidence of Box usage in enterprise environments, shared folder access, and potential data leakage through Box platform. Essential for analyzing insider threats in corporate settings.
 
   structure: |
-    Box configuration includes enterprise account identifiers, sync folder locations,
-    collaboration permissions, security settings, and Box Edit integration preferences.
-    Enterprise policies control access restrictions and sharing permissions.
+    Box configuration includes enterprise account identifiers, sync folder locations, collaboration permissions, security settings, and Box Edit integration preferences. Enterprise policies control access restrictions and sharing permissions.
 
   examples:
-    - "BoxSyncPath: C:\\Users\\user\\Box Sync"
-    - "BoxDrivePath: B:\\ (Box Drive mount point)"
-    - "EnterpriseID: company.app.box.com (Enterprise Box instance)"
-    - "UserEmail: user@company.com (Box enterprise account)"
-    - "CollaborationEnabled: 1 (File collaboration allowed)"
-    - "BoxEditEnabled: 1 (Box Edit integration active)"
-    - "OfflineAccess: 0 (Offline file access disabled)"
+  - 'BoxSyncPath: C:\Users\user\Box Sync'
+  - 'BoxDrivePath: B:\ (Box Drive mount point)'
+  - 'EnterpriseID: company.app.box.com (Enterprise Box instance)'
+  - 'UserEmail: user@company.com (Box enterprise account)'
+  - 'CollaborationEnabled: 1 (File collaboration allowed)'
+  - 'BoxEditEnabled: 1 (Box Edit integration active)'
+  - 'OfflineAccess: 0 (Offline file access disabled)'
 
   tools:
-    - name: "Box Sync/Drive Settings"
-      description: "Built-in Box application configuration interface"
-    - name: "Box Admin Console"
-      description: "Enterprise Box administration and audit capabilities"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis tool"
+  - name: Box Sync/Drive Settings
+    description: Built-in Box application configuration interface
+  - name: Box Admin Console
+    description: Enterprise Box administration and audit capabilities
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis tool
 
 limitations:
-  - "Registry shows configuration only, not actual files shared or accessed"
-  - "Enterprise account presence doesn't prove data exfiltration occurred"
-  - "Collaboration settings don't indicate actual collaboration activity"
-  - "Box Edit integration may not reflect document editing patterns"
+- Registry shows configuration only, not actual files shared or accessed
+- Enterprise account presence doesn't prove data exfiltration occurred
+- Collaboration settings don't indicate actual collaboration activity
+- Box Edit integration may not reflect document editing patterns
 
 correlation:
   required_for_definitive_conclusions:
-    - "Box sync logs and metadata files"
-    - "File system artifacts showing Box folder contents"
-    - "Network traffic logs showing Box API communications"
-    - "Box enterprise audit logs from Box Admin Console"
-  
+  - Box sync logs and metadata files
+  - File system artifacts showing Box folder contents
+  - Network traffic logs showing Box API communications
+  - Box enterprise audit logs from Box Admin Console
+
   strengthens_evidence:
-    - "Timeline analysis of Box folder file modifications"
-    - "User activity showing Box application usage"
-    - "Email notifications from Box sharing activities"
+  - Timeline analysis of Box folder file modifications
+  - User activity showing Box application usage
+  - Email notifications from Box sharing activities
 
 metadata:
   windows_versions:
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Box Sync Client"
-  criticality: "high"
+  introduced: Box Sync Client
+
+  criticality: high
 
   investigation_types:
-    - "data-exfiltration"
-    - "insider-threat"
-    - "behavioral-analysis"
-    - "incident-response"
+  - data-exfiltration
+  - insider-threat
+  - behavioral-analysis
+  - incident-response
 
   tags:
-    - "box"
-    - "enterprise-storage"
-    - "collaboration"
-    - "file-sharing"
-    - "data-governance"
+  - box
+  - enterprise-storage
+  - collaboration
+  - file-sharing
+  - data-governance
 
   references:
-    - title: "Box Drive Documentation"
-      url: "https://support.box.com/hc/en-us/sections/360007415174-Box-Drive"
-      type: "official"
+  - title: Box Drive Documentation
+    url: https://support.box.com/hc/en-us/sections/360007415174-Box-Drive
+    type: official
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
-    persistence: "Enterprise configurations persist per corporate policies"
-    volatility: "Collaboration activity provides enterprise data sharing intelligence"
+    default_location: Registry hive files (SOFTWARE, NTUSER.DAT)
+    persistence: Enterprise configurations persist per corporate policies
+    volatility: Collaboration activity provides enterprise data sharing intelligence
 
   related_artifacts:
-    - "file_associations"
-    - "recent_docs"
+  - file_associations
+  - recent_docs
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-08"
-  last_updated: "2025-06-08"
-  version: "3.0"
+  date_added: '2025-06-08'
+  last_updated: '2025-06-08'
+  version: '3.0'

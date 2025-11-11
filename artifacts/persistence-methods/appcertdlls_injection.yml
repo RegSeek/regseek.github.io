@@ -1,146 +1,138 @@
-title: "AppCertDLLs DLL Injection Persistence"
-category: "persistence-methods"
-description: "Application Certification DLL injection mechanism for persistent code execution in all processes"
+title: AppCertDLLs DLL Injection Persistence
+category: persistence-methods
+description: Application Certification DLL injection mechanism for persistent code execution in all processes
 
 paths:
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\AppCertDLLs"
+- HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\AppCertDLLs
 
 details:
   what: |
-    AppCertDLLs registry key enables system-wide DLL injection by specifying Dynamic Link Libraries
-    that Windows automatically loads into every process that calls CreateProcess, CreateProcessAsUser,
-    CreateProcessWithLogonW, CreateProcessWithTokenW, and WinExec APIs. Originally designed for
-    application certification and compatibility testing.
+    AppCertDLLs registry key enables system-wide DLL injection by specifying Dynamic Link Libraries that Windows automatically loads into every process that calls CreateProcess, CreateProcessAsUser, CreateProcessWithLogonW, CreateProcessWithTokenW, and WinExec APIs. Originally designed for application certification and compatibility testing.
 
   forensic_value: |
-    Critical persistence mechanism used by advanced malware and sophisticated attackers for system-wide
-    code injection. Shows evidence of persistent DLL injection affecting all processes, rootkit-like
-    behavior, and advanced evasion techniques. Provides unrestricted access to all process memory
-    spaces and can be used for credential theft and comprehensive system compromise.
+    Critical persistence mechanism used by advanced malware and sophisticated attackers for system-wide code injection. Shows evidence of persistent DLL injection affecting all processes, rootkit-like behavior, and advanced evasion techniques. Provides unrestricted access to all process memory spaces and can be used for credential theft and comprehensive system compromise.
 
   structure: |
-    Registry key contains value names as arbitrary identifiers with REG_SZ data specifying full
-    paths to DLL files. Each DLL listed will be automatically injected into every new process
-    created on the system. Multiple DLLs can be specified with different value names. Empty
-    or non-existent key is normal state.
+    Registry key contains value names as arbitrary identifiers with REG_SZ data specifying full paths to DLL files. Each DLL listed will be automatically injected into every new process created on the system. Multiple DLLs can be specified with different value names. Empty or non-existent key is normal state.
 
   examples:
-    - "CertificationDLL1: C:\\Windows\\System32\\legitimate_cert.dll (Legitimate certification DLL)"
-    - "MaliciousDLL: C:\\malware\\backdoor.dll (Suspicious DLL injection)"
-    - "RootkitDLL: C:\\Windows\\System32\\evil_rootkit.dll (Rootkit persistence)"
-    - "SpywareDLL: C:\\temp\\keylogger.dll (Keylogging DLL injection)"
-    - "Empty Key: (Normal state - no DLL injection configured)"
+  - 'CertificationDLL1: C:\Windows\System32\legitimate_cert.dll (Legitimate certification DLL)'
+  - 'MaliciousDLL: C:\malware\backdoor.dll (Suspicious DLL injection)'
+  - 'RootkitDLL: C:\Windows\System32\evil_rootkit.dll (Rootkit persistence)'
+  - 'SpywareDLL: C:\temp\keylogger.dll (Keylogging DLL injection)'
+  - 'Empty Key: (Normal state - no DLL injection configured)'
 
   tools:
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis for AppCertDLLs detection"
-    - name: "Autoruns"
-      url: "https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns"
-      description: "Microsoft Sysinternals tool with AppCertDLLs enumeration"
-    - name: "Process Monitor"
-      url: "https://learn.microsoft.com/en-us/sysinternals/downloads/procmon"
-      description: "Real-time monitoring of DLL injection activities"
-    - name: "RegRipper"
-      url: "https://github.com/keydet89/RegRipper3.0"
-      description: "Registry analysis with persistence mechanism detection"
-    - name: "DLL Injection Detectors"
-      description: "Specialized security tools for detecting DLL injection techniques"
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis for AppCertDLLs detection
+  - name: Autoruns
+    url: https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns
+    description: Microsoft Sysinternals tool with AppCertDLLs enumeration
+  - name: Process Monitor
+    url: https://learn.microsoft.com/en-us/sysinternals/downloads/procmon
+    description: Real-time monitoring of DLL injection activities
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry analysis with persistence mechanism detection
+  - name: DLL Injection Detectors
+    description: Specialized security tools for detecting DLL injection techniques
 
 limitations:
-  - "AppCertDLLs entries do NOT prove DLLs were successfully loaded or executed"
-  - "Registry configuration doesn't indicate successful process injection occurred"
-  - "DLL paths don't show malicious payloads were delivered or activated"
-  - "Persistence mechanism may be disabled by security software or policies"
-  - "DLL injection may fail due to missing files, permission issues, or compatibility problems"
-  - "Configuration doesn't reveal frequency or duration of malicious activity"
-  - "Registry entries don't prove system compromise or successful exploitation"
+- AppCertDLLs entries do NOT prove DLLs were successfully loaded or executed
+- Registry configuration doesn't indicate successful process injection occurred
+- DLL paths don't show malicious payloads were delivered or activated
+- Persistence mechanism may be disabled by security software or policies
+- DLL injection may fail due to missing files, permission issues, or compatibility problems
+- Configuration doesn't reveal frequency or duration of malicious activity
+- Registry entries don't prove system compromise or successful exploitation
 
 correlation:
   required_for_definitive_injection_proof:
-    - "Process execution logs showing DLL loading into target processes"
-    - "File system artifacts showing malicious DLL files at specified paths"
-    - "Memory dumps showing injected DLL code in process address spaces"
-    - "Network traffic logs showing command and control communications from injected processes"
-    
+  - Process execution logs showing DLL loading into target processes
+  - File system artifacts showing malicious DLL files at specified paths
+  - Memory dumps showing injected DLL code in process address spaces
+  - Network traffic logs showing command and control communications from injected processes
+
   strengthens_evidence:
-    - "EDR logs showing suspicious process behavior after DLL injection"
-    - "Registry modifications made by injected DLL code"
-    - "File system changes indicating malicious DLL activity"
-    - "Event logs showing process creation and DLL loading events"
+  - EDR logs showing suspicious process behavior after DLL injection
+  - Registry modifications made by injected DLL code
+  - File system changes indicating malicious DLL activity
+  - Event logs showing process creation and DLL loading events
 
 metadata:
   windows_versions:
-    - "Windows NT"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2000"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows NT
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2000
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows NT"
-  criticality: "high"
+  introduced: Windows NT
+
+  criticality: high
 
   investigation_types:
-    - "malware-analysis"
-    - "persistence-analysis"
-    - "privilege-escalation"
-    - "incident-response"
-    - "behavioral-analysis"
+  - malware-analysis
+  - persistence-analysis
+  - privilege-escalation
+  - incident-response
+  - behavioral-analysis
 
   tags:
-    - "persistence"
-    - "dll-injection"
-    - "process-injection"
-    - "system-wide-injection"
-    - "advanced-malware"
-    - "rootkits"
-    - "appcertdlls"
-    - "code-injection"
-    - "sophisticated-attacks"
+  - persistence
+  - dll-injection
+  - process-injection
+  - system-wide-injection
+  - advanced-malware
+  - rootkits
+  - appcertdlls
+  - code-injection
+  - sophisticated-attacks
 
   references:
-    - title: "Microsoft Documentation: Application Certification"
-      url: "https://learn.microsoft.com/en-us/windows/win32/win7appqual/application-certification"
-      type: "official"
-    - title: "MITRE ATT&CK: Process Injection"
-      url: "https://attack.mitre.org/techniques/T1055/"
-      type: "research"
-    - title: "AppCertDLLs Persistence Technique Analysis"
-      url: "https://www.sans.org/blog/appcertdlls-persistence-technique/"
-      type: "research"
-    - title: "DLL Injection Techniques and Detection"
-      url: "https://www.elastic.co/blog/ten-process-injection-techniques-technical-survey-common-and-trending-process"
-      type: "research"
+  - title: 'Microsoft Documentation: Application Certification'
+    url: https://learn.microsoft.com/en-us/windows/win32/win7appqual/application-certification
+    type: official
+  - title: 'MITRE ATT&CK: Process Injection'
+    url: https://attack.mitre.org/techniques/T1055/
+    type: research
+  - title: AppCertDLLs Persistence Technique Analysis
+    url: https://www.sans.org/blog/appcertdlls-persistence-technique/
+    type: research
+  - title: DLL Injection Techniques and Detection
+    url: https://www.elastic.co/blog/ten-process-injection-techniques-technical-survey-common-and-trending-process
+    type: research
 
   retention:
-    default_location: "SYSTEM registry hive"
-    persistence: "Survives reboots, affects all future process creation until removed"
-    volatility: "Extremely persistent mechanism affecting entire system until explicit removal"
+    default_location: SYSTEM registry hive
+    persistence: Survives reboots, affects all future process creation until removed
+    volatility: Extremely persistent mechanism affecting entire system until explicit removal
 
   related_artifacts:
-    - "lsa_packages"
-    - "winlogon_userinit"
-    - "image_hijack"
-    - "com_objects"
-    - "services"
+  - lsa_packages
+  - winlogon_userinit
+  - image_hijack
+  - com_objects
+  - services
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

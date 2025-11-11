@@ -1,140 +1,135 @@
-title: "Local Security Policy Settings"
-category: "security-monitoring"
-description: "Security policies, audit settings, user rights assignments, and Local Security Authority configuration"
+title: Local Security Policy Settings
+category: security-monitoring
+description: Security policies, audit settings, user rights assignments, and Local Security Authority configuration
 
 paths:
-  - "HKLM\\SECURITY\\Policy"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa"
-  - "HKLM\\SECURITY\\Policy\\Accounts"
+- HKLM\SECURITY\Policy
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
+- HKLM\SYSTEM\CurrentControlSet\Control\Lsa
+- HKLM\SECURITY\Policy\Accounts
 
 details:
   what: |
-    Local Security Policy encompasses comprehensive security configuration including audit policies, 
-    user rights assignments, security options, account policies, Local Security Authority (LSA) 
-    settings, and system security behavior controls. Manages authentication requirements and logging.
+    Local Security Policy encompasses comprehensive security configuration including audit policies, user rights assignments, security options, account policies, Local Security Authority (LSA) settings, and system security behavior controls. Manages authentication requirements and logging.
 
   forensic_value: |
-    Critical for detecting security policy modifications that facilitate attacks, privilege escalation 
-    attempts, and evidence tampering through disabled auditing. Shows if attackers weakened security 
-    settings to maintain persistence or disabled logging to hide activities.
+    Critical for detecting security policy modifications that facilitate attacks, privilege escalation attempts, and evidence tampering through disabled auditing. Shows if attackers weakened security settings to maintain persistence or disabled logging to hide activities.
 
   structure: |
-    Security policy data stored in binary format within the SECURITY registry hive. LSA settings 
-    control authentication behavior, audit policies, and security options. Policies registry contains 
-    user-level security restrictions and Group Policy enforcement settings.
+    Security policy data stored in binary format within the SECURITY registry hive. LSA settings control authentication behavior, audit policies, and security options. Policies registry contains user-level security restrictions and Group Policy enforcement settings.
 
   examples:
-    - "AuditLogonEvents: 0 (Logon auditing disabled - potential evidence hiding)"
-    - "AuditObjectAccess: 3 (Success and failure auditing enabled)"
-    - "LSA\\\\LimitBlankPasswordUse: 0 (Blank passwords allowed - security weakness)"
-    - "LSA\\\\NoLMHash: 1 (LM hash storage disabled for security)"
-    - "CrashOnAuditFail: 0 (System continues if audit log full)"
-    - "MinimumPasswordLength: 0 (No minimum password length required)"
-    - "MaximumPasswordAge: 4294967295 (Passwords never expire)"
-    - "EnableGuestAccount: 1 (Guest account enabled - security risk)"
+  - 'AuditLogonEvents: 0 (Logon auditing disabled - potential evidence hiding)'
+  - 'AuditObjectAccess: 3 (Success and failure auditing enabled)'
+  - 'LSA\\LimitBlankPasswordUse: 0 (Blank passwords allowed - security weakness)'
+  - 'LSA\\NoLMHash: 1 (LM hash storage disabled for security)'
+  - 'CrashOnAuditFail: 0 (System continues if audit log full)'
+  - 'MinimumPasswordLength: 0 (No minimum password length required)'
+  - 'MaximumPasswordAge: 4294967295 (Passwords never expire)'
+  - 'EnableGuestAccount: 1 (Guest account enabled - security risk)'
 
   tools:
-    - name: "Local Security Policy (secpol.msc)"
-      description: "Built-in Windows security policy management interface"
-    - name: "secedit.exe"
-      description: "Command-line security configuration and analysis tool"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "Group Policy Editor (gpedit.msc)"
-      description: "Local Group Policy editing for security settings"
-    - name: "Security Configuration Wizard"
-      description: "Windows tool for security policy analysis and configuration"
+  - name: Local Security Policy (secpol.msc)
+    description: Built-in Windows security policy management interface
+  - name: secedit.exe
+    description: Command-line security configuration and analysis tool
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: Group Policy Editor (gpedit.msc)
+    description: Local Group Policy editing for security settings
+  - name: Security Configuration Wizard
+    description: Windows tool for security policy analysis and configuration
 
 limitations:
-  - "Security policy settings do NOT prove actual security events occurred"
-  - "Audit configuration doesn't indicate what events were successfully logged"
-  - "Password policy settings don't prove weak passwords are in use"
-  - "Authentication settings don't indicate successful authentication attacks"
-  - "Policy modifications may be legitimate administrative security adjustments"
-  - "LSA configuration doesn't prove credential harvesting occurred"
+- Security policy settings do NOT prove actual security events occurred
+- Audit configuration doesn't indicate what events were successfully logged
+- Password policy settings don't prove weak passwords are in use
+- Authentication settings don't indicate successful authentication attacks
+- Policy modifications may be legitimate administrative security adjustments
+- LSA configuration doesn't prove credential harvesting occurred
 
 correlation:
   required_for_definitive_attack_proof:
-    - "Event logs showing successful attacks despite security policy settings"
-    - "Authentication logs confirming weak password exploitation"
-    - "Audit trail gaps correlating with disabled auditing periods"
-    - "Registry changes showing security policy modifications during attack windows"
-    - "Process execution logs showing privilege escalation using weakened policies"
-    
+  - Event logs showing successful attacks despite security policy settings
+  - Authentication logs confirming weak password exploitation
+  - Audit trail gaps correlating with disabled auditing periods
+  - Registry changes showing security policy modifications during attack windows
+  - Process execution logs showing privilege escalation using weakened policies
+
   strengthens_evidence:
-    - "Event logs showing multiple failed authentication attempts during weak policy periods"
-    - "File system access logs showing unauthorized access during reduced security"
-    - "Network logs showing lateral movement during disabled auditing periods"
-    - "User activity logs showing suspicious behavior during security policy changes"
+  - Event logs showing multiple failed authentication attempts during weak policy periods
+  - File system access logs showing unauthorized access during reduced security
+  - Network logs showing lateral movement during disabled auditing periods
+  - User activity logs showing suspicious behavior during security policy changes
 
 metadata:
   windows_versions:
-    - "Windows NT"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2000"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows NT
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2000
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows NT 3.1"
-  criticality: "high"
+  introduced: Windows NT 3.1
+
+  criticality: high
 
   investigation_types:
-    - "privilege-escalation"
-    - "incident-response"
-    - "lateral-movement"
-    - "malware-analysis"
-    - "anti-forensics"
+  - privilege-escalation
+  - incident-response
+  - lateral-movement
+  - malware-analysis
+  - anti-forensics
 
   tags:
-    - "security-policy"
-    - "audit-settings"
-    - "lsa"
-    - "access-control"
-    - "privilege-escalation"
-    - "authentication"
-    - "security-configuration"
+  - security-policy
+  - audit-settings
+  - lsa
+  - access-control
+  - privilege-escalation
+  - authentication
+  - security-configuration
 
   references:
-    - title: "Microsoft Documentation: Local Security Policy"
-      url: "https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/"
-      type: "official"
-    - title: "Windows Security Policy Forensics"
-      url: "https://www.sans.org/white-papers/33492/"
-      type: "research"
-    - title: "LSA Security and Authentication"
-      url: "https://learn.microsoft.com/en-us/windows/win32/secauth/lsa-authentication"
-      type: "official"
+  - title: 'Microsoft Documentation: Local Security Policy'
+    url: https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/
+    type: official
+  - title: Windows Security Policy Forensics
+    url: https://www.sans.org/white-papers/33492/
+    type: research
+  - title: LSA Security and Authentication
+    url: https://learn.microsoft.com/en-us/windows/win32/secauth/lsa-authentication
+    type: official
 
   retention:
-    default_location: "Registry hive files (SECURITY, SOFTWARE, SYSTEM)"
-    persistence: "Security policy settings persist until administratively changed"
-    volatility: "Critical security settings affecting all system operations and evidence collection"
+    default_location: Registry hive files (SECURITY, SOFTWARE, SYSTEM)
+    persistence: Security policy settings persist until administratively changed
+    volatility: Critical security settings affecting all system operations and evidence collection
 
   related_artifacts:
-    - "user_profiles"
-    - "sam_security"
-    - "event_log_config"
-    - "windows_defender"
+  - user_profiles
+  - sam_security
+  - event_log_config
+  - windows_defender
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-13"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-13'
+  version: '3.0'

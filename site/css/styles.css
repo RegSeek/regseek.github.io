@@ -11,7 +11,7 @@
     --bg-hover: #1a1a1a;
     --text-primary: #ffffff;
     --text-secondary: #a0a0a0;
-    --text-muted: #666666;
+    --text-muted: #808080;
     --accent: #3b82f6;
     --accent-hover: #2563eb;
     --accent-dark: #1d4ed8;
@@ -100,8 +100,9 @@ header {
     max-width: 900px;
     margin: 16px auto 0 auto;
     line-height: 1.5;
-    white-space: nowrap;
-    overflow: hidden;
+    white-space: normal;
+    overflow-wrap: break-word;
+    text-align: center;
 }
 .contribute-link {
     color: var(--accent);
@@ -698,6 +699,12 @@ header {
     border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
+.badge-deprecated {
+    color: var(--warning);
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
 .artifact-paths {
     font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
     font-size: 0.875rem;
@@ -889,6 +896,58 @@ header {
     margin-bottom: 0;
 }
 
+.info-card ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.info-card li {
+    padding: 6px 0;
+    padding-left: 24px;
+    position: relative;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    transition: all 0.2s ease;
+}
+
+.info-card li::before {
+    content: "▸";
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent);
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+}
+
+.info-card li:hover::before {
+    left: 8px;
+    transform: translateY(-50%);
+    color: var(--accent-hover);
+}
+
+.info-card li strong {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.info-card li a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.info-card li a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
 /* Tool Grid */
 .tools-grid {
     display: grid;
@@ -1000,18 +1059,6 @@ header {
 }
 
 .tool-name a:hover {
-    color: var(--accent-hover);
-    text-decoration: underline;
-}
-
-/* Reference Links Styling */
-.info-card ul li a {
-    color: var(--accent);
-    text-decoration: none;
-    transition: all 0.2s;
-}
-
-.info-card ul li a:hover {
     color: var(--accent-hover);
     text-decoration: underline;
 }
@@ -1179,35 +1226,40 @@ header {
     .container {
         padding: 0 16px;
     }
-    
+
     .registry-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .search-wrapper {
         flex-direction: column;
     }
-    
+
+    /* Prevent iOS zoom on input focus */
+    #search {
+        font-size: 16px;
+    }
+
     .filter-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .quick-filter-buttons {
         justify-content: center;
     }
-    
+
     .stats-bar {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .sort-options {
         justify-content: center;
     }
-    
+
     .advanced-search-actions {
         flex-direction: column;
     }
-    
+
     /* Enhanced modal mobile fixes */
     .enhanced-modal {
         width: 100%;
@@ -1319,7 +1371,7 @@ header {
         padding: 16px;
         margin-bottom: 16px;
     }
-    
+
     /* Limitations and correlation sections */
     .limitations-section,
     .correlation-section {

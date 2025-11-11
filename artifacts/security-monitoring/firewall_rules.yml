@@ -1,144 +1,138 @@
-title: "Windows Firewall Rules and Configuration"
-category: "security-monitoring"
-description: "Firewall rules, exceptions, security policy configurations, and network protection settings"
+title: Windows Firewall Rules and Configuration
+category: security-monitoring
+description: Firewall rules, exceptions, security policy configurations, and network protection settings
 
 paths:
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\SharedAccess\\Parameters\\FirewallPolicy"
-  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\WindowsFirewall"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\MpsSvc"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\SharedAccess\\Epoch"
+- HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy
+- HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall
+- HKLM\SYSTEM\CurrentControlSet\Services\MpsSvc
+- HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Epoch
 
 details:
   what: |
-    Windows firewall configuration including enabled/disabled status, firewall rules, port exceptions, 
-    application exceptions, and network profile settings for Domain, Private, and Public networks. 
-    Controls inbound and outbound traffic filtering and application permissions.
+    Windows firewall configuration including enabled/disabled status, firewall rules, port exceptions, application exceptions, and network profile settings for Domain, Private, and Public networks. Controls inbound and outbound traffic filtering and application permissions.
 
   forensic_value: |
-    Shows security posture changes, unauthorized firewall rule modifications, malware attempts to 
-    create network exceptions, and evidence of network policy tampering. Critical for understanding 
-    network security state, identifying firewall bypass attempts, and revealing unauthorized network access permissions.
+    Shows security posture changes, unauthorized firewall rule modifications, malware attempts to create network exceptions, and evidence of network policy tampering. Critical for understanding network security state, identifying firewall bypass attempts, and revealing unauthorized network access permissions.
 
   structure: |
-    Profile-based configuration with subkeys for DomainProfile, StandardProfile (Private), and PublicProfile 
-    containing EnableFirewall, DefaultInboundAction, DefaultOutboundAction, and detailed rule definitions. 
-    Binary data includes rule specifications, port ranges, and application paths.
+    Profile-based configuration with subkeys for DomainProfile, StandardProfile (Private), and PublicProfile containing EnableFirewall, DefaultInboundAction, DefaultOutboundAction, and detailed rule definitions. Binary data includes rule specifications, port ranges, and application paths.
 
   examples:
-    - "DomainProfile\\EnableFirewall: 1 (firewall enabled)"
-    - "StandardProfile\\DefaultInboundAction: 1 (block inbound)"
-    - "PublicProfile\\DefaultOutboundAction: 0 (allow outbound)"
-    - "FirewallRules\\Rule: v2.10|Action=Allow|Active=TRUE|Dir=In|Protocol=6|LPort=80|App=C:\\inetpub\\wwwroot\\app.exe|"
-    - "Exception: Allow TCP 3389 for Remote Desktop"
-    - "Malicious: Allow TCP 4444 for C:\\malware\\backdoor.exe"
-    - "GloballyOpenPorts: 445:TCP:*:Enabled:File and Printer Sharing"
-    - "AuthorizedApplications: C:\\Windows\\System32\\svchost.exe:*:Enabled:Generic Host Process"
+  - 'DomainProfile\EnableFirewall: 1 (firewall enabled)'
+  - 'StandardProfile\DefaultInboundAction: 1 (block inbound)'
+  - 'PublicProfile\DefaultOutboundAction: 0 (allow outbound)'
+  - 'FirewallRules\Rule: v2.10|Action=Allow|Active=TRUE|Dir=In|Protocol=6|LPort=80|App=C:\inetpub\wwwroot\app.exe|'
+  - 'Exception: Allow TCP 3389 for Remote Desktop'
+  - 'Malicious: Allow TCP 4444 for C:\malware\backdoor.exe'
+  - 'GloballyOpenPorts: 445:TCP:*:Enabled:File and Printer Sharing'
+  - 'AuthorizedApplications: C:\Windows\System32\svchost.exe:*:Enabled:Generic Host Process'
 
   tools:
-    - name: "Windows Defender Firewall with Advanced Security"
-      description: "Built-in Windows firewall management interface with advanced rule configuration"
-    - name: "netsh advfirewall"
-      description: "Command-line interface for Windows firewall configuration and analysis"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry browser for firewall configuration analysis"
-    - name: "FirewallAPI"
-      description: "Windows Firewall API for programmatic rule management and analysis"
-    - name: "Windows Firewall Control"
-      url: "https://www.binisoft.org/wfc"
-      description: "Third-party firewall management tool for detailed rule analysis"
+  - name: Windows Defender Firewall with Advanced Security
+    description: Built-in Windows firewall management interface with advanced rule configuration
+  - name: netsh advfirewall
+    description: Command-line interface for Windows firewall configuration and analysis
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry browser for firewall configuration analysis
+  - name: FirewallAPI
+    description: Windows Firewall API for programmatic rule management and analysis
+  - name: Windows Firewall Control
+    url: https://www.binisoft.org/wfc
+    description: Third-party firewall management tool for detailed rule analysis
 
 limitations:
-  - "Firewall rule configuration does NOT prove network traffic actually occurred"
-  - "Rule exceptions don't indicate applications successfully communicated through firewall"
-  - "Disabled firewall settings don't prove network attacks were successful"
-  - "Port exceptions may be legitimate system requirements, not malicious activity"
-  - "Application exceptions may be created by legitimate software installations"
-  - "Rule modifications may be administrative changes, not evidence tampering"
-  - "Default actions don't show specific traffic that was blocked or allowed"
+- Firewall rule configuration does NOT prove network traffic actually occurred
+- Rule exceptions don't indicate applications successfully communicated through firewall
+- Disabled firewall settings don't prove network attacks were successful
+- Port exceptions may be legitimate system requirements, not malicious activity
+- Application exceptions may be created by legitimate software installations
+- Rule modifications may be administrative changes, not evidence tampering
+- Default actions don't show specific traffic that was blocked or allowed
 
 correlation:
   required_for_definitive_execution_proof:
-    - "Network traffic logs showing actual connections matching firewall rule criteria"
-    - "Windows Firewall service logs showing rule enforcement and traffic decisions"
-    - "Application logs showing successful network communication through firewall"
-    - "Event logs showing firewall rule changes and policy updates"
-    
+  - Network traffic logs showing actual connections matching firewall rule criteria
+  - Windows Firewall service logs showing rule enforcement and traffic decisions
+  - Application logs showing successful network communication through firewall
+  - Event logs showing firewall rule changes and policy updates
+
   strengthens_evidence:
-    - "Process execution logs showing applications that created firewall exceptions"
-    - "Timeline analysis correlating rule changes with suspicious network activity"
-    - "System configuration changes logs showing administrative firewall modifications"
+  - Process execution logs showing applications that created firewall exceptions
+  - Timeline analysis correlating rule changes with suspicious network activity
+  - System configuration changes logs showing administrative firewall modifications
 
 metadata:
   windows_versions:
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows XP SP2"
-  
-  criticality: "high"
+  introduced: Windows XP SP2
+
+  criticality: high
 
   investigation_types:
-    - "lateral-movement"
-    - "data-exfiltration"
-    - "malware-analysis"
-    - "incident-response"
-    - "behavioral-analysis"
+  - lateral-movement
+  - data-exfiltration
+  - malware-analysis
+  - incident-response
+  - behavioral-analysis
 
   tags:
-    - "network"
-    - "firewall"
-    - "security-policy"
-    - "network-exceptions"
-    - "malware-evasion"
-    - "traffic-filtering"
-    - "network-protection"
-    - "rule-modification"
-    - "security-bypass"
+  - network
+  - firewall
+  - security-policy
+  - network-exceptions
+  - malware-evasion
+  - traffic-filtering
+  - network-protection
+  - rule-modification
+  - security-bypass
 
   references:
-    - title: "Windows Defender Firewall"
-      url: "https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-firewall/windows-firewall-with-advanced-security"
-      type: "official"
-    - title: "Firewall Rules and Policies"
-      url: "https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-firewall/best-practices-configuring"
-      type: "official"
-    - title: "Firewall Security Analysis"
-      url: "https://www.sans.org/blog/windows-firewall-analysis/"
-      type: "research"
-    - title: "Network Security Forensics"
-      url: "https://www.forensicfocus.com/articles/firewall-configuration-forensics/"
-      type: "research"
+  - title: Windows Defender Firewall
+    url: https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-firewall/windows-firewall-with-advanced-security
+    type: official
+  - title: Firewall Rules and Policies
+    url: https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-firewall/best-practices-configuring
+    type: official
+  - title: Firewall Security Analysis
+    url: https://www.sans.org/blog/windows-firewall-analysis/
+    type: research
+  - title: Network Security Forensics
+    url: https://www.forensicfocus.com/articles/firewall-configuration-forensics/
+    type: research
 
   retention:
-    default_location: "SYSTEM registry hive"
-    persistence: "Survives reboots, persists until policy or configuration changes"
-    volatility: "Rule modifications overwrite previous firewall configurations"
+    default_location: SYSTEM registry hive
+    persistence: Survives reboots, persists until policy or configuration changes
+    volatility: Rule modifications overwrite previous firewall configurations
 
   related_artifacts:
-    - "network_interfaces"
-    - "shared_folders"
-    - "remote_assistance"
-    - "proxy_settings"
-    - "upnp_settings"
+  - network_interfaces
+  - shared_folders
+  - remote_assistance
+  - proxy_settings
+  - upnp_settings
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

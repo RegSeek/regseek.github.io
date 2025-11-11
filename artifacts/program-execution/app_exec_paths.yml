@@ -1,145 +1,140 @@
-title: "Application Execution Paths"
-category: "program-execution"
-description: "Registered application paths for command-line execution without full path specification"
+title: Application Execution Paths
+category: program-execution
+description: Registered application paths for command-line execution without full path specification
 
 paths:
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths"
-  - "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths"
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths
+- HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths
 
 details:
   what: |
-    Windows registry entries allowing applications to be executed from command line, 
-    Run dialog, or Start menu search without specifying full paths. Contains default 
-    executable paths, working directories, and PATH environment additions for registered applications.
+    Windows registry entries allowing applications to be executed from command line, Run dialog, or Start menu search without specifying full paths. Contains default executable paths, working directories, and PATH environment additions for registered applications.
 
   forensic_value: |
-    Shows applications registered for easy execution and can reveal malware that registers 
-    itself for convenient access. Useful for understanding available execution vectors, 
-    identifying malicious applications that register for easy access, and tracking software installations.
+    Shows applications registered for easy execution and can reveal malware that registers itself for convenient access. Useful for understanding available execution vectors, identifying malicious applications that register for easy access, and tracking software installations.
 
   structure: |
-    Application names as subkeys with default value pointing to full executable path. 
-    Optional Path value specifies additional directories. DropTarget value indicates 
-    drag-and-drop support. Values stored as REG_SZ with optional REG_EXPAND_SZ.
+    Application names as subkeys with default value pointing to full executable path. Optional Path value specifies additional directories. DropTarget value indicates drag-and-drop support. Values stored as REG_SZ with optional REG_EXPAND_SZ.
 
   examples:
-    - "notepad.exe\\(Default): C:\\Windows\\System32\\notepad.exe"
-    - "chrome.exe\\(Default): C:\\Program Files\\Google\\Chrome\\chrome.exe"
-    - "chrome.exe\\Path: C:\\Program Files\\Google\\Chrome"
-    - "malware.exe\\(Default): C:\\Temp\\malware.exe"
-    - "python.exe\\(Default): C:\\Python39\\python.exe"
-    - "python.exe\\Path: C:\\Python39;C:\\Python39\\Scripts"
-    - "suspicious_tool.exe\\(Default): C:\\Users\\user\\AppData\\Local\\tool.exe"
-    - "cmd\\(Default): C:\\Windows\\System32\\cmd.exe"
+  - 'notepad.exe\(Default): C:\Windows\System32\notepad.exe'
+  - 'chrome.exe\(Default): C:\Program Files\Google\Chrome\chrome.exe'
+  - 'chrome.exe\Path: C:\Program Files\Google\Chrome'
+  - 'malware.exe\(Default): C:\Temp\malware.exe'
+  - 'python.exe\(Default): C:\Python39\python.exe'
+  - 'python.exe\Path: C:\Python39;C:\Python39\Scripts'
+  - 'suspicious_tool.exe\(Default): C:\Users\user\AppData\Local\tool.exe'
+  - 'cmd\(Default): C:\Windows\System32\cmd.exe'
 
   tools:
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry browser for App Paths analysis"
-    - name: "AppPathEdit"
-      description: "Tools for editing and managing Windows App Paths registry entries"
-    - name: "RegRipper"
-      url: "https://github.com/keydet89/RegRipper3.0"
-      description: "Registry analysis with app paths enumeration plugins"
-    - name: "PathEditor"
-      description: "PATH environment variable and application path management tools"
-    - name: "AppPathsView"
-      url: "https://www.nirsoft.net/utils/app_paths_view.html"
-      description: "NirSoft tool for viewing registered application paths"
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry browser for App Paths analysis
+  - name: AppPathEdit
+    description: Tools for editing and managing Windows App Paths registry entries
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry analysis with app paths enumeration plugins
+  - name: PathEditor
+    description: PATH environment variable and application path management tools
+  - name: AppPathsView
+    url: https://www.nirsoft.net/utils/app_paths_view.html
+    description: NirSoft tool for viewing registered application paths
 
 limitations:
-  - "App Paths registration does NOT prove application was executed"
-  - "Path entries may be created by installers without user execution"
-  - "Malicious entries may be mixed with legitimate application registrations"
-  - "Registration enables convenient execution but doesn't indicate actual usage"
-  - "Administrative privileges can create system-wide entries without user knowledge"
-  - "Path registration may persist after application uninstallation"
-  - "DropTarget settings don't indicate drag-and-drop operations occurred"
+- App Paths registration does NOT prove application was executed
+- Path entries may be created by installers without user execution
+- Malicious entries may be mixed with legitimate application registrations
+- Registration enables convenient execution but doesn't indicate actual usage
+- Administrative privileges can create system-wide entries without user knowledge
+- Path registration may persist after application uninstallation
+- DropTarget settings don't indicate drag-and-drop operations occurred
 
 correlation:
   required_for_definitive_execution_proof:
-    - "Process execution logs showing actual program launch via registered paths"
-    - "Command-line history showing usage of registered application names"
-    - "Event logs confirming successful program startup through App Paths"
-    - "UserAssist entries showing user-initiated launches of registered applications"
-    
+  - Process execution logs showing actual program launch via registered paths
+  - Command-line history showing usage of registered application names
+  - Event logs confirming successful program startup through App Paths
+  - UserAssist entries showing user-initiated launches of registered applications
+
   strengthens_evidence:
-    - "ShimCache or AmCache entries with matching executable paths"
-    - "Recent documents created by applications launched via App Paths"
-    - "File system artifacts showing application activity after launch"
+  - ShimCache or AmCache entries with matching executable paths
+  - Recent documents created by applications launched via App Paths
+  - File system artifacts showing application activity after launch
 
 metadata:
   windows_versions:
-    - "Windows 95"
-    - "Windows 98"
-    - "Windows NT 4.0"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2000"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows 95
+  - Windows 98
+  - Windows NT 4.0
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2000
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows 95"
-  criticality: "low"
+  introduced: Windows 95
+
+  criticality: low
 
   investigation_types:
-    - "malware-analysis"
-    - "behavioral-analysis"
-    - "incident-response"
-    - "program-execution"
+  - malware-analysis
+  - behavioral-analysis
+  - incident-response
+  - program-execution
 
   tags:
-    - "execution"
-    - "application-paths"
-    - "command-line"
-    - "malware-registration"
-    - "software-installation"
-    - "execution-convenience"
-    - "run-dialog"
-    - "shell-execution"
+  - execution
+  - application-paths
+  - command-line
+  - malware-registration
+  - software-installation
+  - execution-convenience
+  - run-dialog
+  - shell-execution
 
   references:
-    - title: "App Paths Registry Key"
-      url: "https://learn.microsoft.com/en-us/windows/win32/shell/app-registration"
-      type: "official"
-    - title: "Application Registration"
-      url: "https://learn.microsoft.com/en-us/windows/win32/com/application-registration"
-      type: "official"
-    - title: "Windows Execution Paths Analysis"
-      url: "https://www.sans.org/blog/application-execution-paths/"
-      type: "research"
-    - title: "App Paths Security Implications"
-      url: "https://www.forensicfocus.com/articles/app-paths-security/"
-      type: "research"
+  - title: App Paths Registry Key
+    url: https://learn.microsoft.com/en-us/windows/win32/shell/app-registration
+    type: official
+  - title: Application Registration
+    url: https://learn.microsoft.com/en-us/windows/win32/com/application-registration
+    type: official
+  - title: Windows Execution Paths Analysis
+    url: https://www.sans.org/blog/application-execution-paths/
+    type: research
+  - title: App Paths Security Implications
+    url: https://www.forensicfocus.com/articles/app-paths-security/
+    type: research
 
   retention:
-    default_location: "Registry hives (SOFTWARE, NTUSER.DAT)"
-    persistence: "Survives reboots and application updates, persists until uninstallation"
-    volatility: "Application path registrations preserved across system updates"
+    default_location: Registry hives (SOFTWARE, NTUSER.DAT)
+    persistence: Survives reboots and application updates, persists until uninstallation
+    volatility: Application path registrations preserved across system updates
 
   related_artifacts:
-    - "file_associations"
-    - "registry_run_keys"
-    - "shell_extensions"
-    - "appcompat_cache"
-    - "installed_programs"
+  - file_associations
+  - registry_run_keys
+  - shell_extensions
+  - appcompat_cache
+  - installed_programs
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

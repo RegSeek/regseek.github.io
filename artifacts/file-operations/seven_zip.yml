@@ -1,125 +1,117 @@
-title: "7-Zip Archive Tool Usage"
-category: "file-operations"
-description: "7-Zip configuration, archive history, compression settings, and file handling preferences"
+title: 7-Zip Archive Tool Usage
+category: file-operations
+description: 7-Zip configuration, archive history, compression settings, and file handling preferences
 
 paths:
-  - "HKCU\\Software\\7-Zip"
-  - "HKLM\\SOFTWARE\\7-Zip"
-  - "HKCU\\Software\\Classes\\7-Zip.*"
-  - "HKLM\\SOFTWARE\\Classes\\7-Zip.*"
+- HKCU\Software\7-Zip
+- HKLM\SOFTWARE\7-Zip
+- HKCU\Software\Classes\7-Zip.*
+- HKLM\SOFTWARE\Classes\7-Zip.*
 
 details:
   what: |
-    7-Zip archive utility stores configuration including compression settings, file associations,
-    context menu integration, and archive handling preferences. Registry tracks archive creation/
-    extraction activity, compression algorithms, password usage, and interface customizations
-    for comprehensive archive tool usage analysis.
+    7-Zip archive utility stores configuration including compression settings, file associations, context menu integration, and archive handling preferences. Registry tracks archive creation/ extraction activity, compression algorithms, password usage, and interface customizations for comprehensive archive tool usage analysis.
 
   forensic_value: |
-    Critical for investigating data packaging for exfiltration, evidence destruction through
-    compression, password-protected archive creation, and file transfer preparation. Shows
-    evidence of archive manipulation, compression activities, and can indicate data theft
-    preparation or evidence concealment through compressed archive usage.
+    Critical for investigating data packaging for exfiltration, evidence destruction through compression, password-protected archive creation, and file transfer preparation. Shows evidence of archive manipulation, compression activities, and can indicate data theft preparation or evidence concealment through compressed archive usage.
 
   structure: |
-    7-Zip configuration includes compression level preferences, archive format settings,
-    password protection usage, context menu integration, and file association data. Archive
-    history shows processed files, compression ratios, and extraction activities for
-    comprehensive archive tool behavior analysis.
+    7-Zip configuration includes compression level preferences, archive format settings, password protection usage, context menu integration, and file association data. Archive history shows processed files, compression ratios, and extraction activities for comprehensive archive tool behavior analysis.
 
   examples:
-    - "InstallPath: C:\\Program Files\\7-Zip"
-    - "CompressionLevel: 5 (Normal compression)"
-    - "ArchiveFormat: 7z (Default archive format)"
-    - "ContextMenu: 1 (Explorer context menu integration)"
-    - "FileAssociation: .7z -> 7-Zip File Manager"
-    - "FileAssociation: .rar -> 7-Zip File Manager"
-    - "SolidArchive: 1 (Solid compression enabled)"
-    - "EncryptionMethod: AES-256 (Archive encryption method)"
+  - 'InstallPath: C:\Program Files\7-Zip'
+  - 'CompressionLevel: 5 (Normal compression)'
+  - 'ArchiveFormat: 7z (Default archive format)'
+  - 'ContextMenu: 1 (Explorer context menu integration)'
+  - 'FileAssociation: .7z -> 7-Zip File Manager'
+  - 'FileAssociation: .rar -> 7-Zip File Manager'
+  - 'SolidArchive: 1 (Solid compression enabled)'
+  - 'EncryptionMethod: AES-256 (Archive encryption method)'
 
   tools:
-    - name: "7-Zip File Manager"
-      description: "7-Zip's built-in archive management interface"
-    - name: "7z.exe"
-      description: "7-Zip command-line archiving utility"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
+  - name: 7-Zip File Manager
+    description: 7-Zip's built-in archive management interface
+  - name: 7z.exe
+    description: 7-Zip command-line archiving utility
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
 
 limitations:
-  - "7-Zip configuration does NOT prove archives were actually created or extracted"
-  - "File associations don't indicate archive files were opened or processed"
-  - "Compression settings don't show actual compression operations occurred"
-  - "Context menu integration doesn't prove right-click operations were used"
-  - "Encryption method settings don't indicate password-protected archives were created"
-  - "Installation path doesn't show 7-Zip was actively used for file operations"
-  - "Format preferences don't prove specific archive types were created"
+- 7-Zip configuration does NOT prove archives were actually created or extracted
+- File associations don't indicate archive files were opened or processed
+- Compression settings don't show actual compression operations occurred
+- Context menu integration doesn't prove right-click operations were used
+- Encryption method settings don't indicate password-protected archives were created
+- Installation path doesn't show 7-Zip was actively used for file operations
+- Format preferences don't prove specific archive types were created
 
 correlation:
   required_for_definitive_usage_proof:
-    - "File system artifacts showing created or extracted archive files"
-    - "Process execution logs showing 7-Zip application startup and activity"
-    - "Temporary files showing archive processing operations"
-    - "Event logs showing file operations correlating with archive activity"
-    
+  - File system artifacts showing created or extracted archive files
+  - Process execution logs showing 7-Zip application startup and activity
+  - Temporary files showing archive processing operations
+  - Event logs showing file operations correlating with archive activity
+
   strengthens_evidence:
-    - "Recent documents showing archive files accessed through 7-Zip"
-    - "Registry keys modified during archive operations"
-    - "File system timestamps showing archive creation/extraction times"
-    - "Command-line history showing 7z.exe usage"
+  - Recent documents showing archive files accessed through 7-Zip
+  - Registry keys modified during archive operations
+  - File system timestamps showing archive creation/extraction times
+  - Command-line history showing 7z.exe usage
 
 metadata:
   windows_versions:
-    - "Windows 95"
-    - "Windows 98"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 95
+  - Windows 98
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "7-Zip"
-  criticality: "medium"
+  introduced: 7-Zip
+
+  criticality: medium
 
   investigation_types:
-    - "data-exfiltration"
-    - "behavioral-analysis"
-    - "incident-response"
-    - "anti-forensics"
+  - data-exfiltration
+  - behavioral-analysis
+  - incident-response
+  - anti-forensics
 
   tags:
-    - "7-zip"
-    - "archive-tools"
-    - "compression"
-    - "data-packaging"
-    - "file-extraction"
-    - "password-protection"
-    - "free-software"
+  - 7-zip
+  - archive-tools
+  - compression
+  - data-packaging
+  - file-extraction
+  - password-protection
+  - free-software
 
   references:
-    - title: "7-Zip Official Site"
-      url: "https://www.7-zip.org/"
-      type: "official"
+  - title: 7-Zip Official Site
+    url: https://www.7-zip.org/
+    type: official
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
-    persistence: "Archive settings and file associations persist until reconfiguration"
-    volatility: "Archive manipulation activity provides evidence of file compression and extraction"
+    default_location: Registry hive files (SOFTWARE, NTUSER.DAT)
+    persistence: Archive settings and file associations persist until reconfiguration
+    volatility: Archive manipulation activity provides evidence of file compression and extraction
 
   related_artifacts:
-    - "winrar_usage"
-    - "file_compression"
-    - "data_packaging"
+  - winrar_usage
+  - file_compression
+  - data_packaging
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-08"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-06-08'
+  last_updated: '2025-06-12'
+  version: '3.0'

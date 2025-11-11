@@ -1,122 +1,116 @@
-title: "Jump Lists and Taskbar Recent Items"
-category: "user-behaviour"
-description: "Taskbar jump list configuration, recent items tracking, and privacy settings"
+title: Jump Lists and Taskbar Recent Items
+category: user-behaviour
+description: Taskbar jump list configuration, recent items tracking, and privacy settings
 
 paths:
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced"
-  - "HKCU\\Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\CurrentVersion\\AppModel\\SystemAppData"
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced
+- HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData
 
 details:
   what: |
-    Windows Jump Lists display recently accessed files, frequent destinations, and custom tasks
-    for applications pinned to the taskbar and Start menu. Registry settings control jump list
-    behavior, recent items tracking, and privacy configurations.
+    Windows Jump Lists display recently accessed files, frequent destinations, and custom tasks for applications pinned to the taskbar and Start menu. Registry settings control jump list behavior, recent items tracking, and privacy configurations.
 
   forensic_value: |
-    Jump list registry settings reveal if users disabled activity tracking to hide their behavior,
-    shows privacy-conscious modifications, and indicates attempts to conceal file access patterns.
-    While actual jump list data is stored in files, registry settings show configuration changes
-    that affect evidence preservation.
+    Jump list registry settings reveal if users disabled activity tracking to hide their behavior, shows privacy-conscious modifications, and indicates attempts to conceal file access patterns. While actual jump list data is stored in files, registry settings show configuration changes that affect evidence preservation.
 
   structure: |
-    Advanced Explorer settings include Start_TrackDocs (document tracking), Start_TrackProgs
-    (program tracking), JumpListItems_Maximum (item limits), and Start_ShowRecentDocs (recent docs).
-    Values stored as REG_DWORD with 1=enabled, 0=disabled.
+    Advanced Explorer settings include Start_TrackDocs (document tracking), Start_TrackProgs (program tracking), JumpListItems_Maximum (item limits), and Start_ShowRecentDocs (recent docs). Values stored as REG_DWORD with 1=enabled, 0=disabled.
 
   examples:
-    - "Start_TrackDocs: 0 (Recent documents tracking disabled)"
-    - "Start_TrackProgs: 0 (Recent programs tracking disabled)"
-    - "JumpListItems_Maximum: 10 (Maximum 10 items per jump list)"
-    - "Start_ShowRecentDocs: 0 (Hide recent documents in Start menu)"
-    - "TaskbarGlomLevel: 1 (Group similar taskbar buttons)"
-    - "EnableAutoTray: 1 (Hide inactive notification icons)"
+  - 'Start_TrackDocs: 0 (Recent documents tracking disabled)'
+  - 'Start_TrackProgs: 0 (Recent programs tracking disabled)'
+  - 'JumpListItems_Maximum: 10 (Maximum 10 items per jump list)'
+  - 'Start_ShowRecentDocs: 0 (Hide recent documents in Start menu)'
+  - 'TaskbarGlomLevel: 1 (Group similar taskbar buttons)'
+  - 'EnableAutoTray: 1 (Hide inactive notification icons)'
 
   tools:
-    - name: "JumpListsView"
-      url: "https://www.nirsoft.net/utils/jump_lists_view.html"
-      description: "View and analyze Windows jump list files"
-    - name: "JLECmd"
-      url: "https://github.com/EricZimmerman/JLECmd"
-      description: "Command-line jump list analysis tool"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis tool"
-    - name: "Taskbar and Start Menu Properties"
-      description: "Windows built-in privacy settings configuration"
+  - name: JumpListsView
+    url: https://www.nirsoft.net/utils/jump_lists_view.html
+    description: View and analyze Windows jump list files
+  - name: JLECmd
+    url: https://github.com/EricZimmerman/JLECmd
+    description: Command-line jump list analysis tool
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis tool
+  - name: Taskbar and Start Menu Properties
+    description: Windows built-in privacy settings configuration
 
 limitations:
-  - "Jump list settings do NOT show what files or programs were actually accessed"
-  - "Disabled tracking doesn't prevent all activity logging by other Windows components"
-  - "Configuration changes don't indicate when actual jump list usage occurred"
-  - "Privacy settings may be overridden by group policy or system administrators"
-  - "Maximum item settings don't show actual jump list contents or usage"
-  - "Tracking disablement may not be user-initiated (could be system default)"
-  - "Settings don't reveal the effectiveness of privacy attempts"
+- Jump list settings do NOT show what files or programs were actually accessed
+- Disabled tracking doesn't prevent all activity logging by other Windows components
+- Configuration changes don't indicate when actual jump list usage occurred
+- Privacy settings may be overridden by group policy or system administrators
+- Maximum item settings don't show actual jump list contents or usage
+- Tracking disablement may not be user-initiated (could be system default)
+- Settings don't reveal the effectiveness of privacy attempts
 
 correlation:
   required_for_definitive_usage_proof:
-    - "Jump list files showing actual recently accessed items and applications"
-    - "Process execution logs showing applications that would populate jump lists"
-    - "File system artifacts showing document access correlating with jump list settings"
-    - "Windows Event Logs showing application launch patterns"
-    
+  - Jump list files showing actual recently accessed items and applications
+  - Process execution logs showing applications that would populate jump lists
+  - File system artifacts showing document access correlating with jump list settings
+  - Windows Event Logs showing application launch patterns
+
   strengthens_evidence:
-    - "Recent documents registry entries showing file access despite disabled tracking"
-    - "ShellBags showing folder navigation correlating with jump list preferences"
-    - "UserAssist entries showing program execution despite disabled program tracking"
-    - "OpenSaveMRU entries showing file operations independent of jump list settings"
+  - Recent documents registry entries showing file access despite disabled tracking
+  - ShellBags showing folder navigation correlating with jump list preferences
+  - UserAssist entries showing program execution despite disabled program tracking
+  - OpenSaveMRU entries showing file operations independent of jump list settings
 
 metadata:
   windows_versions:
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Windows 7"
-  criticality: "medium"
+  introduced: Windows 7
+
+  criticality: medium
 
   investigation_types:
-    - "behavioral-analysis"
-    - "timeline-analysis"
-    - "anti-forensics"
+  - behavioral-analysis
+  - timeline-analysis
+  - anti-forensics
 
   tags:
-    - "jump-lists"
-    - "recent-items"
-    - "privacy-settings"
-    - "activity-tracking"
-    - "taskbar"
-    - "start-menu"
-    - "user-behavior"
+  - jump-lists
+  - recent-items
+  - privacy-settings
+  - activity-tracking
+  - taskbar
+  - start-menu
+  - user-behavior
 
   references:
-    - title: "Microsoft Documentation: Taskbar Jump Lists"
-      url: "https://learn.microsoft.com/en-us/windows/win32/shell/taskbar-extensions"
-      type: "official"
-    - title: "Windows 7 Jump Lists Forensics"
-      url: "https://www.forensicfocus.com/articles/windows-7-jump-lists/"
-      type: "research"
+  - title: 'Microsoft Documentation: Taskbar Jump Lists'
+    url: https://learn.microsoft.com/en-us/windows/win32/shell/taskbar-extensions
+    type: official
+  - title: Windows 7 Jump Lists Forensics
+    url: https://www.forensicfocus.com/articles/windows-7-jump-lists/
+    type: research
 
   retention:
-    default_location: "Registry hive files (NTUSER.DAT, SOFTWARE)"
-    persistence: "Settings persist until manually changed"
-    volatility: "Configuration changes immediate, affects future evidence collection"
+    default_location: Registry hive files (NTUSER.DAT, SOFTWARE)
+    persistence: Settings persist until manually changed
+    volatility: Configuration changes immediate, affects future evidence collection
 
   related_artifacts:
-    - "recent_docs"
-    - "shellbags"
-    - "userassist"
-    - "opensavemru"
+  - recent_docs
+  - shellbags
+  - userassist
+  - opensavemru
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

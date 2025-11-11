@@ -1,94 +1,90 @@
-title: "Zoom Desktop Client"
-category: "communication-apps"
-description: "Zoom video conferencing configuration, meeting settings, and account integration"
+title: Zoom Desktop Client
+category: communication-apps
+description: Zoom video conferencing configuration, meeting settings, and account integration
 
 paths:
-  - "HKCU\\Software\\Zoom\\Installer"
-  - "HKCU\\Software\\Zoom"
-  - "HKLM\\SOFTWARE\\Zoom\\ZoomInstaller"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\ZoomUMX"
+- HKCU\Software\Zoom\Installer
+- HKCU\Software\Zoom
+- HKLM\SOFTWARE\Zoom\ZoomInstaller
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\ZoomUMX
 
 details:
   what: |
-    Zoom client settings for video conferencing. Stores user authentication,
-    meeting preferences, security configurations, and recording locations.
+    Zoom client settings for video conferencing. Stores user authentication, meeting preferences, security configurations, and recording locations.
 
   forensic_value: |
-    Critical for investigating meeting participation, unauthorized external meetings,
-    and recording activities. Shows account associations, recording configurations,
-    and external communication patterns through video conferencing.
+    Critical for investigating meeting participation, unauthorized external meetings, and recording activities. Shows account associations, recording configurations, and external communication patterns through video conferencing.
 
   structure: |
-    Configuration includes account identifiers, SSO settings, meeting preferences,
-    recording locations, security configurations, and device integration options.
+    Configuration includes account identifiers, SSO settings, meeting preferences, recording locations, security configurations, and device integration options.
 
   examples:
-    - "Email: user@company.com (Zoom account email)"
-    - "SSO: company.zoom.us (Enterprise SSO domain)"
-    - "AutoRecord: 1 (Automatic meeting recording enabled)"
-    - "RecordPath: C:\\Users\\user\\Documents\\Zoom (Recording save location)"
-    - "JoinBeforeHost: 0 (Participants cannot join before host)"
-    - "EnableWaitingRoom: 1 (Waiting room security enabled)"
+  - 'Email: user@company.com (Zoom account email)'
+  - 'SSO: company.zoom.us (Enterprise SSO domain)'
+  - 'AutoRecord: 1 (Automatic meeting recording enabled)'
+  - 'RecordPath: C:\Users\user\Documents\Zoom (Recording save location)'
+  - 'JoinBeforeHost: 0 (Participants cannot join before host)'
+  - 'EnableWaitingRoom: 1 (Waiting room security enabled)'
 
   tools:
-    - name: "Zoom Desktop Client Settings"
-      description: "Built-in configuration and meeting preferences"
-    - name: "Zoom Admin Portal"
-      description: "Enterprise administration and usage analytics"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Registry analysis tool"
+  - name: Zoom Desktop Client Settings
+    description: Built-in configuration and meeting preferences
+  - name: Zoom Admin Portal
+    description: Enterprise administration and usage analytics
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Registry analysis tool
 
 limitations:
-  - "Shows configuration only, not actual meeting content or participants"
-  - "Recording settings don't indicate what meetings were actually recorded"
-  - "Account information doesn't prove what meetings were attended"
+- Shows configuration only, not actual meeting content or participants
+- Recording settings don't indicate what meetings were actually recorded
+- Account information doesn't prove what meetings were attended
 
 correlation:
   required_for_definitive_conclusions:
-    - "Zoom cloud dashboard or local meeting logs showing actual participation"
-    - "File system artifacts showing locally recorded meeting files"
-    - "Network traffic analysis confirming Zoom meeting connections"
-  
+  - Zoom cloud dashboard or local meeting logs showing actual participation
+  - File system artifacts showing locally recorded meeting files
+  - Network traffic analysis confirming Zoom meeting connections
+
   strengthens_evidence:
-    - "Calendar artifacts showing Zoom meeting invitations"
-    - "Email artifacts showing Zoom meeting notifications"
-    - "Browser artifacts showing Zoom web client usage"
+  - Calendar artifacts showing Zoom meeting invitations
+  - Email artifacts showing Zoom meeting notifications
+  - Browser artifacts showing Zoom web client usage
 
 metadata:
   windows_versions:
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  criticality: "medium"
+  criticality: medium
 
   investigation_types:
-    - "behavioral-analysis"
-    - "timeline-analysis"
-    - "incident-response"
-    - "insider-threat"
+  - behavioral-analysis
+  - timeline-analysis
+  - incident-response
+  - insider-threat
 
   tags:
-    - "zoom"
-    - "video-conferencing"
-    - "meeting-recording"
-    - "remote-collaboration"
-    - "enterprise-sso"
+  - zoom
+  - video-conferencing
+  - meeting-recording
+  - remote-collaboration
+  - enterprise-sso
 
   references:
-    - title: "Zoom Support Documentation"
-      url: "https://support.zoom.us/"
-      type: "official"
+  - title: Zoom Support Documentation
+    url: https://support.zoom.us/
+    type: official
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-08"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-06-08'
+  last_updated: '2025-06-12'
+  version: '3.0'

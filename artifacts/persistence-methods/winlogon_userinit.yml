@@ -1,154 +1,144 @@
-title: "Winlogon and UserInit Persistence"
-category: "persistence-methods"
-description: "Windows logon process hijacking through Userinit, Shell, and notification package modifications"
+title: Winlogon and UserInit Persistence
+category: persistence-methods
+description: Windows logon process hijacking through Userinit, Shell, and notification package modifications
 
 paths:
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon"
-  - "HKCU\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\Notify"
+- HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon
+- HKCU\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon
+- HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\Notify
 
 details:
   what: |
-    Winlogon registry keys control the Windows logon process including which programs run during
-    user logon, desktop shell initialization, and system notification handlers. Userinit and
-    Shell values specify programs that execute automatically when users log in. Notify subkeys
-    register DLLs for logon/logoff event notifications. These mechanisms are fundamental to
-    Windows startup process.
+    Winlogon registry keys control the Windows logon process including which programs run during user logon, desktop shell initialization, and system notification handlers. Userinit and Shell values specify programs that execute automatically when users log in. Notify subkeys register DLLs for logon/logoff event notifications. These mechanisms are fundamental to Windows startup process.
 
   forensic_value: |
-    Critical persistence mechanism used by advanced malware and sophisticated attackers. Shows
-    unauthorized modifications to the logon process that ensure malware execution on every user
-    login. Difficult to detect and highly effective for maintaining access. Can indicate system
-    compromise, privilege escalation, and advanced persistent threats. Essential for identifying
-    rootkits and advanced malware families.
+    Critical persistence mechanism used by advanced malware and sophisticated attackers. Shows unauthorized modifications to the logon process that ensure malware execution on every user login. Difficult to detect and highly effective for maintaining access. Can indicate system compromise, privilege escalation, and advanced persistent threats. Essential for identifying rootkits and advanced malware families.
 
   structure: |
-    Key values include Userinit (programs run during logon initialization), Shell (desktop shell
-    program), Notify DLL registrations, and system policies. Values contain comma-separated
-    executable paths with parameters. Binary data may include security descriptors and policy
-    enforcement mechanisms.
+    Key values include Userinit (programs run during logon initialization), Shell (desktop shell program), Notify DLL registrations, and system policies. Values contain comma-separated executable paths with parameters. Binary data may include security descriptors and policy enforcement mechanisms.
 
   examples:
-    - "Userinit: C:\\Windows\\system32\\userinit.exe,C:\\malware\\backdoor.exe"
-    - "Shell: explorer.exe,C:\\temp\\malicious.exe"
-    - "Notify\\malware_notify\\DllName: evil_notify.dll"
-    - "AutoAdminLogon: 1 (automatic login enabled)"
-    - "DefaultUserName: administrator"
-    - "LegalNoticeCaption: System Security Notice"
-    - "LegalNoticeText: Authorized use only"
-    - "VmApplet: rundll32.exe shell32.dll,Control_RunDLL appwiz.cpl"
+  - 'Userinit: C:\Windows\system32\userinit.exe,C:\malware\backdoor.exe'
+  - 'Shell: explorer.exe,C:\temp\malicious.exe'
+  - 'Notify\malware_notify\DllName: evil_notify.dll'
+  - 'AutoAdminLogon: 1 (automatic login enabled)'
+  - 'DefaultUserName: administrator'
+  - 'LegalNoticeCaption: System Security Notice'
+  - 'LegalNoticeText: Authorized use only'
+  - 'VmApplet: rundll32.exe shell32.dll,Control_RunDLL appwiz.cpl'
 
   tools:
-    - name: "Autoruns"
-      url: "https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns"
-      description: "Microsoft Sysinternals comprehensive autostart enumeration tool"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis for Winlogon configuration review"
-    - name: "RegRipper"
-      url: "https://github.com/keydet89/RegRipper3.0"
-      description: "Registry analysis with winlogon.pl and userinit.pl plugins"
-    - name: "Process Monitor"
-      url: "https://learn.microsoft.com/en-us/sysinternals/downloads/procmon"
-      description: "Real-time process and file system monitoring during logon"
-    - name: "LogonExpert"
-      description: "Specialized tools for Windows logon process analysis"
+  - name: Autoruns
+    url: https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns
+    description: Microsoft Sysinternals comprehensive autostart enumeration tool
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis for Winlogon configuration review
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry analysis with winlogon.pl and userinit.pl plugins
+  - name: Process Monitor
+    url: https://learn.microsoft.com/en-us/sysinternals/downloads/procmon
+    description: Real-time process and file system monitoring during logon
+  - name: LogonExpert
+    description: Specialized tools for Windows logon process analysis
 
 limitations:
-  - "Winlogon configuration does NOT prove modified programs were executed"
-  - "Userinit settings don't indicate successful program launch during logon"
-  - "Shell modifications don't show desktop environment was compromised"
-  - "Notification package entries don't prove DLLs were loaded or executed"
-  - "Logon process hijacking may be blocked by security software or policies"
-  - "Malicious programs may fail due to missing files, dependencies, or permissions"
-  - "Registry entries don't reveal frequency or success of logon process exploitation"
+- Winlogon configuration does NOT prove modified programs were executed
+- Userinit settings don't indicate successful program launch during logon
+- Shell modifications don't show desktop environment was compromised
+- Notification package entries don't prove DLLs were loaded or executed
+- Logon process hijacking may be blocked by security software or policies
+- Malicious programs may fail due to missing files, dependencies, or permissions
+- Registry entries don't reveal frequency or success of logon process exploitation
 
 correlation:
   required_for_definitive_hijacking_proof:
-    - "Process execution logs showing modified logon programs launching"
-    - "File system artifacts showing malicious programs at configured paths"
-    - "Windows Event Logs showing logon process execution (Event ID 4624)"
-    - "Memory dumps showing injected code in winlogon.exe process"
-    
+  - Process execution logs showing modified logon programs launching
+  - File system artifacts showing malicious programs at configured paths
+  - Windows Event Logs showing logon process execution (Event ID 4624)
+  - Memory dumps showing injected code in winlogon.exe process
+
   strengthens_evidence:
-    - "Registry modifications made by hijacked logon processes"
-    - "Network traffic initiated by malicious logon programs"
-    - "File system changes indicating logon process exploitation"
-    - "User account activity correlating with logon process modifications"
+  - Registry modifications made by hijacked logon processes
+  - Network traffic initiated by malicious logon programs
+  - File system changes indicating logon process exploitation
+  - User account activity correlating with logon process modifications
 
 metadata:
   windows_versions:
-    - "Windows NT 3.1"
-    - "Windows NT 3.5"
-    - "Windows NT 4.0"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows NT 3.1
+  - Windows NT 3.5
+  - Windows NT 4.0
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows NT 3.1"
-  criticality: "high"
+  introduced: Windows NT 3.1
+
+  criticality: high
 
   investigation_types:
-    - "malware-analysis"
-    - "persistence-analysis"
-    - "incident-response"
-    - "privilege-escalation"
-    - "behavioral-analysis"
+  - malware-analysis
+  - persistence-analysis
+  - incident-response
+  - privilege-escalation
+  - behavioral-analysis
 
   tags:
-    - "persistence"
-    - "winlogon"
-    - "userinit"
-    - "logon-hijacking"
-    - "advanced-malware"
-    - "process-hijacking"
-    - "system-startup"
-    - "rootkits"
-    - "notification-packages"
+  - persistence
+  - winlogon
+  - userinit
+  - logon-hijacking
+  - advanced-malware
+  - process-hijacking
+  - system-startup
+  - rootkits
+  - notification-packages
 
   references:
-    - title: "Windows Logon Process"
-      url: "https://learn.microsoft.com/en-us/windows/win32/secauthn/winlogon-and-credential-providers"
-      type: "official"
-    - title: "MITRE ATT&CK: Winlogon Helper DLL"
-      url: "https://attack.mitre.org/techniques/T1547/004/"
-      type: "research"
-    - title: "Windows Logon Forensics"
-      url: "https://www.sans.org/blog/digital-forensics-winlogon-analysis/"
-      type: "research"
-    - title: "Malware Persistence via Winlogon"
-      url: "https://attack.mitre.org/techniques/T1547/"
-      type: "research"
+  - title: Windows Logon Process
+    url: https://learn.microsoft.com/en-us/windows/win32/secauthn/winlogon-and-credential-providers
+    type: official
+  - title: 'MITRE ATT&CK: Winlogon Helper DLL'
+    url: https://attack.mitre.org/techniques/T1547/004/
+    type: research
+  - title: Windows Logon Forensics
+    url: https://www.sans.org/blog/digital-forensics-winlogon-analysis/
+    type: research
+  - title: Malware Persistence via Winlogon
+    url: https://attack.mitre.org/techniques/T1547/
+    type: research
 
   retention:
-    default_location: "SYSTEM and SOFTWARE registry hives"
-    persistence: "Survives reboots, system updates, and most malware removal attempts"
-    volatility: "Persistent until explicitly modified or system corruption occurs"
+    default_location: SYSTEM and SOFTWARE registry hives
+    persistence: Survives reboots, system updates, and most malware removal attempts
+    volatility: Persistent until explicitly modified or system corruption occurs
 
   related_artifacts:
-    - "registry_run_keys"
-    - "scheduled_tasks"
-    - "shell_extensions"
-    - "lsa_packages"
-    - "image_hijack"
+  - registry_run_keys
+  - scheduled_tasks
+  - shell_extensions
+  - lsa_packages
+  - image_hijack
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

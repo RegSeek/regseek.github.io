@@ -1,138 +1,130 @@
-title: "Print Spooler and Printer History"
-category: "file-operations"
-description: "Printer configuration, print job evidence, and document printing history"
+title: Print Spooler and Printer History
+category: file-operations
+description: Printer configuration, print job evidence, and document printing history
 
 paths:
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\\Printers"
-  - "HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Devices"
-  - "HKCU\\Printers\\DevModePerUser"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\\Providers"
+- HKLM\SYSTEM\CurrentControlSet\Control\Print\Printers
+- HKCU\Software\Microsoft\Windows NT\CurrentVersion\Devices
+- HKCU\Printers\DevModePerUser
+- HKLM\SYSTEM\CurrentControlSet\Control\Print\Providers
 
 details:
   what: |
-    Windows print subsystem maintains comprehensive printer configurations including installed
-    printers, network printer connections, print settings, driver information, and user-specific
-    printer preferences. Manages local and network printer access and print spooler service
-    behavior for complete printing infrastructure management.
+    Windows print subsystem maintains comprehensive printer configurations including installed printers, network printer connections, print settings, driver information, and user-specific printer preferences. Manages local and network printer access and print spooler service behavior for complete printing infrastructure management.
 
   forensic_value: |
-    Critical for investigating data exfiltration through physical document printing and
-    intellectual property theft. Shows what documents were printed, which printers were accessed,
-    and network printer usage patterns. Essential for insider threat investigations involving
-    document theft and corporate espionage through print channels.
+    Critical for investigating data exfiltration through physical document printing and intellectual property theft. Shows what documents were printed, which printers were accessed, and network printer usage patterns. Essential for insider threat investigations involving document theft and corporate espionage through print channels.
 
   structure: |
-    Printer configurations stored as printer name subkeys containing driver information, port
-    assignments, device settings, and security descriptors. User settings include default
-    printer selections and device modes. Network printer connections show authentication
-    and access patterns with connection timestamps.
+    Printer configurations stored as printer name subkeys containing driver information, port assignments, device settings, and security descriptors. User settings include default printer selections and device modes. Network printer connections show authentication and access patterns with connection timestamps.
 
   examples:
-    - "Printers\\HP LaserJet Pro M404: Local printer configuration"
-    - "Printers\\\\\\\\printserver\\\\Legal_Printer: Network printer connection"
-    - "Port: \\\\\\\\192.168.1.100\\\\Finance_Printer (Network print server)"
-    - "Driver: HP Universal Printing PCL 6 (Printer driver information)"
-    - "DefaultPrinter: Microsoft Print to PDF (Default printer selection)"
-    - "PrintProcessor: winprint,RAW (Print data processor)"
-    - "DevModePerUser\\\\\\\\server\\\\Confidential_Printer: User-specific print settings"
-    - "Security: O:BAG:SYD: (DACL security descriptor for printer access)"
+  - 'Printers\HP LaserJet Pro M404: Local printer configuration'
+  - 'Printers\\\\printserver\\Legal_Printer: Network printer connection'
+  - 'Port: \\\\192.168.1.100\\Finance_Printer (Network print server)'
+  - 'Driver: HP Universal Printing PCL 6 (Printer driver information)'
+  - 'DefaultPrinter: Microsoft Print to PDF (Default printer selection)'
+  - 'PrintProcessor: winprint,RAW (Print data processor)'
+  - 'DevModePerUser\\\\server\\Confidential_Printer: User-specific print settings'
+  - 'Security: O:BAG:SYD: (DACL security descriptor for printer access)'
 
   tools:
-    - name: "Printers & Scanners Settings"
-      description: "Windows built-in printer management and configuration interface"
-    - name: "Print Management Console"
-      description: "Advanced printer administration and monitoring tool"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "Print Job Monitor"
-      description: "Third-party tools for monitoring and analyzing print activity"
-    - name: "PrinterLogView"
-      description: "Utilities for analyzing Windows print spooler logs and history"
+  - name: Printers & Scanners Settings
+    description: Windows built-in printer management and configuration interface
+  - name: Print Management Console
+    description: Advanced printer administration and monitoring tool
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: Print Job Monitor
+    description: Third-party tools for monitoring and analyzing print activity
+  - name: PrinterLogView
+    description: Utilities for analyzing Windows print spooler logs and history
 
 limitations:
-  - "Printer configuration does NOT prove documents were actually printed"
-  - "Installed printer drivers don't indicate successful print job completion"
-  - "Network printer connections don't show actual document output"
-  - "Default printer settings don't prove printer usage or document access"
-  - "Print processor configurations don't indicate successful print operations"
-  - "Device modes don't show actual printing activity or document content"
-  - "Security descriptors don't prove print job authorization or access"
+- Printer configuration does NOT prove documents were actually printed
+- Installed printer drivers don't indicate successful print job completion
+- Network printer connections don't show actual document output
+- Default printer settings don't prove printer usage or document access
+- Print processor configurations don't indicate successful print operations
+- Device modes don't show actual printing activity or document content
+- Security descriptors don't prove print job authorization or access
 
 correlation:
   required_for_definitive_printing_proof:
-    - "Print spooler logs showing actual print job processing and completion"
-    - "Windows Event Logs showing document printing events and printer access"
-    - "Process execution logs showing applications performing print operations"
-    - "Network traffic logs showing print job data transmission to network printers"
-    
+  - Print spooler logs showing actual print job processing and completion
+  - Windows Event Logs showing document printing events and printer access
+  - Process execution logs showing applications performing print operations
+  - Network traffic logs showing print job data transmission to network printers
+
   strengthens_evidence:
-    - "Recent documents showing files that correlate with printer access patterns"
-    - "Application event logs showing document opening preceding printer usage"
-    - "File system artifacts showing temporary print files or spooled documents"
-    - "Registry keys modified during print job processing"
+  - Recent documents showing files that correlate with printer access patterns
+  - Application event logs showing document opening preceding printer usage
+  - File system artifacts showing temporary print files or spooled documents
+  - Registry keys modified during print job processing
 
 metadata:
   windows_versions:
-    - "Windows NT"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2000"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows NT
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2000
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows NT 3.1"
-  criticality: "medium"
+  introduced: Windows NT 3.1
+
+  criticality: medium
 
   investigation_types:
-    - "insider-threat"
-    - "data-exfiltration"
-    - "behavioral-analysis"
+  - insider-threat
+  - data-exfiltration
+  - behavioral-analysis
 
   tags:
-    - "printing"
-    - "document-access"
-    - "data-exfiltration"
-    - "network-printers"
-    - "physical-evidence"
-    - "print-spooler"
-    - "document-theft"
+  - printing
+  - document-access
+  - data-exfiltration
+  - network-printers
+  - physical-evidence
+  - print-spooler
+  - document-theft
 
   references:
-    - title: "Microsoft Documentation: Print Spooler Architecture"
-      url: "https://learn.microsoft.com/en-us/windows-hardware/drivers/print/introduction-to-the-print-spooler"
-      type: "official"
-    - title: "Print Job Forensics and Investigation"
-      url: "https://www.forensicfocus.com/articles/print-job-forensics/"
-      type: "research"
+  - title: 'Microsoft Documentation: Print Spooler Architecture'
+    url: https://learn.microsoft.com/en-us/windows-hardware/drivers/print/introduction-to-the-print-spooler
+    type: official
+  - title: Print Job Forensics and Investigation
+    url: https://www.forensicfocus.com/articles/print-job-forensics/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SYSTEM, NTUSER.DAT)"
-    persistence: "Printer configuration persists until manually removed"
-    volatility: "Print settings reflect recent printing activity and document access"
+    default_location: Registry hive files (SYSTEM, NTUSER.DAT)
+    persistence: Printer configuration persists until manually removed
+    volatility: Print settings reflect recent printing activity and document access
 
   related_artifacts:
-    - "user_activity"
-    - "network_connections"
-    - "document_access"
-    - "recent_docs"
+  - user_activity
+  - network_connections
+  - document_access
+  - recent_docs
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-06-12"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-06-12'
+  version: '3.0'

@@ -1,122 +1,117 @@
-title: "Internet Explorer Security Zones and Settings"
-category: "browser-activity"
-description: "Internet Explorer security zone configuration, trusted sites, restricted sites, and browser security policies"
+title: Internet Explorer Security Zones and Settings
+category: browser-activity
+description: Internet Explorer security zone configuration, trusted sites, restricted sites, and browser security policies
 
 paths:
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones"
-  - "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\ZoneMap"
-  - "HKLM\\SOFTWARE\\Policies\\Microsoft\\Internet Explorer"
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Zones
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap
+- HKLM\SOFTWARE\Policies\Microsoft\Internet Explorer
 
 details:
   what: |
-    Internet Explorer security zones control website trust levels and security policies.
-    Manages Internet, Local Intranet, Trusted Sites, and Restricted Sites zones with
-    ActiveX control permissions, script execution restrictions, and download behaviors.
+    Internet Explorer security zones control website trust levels and security policies. Manages Internet, Local Intranet, Trusted Sites, and Restricted Sites zones with ActiveX control permissions, script execution restrictions, and download behaviors.
 
   forensic_value: |
-    Critical for investigating browser-based attacks and security policy bypasses.
-    Shows evidence of trusted site modifications that facilitate attacks, security
-    zone changes that weaken defenses, and policy violations.
+    Important for investigating browser-based attacks and security policy bypasses. Shows evidence of trusted site modifications that facilitate attacks, security zone changes that weaken defenses, and policy violations.
 
   structure: |
-    Security zones numbered 0-4 (My Computer, Local Intranet, Trusted Sites, Internet, Restricted)
-    with detailed security settings as REG_DWORD values. ZoneMap contains site-to-zone assignments.
-    Policy enforcement controls enterprise-wide browser security through Group Policy.
+    Security zones numbered 0-4 (My Computer, Local Intranet, Trusted Sites, Internet, Restricted) with detailed security settings as REG_DWORD values. ZoneMap contains site-to-zone assignments. Policy enforcement controls enterprise-wide browser security through Group Policy.
 
   examples:
-    - "Zones\\1\\1001: 3 (Local Intranet - Prompt for ActiveX download)"
-    - "Zones\\2\\1200: 0 (Trusted Sites - Enable ActiveX controls)"
-    - "Zones\\3\\1400: 1 (Internet - Disable active scripting)"
-    - "Zones\\4\\1001: 3 (Restricted - Disable ActiveX completely)"
-    - "ZoneMap\\Domains\\malicious-site.com: 4 (Restricted zone assignment)"
-    - "ZoneMap\\Domains\\intranet.company.com: 1 (Local Intranet zone)"
-    - "Policies\\DisableSecuritySettingsCheck: 1 (Security warnings disabled)"
-    - "ProtectedMode\\Enabled: 0 (Protected Mode disabled - security risk)"
+  - 'Zones\1\1001: 3 (Local Intranet - Prompt for ActiveX download)'
+  - 'Zones\2\1200: 0 (Trusted Sites - Enable ActiveX controls)'
+  - 'Zones\3\1400: 1 (Internet - Disable active scripting)'
+  - 'Zones\4\1001: 3 (Restricted - Disable ActiveX completely)'
+  - 'ZoneMap\Domains\malicious-site.com: 4 (Restricted zone assignment)'
+  - 'ZoneMap\Domains\intranet.company.com: 1 (Local Intranet zone)'
+  - 'Policies\DisableSecuritySettingsCheck: 1 (Security warnings disabled)'
+  - 'ProtectedMode\Enabled: 0 (Protected Mode disabled - security risk)'
 
   tools:
-    - name: "Internet Options (inetcpl.cpl)"
-      description: "Built-in IE security zone configuration interface"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis tool"
-    - name: "Group Policy Editor (gpedit.msc)"
-      description: "Enterprise Internet Explorer policy management"
+  - name: Internet Options (inetcpl.cpl)
+    description: Built-in IE security zone configuration interface
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis tool
+  - name: Group Policy Editor (gpedit.msc)
+    description: Enterprise Internet Explorer policy management
 
 limitations:
-  - "Configuration shows security settings only, not actual exploitation attempts"
-  - "Trusted site assignments don't prove malicious activity occurred"
-  - "Zone modifications may be legitimate administrative changes"
-  - "Settings may be overridden by Group Policy or user actions"
+- Configuration shows security settings only, not actual exploitation attempts
+- Trusted site assignments don't prove malicious activity occurred
+- Zone modifications may be legitimate administrative changes
+- Settings may be overridden by Group Policy or user actions
 
 correlation:
   required_for_definitive_conclusions:
-    - "Browser history showing visits to modified trusted sites"
-    - "Network traffic logs showing malicious communication"
-    - "ActiveX control execution logs or crash dumps"
-    - "Process execution showing exploitation artifacts"
-  
+  - Browser history showing visits to modified trusted sites
+  - Network traffic logs showing malicious communication
+  - ActiveX control execution logs or crash dumps
+  - Process execution showing exploitation artifacts
+
   strengthens_evidence:
-    - "Timeline analysis of when zone settings were changed"
-    - "User activity correlating with security modifications"
-    - "Other browser security bypasses or malware"
+  - Timeline analysis of when zone settings were changed
+  - User activity correlating with security modifications
+  - Other browser security bypasses or malware
 
 metadata:
   windows_versions:
-    - "Windows 98"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 98
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
 
-  introduced: "Internet Explorer 4.0"
-  criticality: "high"
+  introduced: Internet Explorer 4.0
+
+  criticality: high
 
   investigation_types:
-    - "malware-analysis"
-    - "incident-response"
-    - "behavioral-analysis"
-    - "insider-threat"
-    - "initial-access"
-    - "privilege-escalation"
+  - malware-analysis
+  - incident-response
+  - behavioral-analysis
+  - insider-threat
+  - initial-access
+  - privilege-escalation
 
   tags:
-    - "browser"
-    - "internet-explorer"
-    - "security-zones"
-    - "trusted-sites"
-    - "browser-security"
-    - "activex"
+  - browser
+  - internet-explorer
+  - security-zones
+  - trusted-sites
+  - browser-security
+  - activex
 
   references:
-    - title: "Microsoft Documentation: Internet Explorer Security Zones"
-      url: "https://learn.microsoft.com/en-us/troubleshoot/browsers/security-zones-registry-entries"
-      type: "official"
-    - title: "Browser Security Zone Exploitation Techniques"
-      url: "https://attack.mitre.org/techniques/T1185/"
-      type: "research"
+  - title: 'Microsoft Documentation: Internet Explorer Security Zones'
+    url: https://learn.microsoft.com/en-us/troubleshoot/browsers/security-zones-registry-entries
+    type: official
+  - title: Browser Security Zone Exploitation Techniques
+    url: https://attack.mitre.org/techniques/T1185/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
-    persistence: "Security zone settings persist until manually changed or policy update"
-    volatility: "Configuration changes affect immediate browser security posture"
+    default_location: Registry hive files (SOFTWARE, NTUSER.DAT)
+    persistence: Security zone settings persist until manually changed or policy update
+    volatility: Configuration changes affect immediate browser security posture
 
   related_artifacts:
-    - "activex_controls"
-    - "browser_helper_objects"
-    - "downloads"
-    - "typed_urls"
+  - activex_controls
+  - browser_helper_objects
+  - downloads
+  - typed_urls
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-01-15"
-  last_updated: "2025-01-15"
-  version: "3.0"
+  date_added: '2025-01-15'
+  last_updated: '2025-01-15'
+  version: '3.0'

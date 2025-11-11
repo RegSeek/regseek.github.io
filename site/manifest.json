@@ -1,0 +1,37 @@
+{
+  "name": "RegSeek - Windows Registry Forensics Artifacts",
+  "short_name": "RegSeek",
+  "description": "Comprehensive database of Windows Registry forensic artifacts for digital forensics investigations",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#0a0a0a",
+  "background_color": "#0a0a0a",
+  "icons": [
+    {
+      "src": "https://avatars.githubusercontent.com/u/215176684?s=192&v=4",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://avatars.githubusercontent.com/u/215176684?s=512&v=4",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities", "security"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Search Artifacts",
+      "short_name": "Search",
+      "description": "Search Windows Registry artifacts",
+      "url": "/?action=search",
+      "icons": []
+    }
+  ],
+  "prefer_related_applications": false
+}

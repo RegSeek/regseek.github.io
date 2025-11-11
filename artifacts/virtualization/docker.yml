@@ -1,112 +1,106 @@
-title: "Docker Desktop Container Platform"
-category: "virtualization"
-description: "Docker Desktop configuration, container management, and development environment settings"
+title: Docker Desktop Container Platform
+category: virtualization
+description: Docker Desktop configuration, container management, and development environment settings
 
 paths:
-  - "HKCU\\Software\\Docker Inc\\Docker Desktop"
-  - "HKLM\\SOFTWARE\\Docker Inc\\Docker Desktop"
-  - "HKCU\\Software\\Classes\\docker"
-  - "HKLM\\SOFTWARE\\Classes\\docker"
+- HKCU\Software\Docker Inc\Docker Desktop
+- HKLM\SOFTWARE\Docker Inc\Docker Desktop
+- HKCU\Software\Classes\docker
+- HKLM\SOFTWARE\Classes\docker
 
 details:
   what: |
-    Docker Desktop Windows integration settings including installation paths, basic configuration 
-    preferences, and Windows-specific integration options. Note: Docker primarily stores 
-    operational data (containers, images, networks) in JSON configuration files and databases 
-    in %APPDATA%\Docker, not in the Windows registry.
+    Docker Desktop Windows integration settings including installation paths, basic configuration preferences, and Windows-specific integration options. Note: Docker primarily stores operational data (containers, images, networks) in JSON configuration files and databases in %APPDATA%\Docker, not in the Windows registry.
 
   forensic_value: |
-    Important for investigating containerized application development, potential isolation bypass 
-    attempts, and container-based malware analysis. Shows evidence of container usage, image downloads, 
-    and can reveal container-based data exfiltration or isolated development activities.
+    Important for investigating containerized application development, potential isolation bypass attempts, and container-based malware analysis. Shows evidence of container usage, image downloads, and can reveal container-based data exfiltration or isolated development activities.
 
   structure: |
-    Registry contains basic Docker Desktop installation information, Windows integration settings, 
-    and file associations. Operational container data (images, containers, networks, volumes) 
-    is stored in Docker's JSON configuration files in the user's AppData directory, not in the Windows registry.
+    Registry contains basic Docker Desktop installation information, Windows integration settings, and file associations. Operational container data (images, containers, networks, volumes) is stored in Docker's JSON configuration files in the user's AppData directory, not in the Windows registry.
 
   examples:
-    - "InstallPath: C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe"
-    - "Version: Docker Desktop 4.25.0"
-    - "FileAssociation: .dockerfile -> Docker Desktop"
-    - "ProtocolHandler: docker:// (Docker protocol registration)"
-    - "WSLIntegration: 1 (Windows Subsystem for Linux enabled)"
-    - "Note: Container runtime settings are in JSON files at %APPDATA%\\Docker\\settings.json"
-    - "Note: Container images stored in virtual disk files, not registry"
+  - 'InstallPath: C:\Program Files\Docker\Docker\Docker Desktop.exe'
+  - 'Version: Docker Desktop 4.25.0'
+  - 'FileAssociation: .dockerfile -> Docker Desktop'
+  - 'ProtocolHandler: docker:// (Docker protocol registration)'
+  - 'WSLIntegration: 1 (Windows Subsystem for Linux enabled)'
+  - 'Note: Container runtime settings are in JSON files at %APPDATA%\Docker\settings.json'
+  - 'Note: Container images stored in virtual disk files, not registry'
 
   tools:
-    - name: "Docker Desktop GUI"
-      description: "Docker's graphical container management interface"
-    - name: "docker CLI"
-      description: "Docker command-line interface for container operations"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
+  - name: Docker Desktop GUI
+    description: Docker's graphical container management interface
+  - name: docker CLI
+    description: Docker command-line interface for container operations
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
 
 limitations:
-  - "Docker registry entries do NOT prove containers were created or executed"
-  - "Installation presence doesn't indicate active container development or deployment"
-  - "Registry entries do NOT contain container runtime data, images, or configuration"
-  - "File associations don't prove Docker was actively used for container operations"
-  - "Registry settings only show Windows integration, not actual Docker operations"
-  - "Actual container data is stored in JSON files and virtual disks, not in Windows registry"
-  - "WSL integration settings don't show Linux containers were run or what they contained"
+- Docker registry entries do NOT prove containers were created or executed
+- Installation presence doesn't indicate active container development or deployment
+- Registry entries do NOT contain container runtime data, images, or configuration
+- File associations don't prove Docker was actively used for container operations
+- Registry settings only show Windows integration, not actual Docker operations
+- Actual container data is stored in JSON files and virtual disks, not in Windows registry
+- WSL integration settings don't show Linux containers were run or what they contained
 
 correlation:
   required_for_definitive_execution_proof:
-    - "Docker daemon logs showing container creation and execution"
-    - "Process execution logs showing docker.exe commands"
-    - "File system artifacts showing Docker images and container files"
-    - "Network logs showing container communication"
-    
+  - Docker daemon logs showing container creation and execution
+  - Process execution logs showing docker.exe commands
+  - File system artifacts showing Docker images and container files
+  - Network logs showing container communication
+
   strengthens_evidence:
-    - "WSL configuration artifacts for Docker backend"
-    - "Development tools artifacts showing container integration"
-    - "File modifications in shared directories indicating container access"
+  - WSL configuration artifacts for Docker backend
+  - Development tools artifacts showing container integration
+  - File modifications in shared directories indicating container access
 
 metadata:
   windows_versions:
-    - "Windows 10"
-    - "Windows 11"
+  - Windows 10
+  - Windows 11
 
-  introduced: "Docker Desktop for Windows"
-  criticality: "medium"
+  introduced: Docker Desktop for Windows
+
+  criticality: medium
 
   investigation_types:
-    - "behavioral-analysis"
-    - "incident-response"
-    - "anti-forensics"
+  - behavioral-analysis
+  - incident-response
+  - anti-forensics
 
   tags:
-    - "docker"
-    - "containers"
-    - "virtualization"
-    - "development"
-    - "microservices"
-    - "deployment"
-    - "isolation"
+  - docker
+  - containers
+  - virtualization
+  - development
+  - microservices
+  - deployment
+  - isolation
 
   references:
-    - title: "Docker Desktop Documentation"
-      url: "https://docs.docker.com/desktop/"
-      type: "official"
+  - title: Docker Desktop Documentation
+    url: https://docs.docker.com/desktop/
+    type: official
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, NTUSER.DAT)"
-    persistence: "Container platform settings persist until reconfiguration"
-    volatility: "Container development activity provides modern application deployment evidence"
+    default_location: Registry hive files (SOFTWARE, NTUSER.DAT)
+    persistence: Container platform settings persist until reconfiguration
+    volatility: Container development activity provides modern application deployment evidence
 
   related_artifacts:
-    - "development_tools"
-    - "virtualization_settings"
-    - "wsl_configuration"
+  - development_tools
+  - virtualization_settings
+  - wsl_configuration
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-08"
-  last_updated: "2025-07-06"
-  version: "3.0"
+  date_added: '2025-06-08'
+  last_updated: '2025-07-06'
+  version: '3.0'

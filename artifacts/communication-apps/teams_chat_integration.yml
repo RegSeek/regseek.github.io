@@ -1,0 +1,102 @@
+title: Microsoft Teams Chat Taskbar Integration (Legacy)
+category: communication-apps
+description: Deprecated Windows 11 taskbar Teams chat button configuration for historical communication pattern analysis
+
+paths:
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarMn
+- HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Chat
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarChat
+
+details:
+  what: |
+    Microsoft Teams Chat taskbar integration was a Windows 11 feature providing quick access to Teams consumer chat from the taskbar. Registry keys stored chat button visibility preference (TaskbarMn), organizational policy restrictions disabling the feature, and integration enablement state. Microsoft removed this feature in Windows 11 24H2 (October 2024), replacing it with unified Teams app integration. The artifact remains forensically relevant for investigations covering 2021-2024.
+
+  forensic_value: |
+    Historical evidence of Microsoft Teams personal communication access during Windows 11 21H2-23H2 timeframe. Chat button visibility indicates user's communication preferences and potential for personal messaging during work hours. Policy-based disablement reveals organizational stance on consumer communication tools on enterprise devices. Feature removal in user's timeline may indicate awareness of monitoring or attempt to reduce personal communication footprint. Useful for establishing communication capability baselines in investigations covering 2021-2024 incidents.
+
+  structure: |
+    Registry values stored as DWORD for feature toggles. TaskbarMn (0/1) controls button visibility, with 0 showing and 1 hiding the chat icon. Policy keys in HKLM override user preferences when organizational restrictions apply. Simple boolean configuration with minimal metadata.
+
+  examples:
+  - TaskbarMn = 0 (DWORD) - Chat button visible on taskbar (default in 21H2-23H2)
+  - TaskbarMn = 1 (DWORD) - Chat button hidden by user preference
+  - ConfigureChatIcon = 1 (DWORD) - Policy enforces chat button state
+  - ChatIconVisibility = 0 (DWORD) - Policy disables chat icon
+
+  tools:
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Registry browser for taskbar configuration analysis
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry analysis with Explorer settings parsing
+
+limitations:
+- Registry configuration DOES NOT prove Teams Chat was actually used for communication
+- Button visibility does not indicate messaging frequency or conversation content
+- Cannot determine who was contacted or what was discussed from registry alone
+- Feature removal in 24H2 makes this artifact irrelevant for recent investigations
+- Policy disablement does not prove user attempted to access chat feature
+- Chat button state shows preference, not actual communication behavior
+- 'DEPRECATED: Not present in Windows 11 24H2 and later versions'
+
+correlation:
+  required_for_definitive_conclusions:
+  - Analyze Teams application logs at %APPDATA%\Microsoft\Teams for actual usage
+  - Check network traffic logs for teams.microsoft.com domains and chat API endpoints
+  - Review browser history for Microsoft Teams consumer web interface access
+  - Examine Windows Timeline (ActivitiesCache.db) for Teams application activity
+  - Verify User Assist entries for Teams application launches
+  - Cross-reference with communication app artifacts (microsoft_teams.yml) for enterprise usage
+
+  strengthens_evidence:
+  - Microsoft Teams desktop application installation in Programs and Features
+  - Recent Documents showing Teams-related files or conversation exports
+  - Jump Lists for Teams showing recent contacts or conversations
+  - Notification settings showing Teams chat alerts configuration
+  - Network proxy logs showing Teams communication during investigation timeframe
+  - Microsoft account authentication logs for Teams consumer service
+
+metadata:
+  windows_versions:
+  - Windows 11
+
+  introduced: Windows 11 21H2 (October 2021)
+  deprecated: Windows 11 24H2 (October 2024)
+
+  criticality: low
+
+  investigation_types:
+  - insider-threat
+  - timeline-analysis
+  - behavioral-analysis
+
+  tags:
+  - windows-11
+  - teams-chat
+  - taskbar
+  - communication
+  - deprecated-2024
+  - legacy-artifact
+  - microsoft-teams
+  - consumer-chat
+
+  references:
+  - title: Microsoft Teams Chat Icon Removed from Windows 11 24H2
+    url: https://support.microsoft.com/en-us/windows/chat-from-microsoft-teams-is-no-longer-available-9cda87c7-6bca-4e60-b9fa-bdb5fe098a20
+    type: official
+
+  retention:
+    default_location: NTUSER.DAT registry hive
+    persistence: Survives reboots on Windows 11 21H2-23H2; removed in 24H2 upgrade
+    volatility: Persistent configuration on compatible versions; obsolete on 24H2+
+
+author:
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
+
+contribution:
+  date_added: '2025-01-11'
+  last_updated: '2025-01-11'
+  version: '1.0'

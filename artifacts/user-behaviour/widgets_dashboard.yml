@@ -1,0 +1,118 @@
+title: Widgets Dashboard Configuration and Personalization
+category: user-behaviour
+description: Windows 11 widgets panel settings revealing user interests, news preferences, and personalized content consumption patterns
+
+paths:
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Widgets
+- HKLM\SOFTWARE\Policies\Microsoft\Windows\Widgets
+- HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\NewsAndInterests
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Feeds
+- HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDa
+
+details:
+  what: |
+    Widgets Dashboard is a personalized information panel in Windows 11 showing news, weather, stocks, sports scores, and other user-selected content feeds. Registry keys store widget enablement settings, user preferences for displayed widgets, news feed personalization, organizational policy restrictions, taskbar widget button visibility, and content filtering preferences. The feature evolved from Windows 10 "News and Interests" with expanded customization in Windows 11.
+
+  forensic_value: |
+    Reveals user interests and information consumption patterns valuable for behavioral profiling and user attribution. Shows financial market monitoring (stocks widget) that may indicate investment activity or financial intelligence gathering. Sports and entertainment preferences contribute to user identity verification and timeline reconstruction.
+
+  structure: |
+    Registry values stored as DWORD for feature toggles, policy enforcement, and boolean preferences. String and binary values for widget configurations and content preferences. Key locations include per-user widget settings in HKCU, machine-level policy restrictions in HKLM, and Device Management policy configurations. TaskbarDa (DWORD) controls taskbar widget button visibility.
+
+  examples:
+  - AllowNewsAndInterests = 0 (DWORD) - Widgets disabled by organizational policy
+  - TaskbarDa = 0 (DWORD) - Widget button hidden from taskbar
+  - ShellFeedsTaskbarViewMode = 0 (DWORD) - Widgets panel display mode
+  - IsDynamicContentEnabled = 1 (DWORD) - Personalized content enabled
+  - EnableWidgets = 1 (DWORD) - Widgets feature enabled for user
+  - FeedEnabled = 0 (DWORD) - News feed disabled in widgets panel
+
+  tools:
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry browser for widgets configuration analysis
+  - name: RegRipper
+    url: https://github.com/keydet89/RegRipper3.0
+    description: Registry analysis with Explorer settings and policy parsing
+  - name: Group Policy Results Tool (gpresult)
+    description: Verify applied policies affecting widgets configuration
+
+limitations:
+- Registry settings DO NOT show specific news articles or content viewed in widgets
+- Cannot prove which widgets were actively clicked or interacted with
+- Feature enablement does not indicate actual usage frequency or engagement
+- Does not contain historical record of widget content or personalization changes
+- Cannot determine if content was copied, shared, or acted upon from registry alone
+- Taskbar button visibility does not prove widgets panel was opened or used
+- Policy restrictions may override user preferences - check both HKLM and HKCU keys
+
+correlation:
+  required_for_definitive_conclusions:
+  - Analyze Edge browser history for MSN, Bing News, and content feed domains
+  - Check network traffic logs for widget content API endpoints (Microsoft Graph)
+  - Review %LOCALAPPDATA%\Packages\MicrosoftWindows.Client.WebExperience* for widget cache
+  - Examine WebView2 cache for rendered widget content and interaction history
+  - Cross-reference with Windows Timeline for widgets application activity
+  - Verify Group Policy application logs if policy-based restrictions present
+
+  strengthens_evidence:
+  - Browser cookies and authentication tokens for Microsoft account personalization
+  - Recent Documents showing files opened from widget content links
+  - Screenshots or screen recordings showing actual widget usage
+  - Network logs showing widget content updates at regular intervals
+  - Jump Lists for Edge browser showing widget-sourced page visits
+  - Event logs for WebView2 and WebExperience host processes
+
+metadata:
+  windows_versions:
+  - Windows 11
+
+  introduced: Windows 11 21H2 (October 2021)
+
+  criticality: medium
+
+  investigation_types:
+  - behavioral-analysis
+  - insider-threat
+  - timeline-analysis
+  - incident-response
+
+  tags:
+  - windows-11
+  - widgets
+  - news-feeds
+  - personalization
+  - user-interests
+  - msn
+  - behavioral-profiling
+  - taskbar
+
+  references:
+  - title: Stay Up to Date with Widgets
+    url: https://support.microsoft.com/en-us/windows/stay-up-to-date-with-widgets-7ba79aaa-dac6-4687-b460-ad16a06be6e4
+    type: official
+  - title: Manage Widgets for Enterprise Organizations
+    url: https://learn.microsoft.com/en-us/windows/configuration/widgets
+    type: official
+
+  retention:
+    default_location: NTUSER.DAT and SOFTWARE registry hives
+    persistence: Survives reboots; preferences persist until user modification or policy change
+    volatility: Persistent configuration; widget content cache stored in separate AppData location
+
+  related_artifacts:
+  - chrome_browser
+  - search_history
+  - taskbar_customizations
+  - windows_spotlight
+  - windows_explorer_policies
+
+author:
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
+
+contribution:
+  date_added: '2025-01-11'
+  last_updated: '2025-01-11'
+  version: '1.0'

@@ -1,124 +1,116 @@
-title: "Windows Containers and Container Runtime"
-category: "virtualization"
-description: "Docker Desktop configuration, Windows container settings, container runtime policies, and isolation modes"
+title: Windows Containers and Container Runtime
+category: virtualization
+description: Docker Desktop configuration, Windows container settings, container runtime policies, and isolation modes
 
 paths:
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Container Manager"
-  - "HKCU\\Software\\Docker Inc\\Docker Desktop"
-  - "HKLM\\SYSTEM\\CurrentControlSet\\Services\\containerd"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Containers"
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Container Manager
+- HKCU\Software\Docker Inc\Docker Desktop
+- HKLM\SYSTEM\CurrentControlSet\Services\containerd
+- HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Containers
 
 details:
   what: |
-    Windows container infrastructure includes Docker Desktop configuration, Windows container
-    runtime settings, container isolation policies, image management, and networking
-    configuration. Controls container execution environment, resource allocation,
-    and security boundaries for modern application deployment.
+    Windows container infrastructure includes Docker Desktop configuration, Windows container runtime settings, container isolation policies, image management, and networking configuration. Controls container execution environment, resource allocation, and security boundaries for modern application deployment.
 
   forensic_value: |
-    Critical for investigating containerized malware, container escape attempts,
-    unauthorized container deployments, and container-based data exfiltration.
-    Shows evidence of container usage that could hide malicious activity and
-    indicates attempts to bypass security controls through container technologies.
+    Critical for investigating containerized malware, container escape attempts, unauthorized container deployments, and container-based data exfiltration. Shows evidence of container usage that could hide malicious activity and indicates attempts to bypass security controls through container technologies.
 
   structure: |
-    Container configuration includes runtime policies, isolation modes (process vs. Hyper-V),
-    network settings, storage drivers, security contexts, and resource constraints.
-    Docker Desktop settings control daemon configuration, experimental features,
-    and resource allocation.
+    Container configuration includes runtime policies, isolation modes (process vs. Hyper-V), network settings, storage drivers, security contexts, and resource constraints. Docker Desktop settings control daemon configuration, experimental features, and resource allocation.
 
   examples:
-    - "ContainerManager\\IsolationMode: 1 (Process isolation enabled)"
-    - "containerd\\Start: 3 (Container runtime service - manual startup)"
-    - "Docker Desktop\\Settings\\SharedDrives: C,D (Host drive mapping)"
-    - "Docker Desktop\\ExperimentalFeatures: true (Experimental features enabled)"
-    - "Containers\\Runtime: Docker (Container runtime provider)"
-    - "NetworkingMode: NAT (Network Address Translation mode)"
-    - "StorageDriver: windowsfilter (Windows container storage driver)"
-    - "SecurityOptions: privileged (Privileged container execution allowed)"
+  - 'ContainerManager\IsolationMode: 1 (Process isolation enabled)'
+  - 'containerd\Start: 3 (Container runtime service - manual startup)'
+  - 'Docker Desktop\Settings\SharedDrives: C,D (Host drive mapping)'
+  - 'Docker Desktop\ExperimentalFeatures: true (Experimental features enabled)'
+  - 'Containers\Runtime: Docker (Container runtime provider)'
+  - 'NetworkingMode: NAT (Network Address Translation mode)'
+  - 'StorageDriver: windowsfilter (Windows container storage driver)'
+  - 'SecurityOptions: privileged (Privileged container execution allowed)'
 
   tools:
-    - name: "Docker Desktop"
-      description: "Docker Desktop for Windows container management interface"
-    - name: "docker.exe"
-      description: "Docker command-line interface for container operations"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis tool"
+  - name: Docker Desktop
+    description: Docker Desktop for Windows container management interface
+  - name: docker.exe
+    description: Docker command-line interface for container operations
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis tool
 
 limitations:
-  - "Registry shows configuration only, not actual container deployments or activity"
-  - "Container settings don't prove malicious containers were actually run"
-  - "Experimental features may be enabled but not actively used"
-  - "Privileged access settings don't indicate actual privilege abuse"
-  - "Shared drive mappings don't prove data exfiltration occurred"
+- Registry shows configuration only, not actual container deployments or activity
+- Container settings don't prove malicious containers were actually run
+- Experimental features may be enabled but not actively used
+- Privileged access settings don't indicate actual privilege abuse
+- Shared drive mappings don't prove data exfiltration occurred
 
 correlation:
   required_for_definitive_conclusions:
-    - "Docker daemon logs showing actual container operations"
-    - "Container images and running container processes"
-    - "File system artifacts showing container-related files"
-    - "Network traffic logs showing container communications"
-    - "Process execution logs showing Docker/containerd activity"
-  
+  - Docker daemon logs showing actual container operations
+  - Container images and running container processes
+  - File system artifacts showing container-related files
+  - Network traffic logs showing container communications
+  - Process execution logs showing Docker/containerd activity
+
   strengthens_evidence:
-    - "Timeline analysis of container configuration changes"
-    - "User activity showing Docker Desktop usage"
-    - "File operations in shared drive mappings"
+  - Timeline analysis of container configuration changes
+  - User activity showing Docker Desktop usage
+  - File operations in shared drive mappings
 
 metadata:
   windows_versions:
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows 10
+  - Windows 11
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows Server 2016"
-  criticality: "high"
+  introduced: Windows Server 2016
+
+  criticality: high
 
   investigation_types:
-    - "malware-analysis"
-    - "incident-response"
-    - "privilege-escalation"
-    - "behavioral-analysis"
-    - "lateral-movement"
-    - "anti-forensics"
+  - malware-analysis
+  - incident-response
+  - privilege-escalation
+  - behavioral-analysis
+  - lateral-movement
+  - anti-forensics
 
   tags:
-    - "containers"
-    - "docker"
-    - "container-security"
-    - "isolation"
-    - "runtime-security"
-    - "container-escape"
+  - containers
+  - docker
+  - container-security
+  - isolation
+  - runtime-security
+  - container-escape
 
   references:
-    - title: "Microsoft Documentation: Windows Containers"
-      url: "https://learn.microsoft.com/en-us/virtualization/windowscontainers/"
-      type: "official"
-    - title: "Docker Desktop for Windows"
-      url: "https://docs.docker.com/desktop/windows/"
-      type: "official"
-    - title: "Container Security and Forensic Analysis"
-      url: "https://www.sans.org/white-papers/36240/"
-      type: "research"
+  - title: 'Microsoft Documentation: Windows Containers'
+    url: https://learn.microsoft.com/en-us/virtualization/windowscontainers/
+    type: official
+  - title: Docker Desktop for Windows
+    url: https://docs.docker.com/desktop/windows/
+    type: official
+  - title: Container Security and Forensic Analysis
+    url: https://www.sans.org/white-papers/36240/
+    type: research
 
   retention:
-    default_location: "Registry hive files (SOFTWARE, SYSTEM, NTUSER.DAT)"
-    persistence: "Container configuration persists until service modification"
-    volatility: "Container settings affect ongoing application security and isolation"
+    default_location: Registry hive files (SOFTWARE, SYSTEM, NTUSER.DAT)
+    persistence: Container configuration persists until service modification
+    volatility: Container settings affect ongoing application security and isolation
 
   related_artifacts:
-    - "hyperv"
-    - "windows_subsystem_linux"
+  - hyperv
+  - windows_subsystem_linux
 
 author:
-  name: "Tonmoy Jitu"
-  github: "tonmoy0010"
-  x: "tonmoy0010"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-07"
-  last_updated: "2025-06-07"
-  version: "3.0"
+  date_added: '2025-06-07'
+  last_updated: '2025-06-07'
+  version: '3.0'

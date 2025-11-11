@@ -1,133 +1,129 @@
-title: "Windows Version and Build Information"
-category: "system-modifications"
-description: "Windows version identification, build numbers, edition details, and installation metadata"
+title: Windows Version and Build Information
+category: system-modifications
+description: Windows version identification, build numbers, edition details, and installation metadata
 
 paths:
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion"
-  - "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Update"
+- HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+- HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion
+- HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Update
 
 details:
   what: |
-    Windows stores version identification information including build numbers, edition details, 
-    installation timestamps, product keys, registered owner information, update history, and 
-    licensing data for complete system identification.
+    Windows stores version identification information including build numbers, edition details, installation timestamps, product keys, registered owner information, update history, and licensing data for complete system identification.
 
   forensic_value: |
-    Essential for establishing system baseline information, determining available Windows 
-    features and security capabilities, and identifying Windows editions for vulnerability 
-    assessment and investigation correlation.
+    Essential for establishing system baseline information, determining available Windows features and security capabilities, and identifying Windows editions for vulnerability assessment and investigation correlation.
 
   structure: |
-    Version information stored as REG_SZ strings and REG_DWORD values including ProductName, 
-    CurrentBuild, ReleaseId, InstallDate (Unix timestamp), RegisteredOwner, DigitalProductId, 
-    and update information for comprehensive system identification.
+    Version information stored as REG_SZ strings and REG_DWORD values including ProductName, CurrentBuild, ReleaseId, InstallDate (Unix timestamp), RegisteredOwner, DigitalProductId, and update information for comprehensive system identification.
 
   examples:
-    - "ProductName: Windows 11 Pro"
-    - "ProductName: Windows 10 Enterprise LTSC"
-    - "CurrentBuild: 22621 (Windows 11 22H2 build number)"
-    - "CurrentBuild: 19044 (Windows 10 21H2 build number)"
-    - "ReleaseId: 22H2 (Feature update identifier)"
-    - "InstallDate: 0x63A1B2C0 (Unix timestamp: 1671450304 = December 19, 2022)"
-    - "RegisteredOwner: CORPORATE\\ITDepartment"
-    - "RegisteredOrganization: Acme Corporation"
-    - "DigitalProductId: [Binary license and product key data]"
+  - 'ProductName: Windows 11 Pro'
+  - 'ProductName: Windows 10 Enterprise LTSC'
+  - 'CurrentBuild: 22621 (Windows 11 22H2 build number)'
+  - 'CurrentBuild: 19044 (Windows 10 21H2 build number)'
+  - 'ReleaseId: 22H2 (Feature update identifier)'
+  - 'InstallDate: 0x63A1B2C0 (Unix timestamp: 1671450304 = December 19, 2022)'
+  - 'RegisteredOwner: CORPORATE\ITDepartment'
+  - 'RegisteredOrganization: Acme Corporation'
+  - 'DigitalProductId: [Binary license and product key data]'
 
   tools:
-    - name: "winver.exe"
-      description: "Built-in Windows version information dialog"
-    - name: "systeminfo.exe"
-      description: "Command-line system information utility"
-    - name: "Registry Explorer"
-      url: "https://ericzimmerman.github.io/#!index.md"
-      description: "Advanced registry analysis and browsing tool"
-    - name: "PowerShell Get-ComputerInfo"
-      description: "PowerShell cmdlet for detailed system information retrieval"
+  - name: winver.exe
+    description: Built-in Windows version information dialog
+  - name: systeminfo.exe
+    description: Command-line system information utility
+  - name: Registry Explorer
+    url: https://ericzimmerman.github.io/#!index.md
+    description: Advanced registry analysis and browsing tool
+  - name: PowerShell Get-ComputerInfo
+    description: PowerShell cmdlet for detailed system information retrieval
 
 limitations:
-  - "Version information does NOT prove system activity or usage patterns"
-  - "Installation date shows registry creation, not actual system deployment"
-  - "Registered owner doesn't prove who actually uses the system"
-  - "Edition details don't indicate which features are actively enabled"
-  - "Build numbers don't prove specific security patches are installed"
-  - "Version data may be modified by system updates or registry editing"
-  - "Product information doesn't indicate system configuration or security state"
+- Version information does NOT prove system activity or usage patterns
+- Installation date shows registry creation, not actual system deployment
+- Registered owner doesn't prove who actually uses the system
+- Edition details don't indicate which features are actively enabled
+- Build numbers don't prove specific security patches are installed
+- Version data may be modified by system updates or registry editing
+- Product information doesn't indicate system configuration or security state
 
 correlation:
   required_for_definitive_system_capability_proof:
-    - "Installed programs registry showing actual feature installations"
-    - "Windows Features configuration showing enabled capabilities"
-    - "Security event logs confirming available security features"
-    - "File system artifacts showing Windows component presence"
-    
+  - Installed programs registry showing actual feature installations
+  - Windows Features configuration showing enabled capabilities
+  - Security event logs confirming available security features
+  - File system artifacts showing Windows component presence
+
   strengthens_evidence:
-    - "Update history logs showing patch level and security updates"
-    - "Hardware device registry showing compatible features"
-    - "Network configuration showing available protocols and services"
-    - "Application logs showing feature utilization"
+  - Update history logs showing patch level and security updates
+  - Hardware device registry showing compatible features
+  - Network configuration showing available protocols and services
+  - Application logs showing feature utilization
 
 metadata:
   windows_versions:
-    - "Windows NT 3.1"
-    - "Windows 95"
-    - "Windows 2000"
-    - "Windows XP"
-    - "Windows Vista"
-    - "Windows 7"
-    - "Windows 8"
-    - "Windows 8.1"
-    - "Windows 10"
-    - "Windows 11"
-    - "Windows Server 2000"
-    - "Windows Server 2003"
-    - "Windows Server 2008"
-    - "Windows Server 2012"
-    - "Windows Server 2016"
-    - "Windows Server 2019"
-    - "Windows Server 2022"
+  - Windows NT 3.1
+  - Windows 95
+  - Windows 2000
+  - Windows XP
+  - Windows Vista
+  - Windows 7
+  - Windows 8
+  - Windows 8.1
+  - Windows 10
+  - Windows 11
+  - Windows Server 2000
+  - Windows Server 2003
+  - Windows Server 2008
+  - Windows Server 2012
+  - Windows Server 2016
+  - Windows Server 2019
+  - Windows Server 2022
 
-  introduced: "Windows NT 3.1"
-  criticality: "low"
+  introduced: Windows NT 3.1
+
+  criticality: low
 
   investigation_types:
-    - "incident-response"
-    - "timeline-analysis"
-    - "behavioral-analysis"
+  - incident-response
+  - timeline-analysis
+  - behavioral-analysis
 
   tags:
-    - "version-info"
-    - "baseline"
-    - "installation"
-    - "vulnerability-assessment"
-    - "system-identification"
-    - "build-numbers"
-    - "edition-analysis"
+  - version-info
+  - baseline
+  - installation
+  - vulnerability-assessment
+  - system-identification
+  - build-numbers
+  - edition-analysis
 
   references:
-    - title: "Windows Version Information"
-      url: "https://learn.microsoft.com/en-us/windows/win32/sysinfo/getting-the-system-version"
-      type: "official"
-    - title: "Windows Version History and Security Features"
-      url: "https://learn.microsoft.com/en-us/windows/release-health/"
-      type: "official"
+  - title: Windows Version Information
+    url: https://learn.microsoft.com/en-us/windows/win32/sysinfo/getting-the-system-version
+    type: official
+  - title: Windows Version History and Security Features
+    url: https://learn.microsoft.com/en-us/windows/release-health/
+    type: official
 
   retention:
-    default_location: "Registry hive files (SOFTWARE)"
-    persistence: "Version information static until system upgrade or reinstallation"
-    volatility: "Fundamental system identification data, stable across system operations"
+    default_location: Registry hive files (SOFTWARE)
+    persistence: Version information static until system upgrade or reinstallation
+    volatility: Fundamental system identification data, stable across system operations
 
   related_artifacts:
-    - "installed_programs"
-    - "computer_name"
-    - "user_profiles"
-    - "windows_features"
+  - installed_programs
+  - computer_name
+  - user_profiles
+  - windows_features
 
 author:
-  name: "RegSeek Migration"
-  github: "regseek"
+  name: Tonmoy Jitu
+  github: tonmoy0010
+  x: tonmoy0010
 
 contribution:
-  date_added: "2025-06-13"
-  last_updated: "2025-06-13"
-  version: "3.0"
+  date_added: '2025-06-13'
+  last_updated: '2025-06-13'
+  version: '3.0'
